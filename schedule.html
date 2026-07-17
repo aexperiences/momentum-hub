@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Classes &amp; Schedule</title>
+<link rel="icon" href="/logo.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/config.js"></script>
+<style>
+  *{box-sizing:border-box}html,body{margin:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#2a201a);background:var(--paper,#fbf7f2);min-height:100vh}
+  h1,h2,h3{font-family:Georgia,serif;font-weight:800;margin:0}
+  .wrap{max-width:1200px;margin:0 auto;padding:20px 20px 70px}
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+  .bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:8px 0 12px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 14px}
+  .stat .n{font-family:Georgia,serif;font-weight:800;font-size:20px;color:var(--accent)}
+  .stat .l{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+  .sp{flex:1}
+  .btn{background:linear-gradient(180deg,var(--accent),var(--accent2));color:var(--onAccent);border:none;border-radius:10px;padding:11px 17px;font-weight:700;font-family:Georgia,serif;font-size:14px;cursor:pointer}
+  .filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+  .flt{border:1px solid var(--line);background:var(--card);border-radius:99px;padding:7px 13px;font-size:12.5px;font-weight:600;color:var(--ink2);cursor:pointer}
+  .flt.on{background:var(--accent);color:var(--onAccent);border-color:transparent}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:13px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 15px;cursor:pointer;box-shadow:0 4px 14px rgba(80,50,20,.05);transition:.13s}
+  .card:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 10px 22px rgba(80,50,20,.1)}
+  .tag{display:inline-block;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#fff;padding:2px 9px;border-radius:99px}
+  .nm{font-family:Georgia,serif;font-weight:800;font-size:17px;margin:8px 0 2px}
+  .meta{font-size:12px;color:var(--mut)}
+  .when{font-size:12.5px;color:var(--ink2);margin-top:6px}
+  .when b{color:var(--ink)}
+  .bar2{height:8px;border-radius:99px;background:var(--line2);overflow:hidden;margin:9px 0 4px}
+  .bar2 i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px}
+  .bar2 i.full{background:linear-gradient(90deg,#c0722a,#a85f1f)}
+  .row{display:flex;justify-content:space-between;align-items:center;margin-top:3px}
+  .fill{font-size:11.5px;color:var(--mut)}.fill b{color:var(--ink)}
+  .tu{font-family:Georgia,serif;font-weight:800;color:var(--accent)}.tu small{font-size:10px;color:var(--mut);font-weight:600}
+  .pill{font-size:10px;font-weight:800;text-transform:uppercase;padding:2px 8px;border-radius:99px}
+  .pill.full{background:#fbeee0;color:#a85f1f}.pill.up{background:#eef6f0;color:#2f6a52}
+  .scrim{position:fixed;inset:0;background:rgba(30,20,10,.5);z-index:60;display:none;align-items:center;justify-content:center;padding:18px}.scrim.on{display:flex}
+  .modal{background:var(--card);border-radius:16px;max-width:520px;width:100%;max-height:90vh;overflow:auto;padding:20px 22px;box-shadow:0 24px 60px rgba(0,0,0,.3)}
+  .modal h2{color:var(--accent);font-size:20px;margin-bottom:2px}
+  .modal .msub{font-size:12.5px;color:var(--mut);margin-bottom:12px}
+  .rlist{display:flex;flex-direction:column;gap:5px;margin-bottom:8px}
+  .re{display:flex;align-items:center;gap:9px;font-size:13px;border-bottom:1px dotted var(--line);padding:6px 0}
+  .re .c{font-weight:700}.re .fm{color:var(--mut);font-size:11.5px}
+  .chk{margin-left:auto;font-size:11px;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 10px;cursor:pointer;color:var(--ink2)}
+  .chk.on{background:#eef6f0;border-color:#bfe0cb;color:#2f6a52;font-weight:700}
+  .more{font-size:12px;color:var(--mut);padding:4px 0}
+  .fld{margin:8px 0}.fld label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--mut);font-weight:700;margin-bottom:4px}
+  .fld input{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 10px;font:inherit;font-size:13.5px;background:var(--paper);color:var(--ink)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .mrow{display:flex;gap:9px;margin-top:12px}
+  .mini{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:10px 14px;font:inherit;font-weight:600;cursor:pointer;color:var(--ink2)}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:13.5px;opacity:0;transition:.25s;pointer-events:none;z-index:80}.toast.on{opacity:1}
+  a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--accent)!important;outline-offset:2px}
+</style>
+</head>
+<body>
+<script src="/hub-nav.js" defer></script>
+<script src="/data.js"></script>
+<script src="/assistant.js" defer></script>
+<div class="wrap">
+  <div class="eyebrow" id="eb"></div>
+  <h1>Classes &amp; Schedule</h1>
+  <div class="bar">
+    <div class="stat"><div class="n" id="kClasses">—</div><div class="l">Active classes</div></div>
+    <div class="stat"><div class="n" id="kEnrolled">—</div><div class="l">Enrolled spots</div></div>
+    <div class="stat"><div class="n" id="kFill">—</div><div class="l">Avg fill</div></div>
+    <div class="stat"><div class="n" id="kWait">—</div><div class="l">Full / waitlist</div></div>
+    <div class="sp"></div>
+    <button class="btn" onclick="openNew()">＋ New class</button>
+  </div>
+  <div class="filters" id="filters"></div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<!-- roster / enroll -->
+<div class="scrim" id="scrim" onclick="if(event.target===this)close2()"><div class="modal">
+  <h2 id="mTitle">Class</h2><div class="msub" id="mSub"></div>
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--mut);font-weight:700;margin-bottom:6px">Roster &amp; check-in</div>
+  <div class="rlist" id="rlist"></div>
+  <div class="more" id="moreEnrolled"></div>
+  <div style="border-top:1px solid var(--line);margin-top:8px;padding-top:10px">
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--mut);font-weight:700;margin-bottom:4px">Enroll a child</div>
+    <div class="two"><div class="fld" style="margin-top:0"><label>Child</label><input id="e_child" placeholder="First name"></div>
+      <div class="fld" style="margin-top:0"><label>Family</label><input id="e_family" list="famList" placeholder="Family"><datalist id="famList"></datalist></div></div>
+    <div class="mrow"><button class="btn" style="flex:1" onclick="enrollKid()">Enroll →</button><button class="mini" onclick="close2()">Close</button></div>
+  </div>
+</div></div>
+
+<!-- new / edit class -->
+<div class="scrim" id="cscrim" onclick="if(event.target===this)closeC()"><div class="modal">
+  <h2 id="cTitle">New class</h2>
+  <div class="two"><div class="fld"><label>Program</label><input id="f_program" list="progList" placeholder="Gymnastics…"><datalist id="progList"></datalist></div>
+    <div class="fld"><label>Class name</label><input id="f_name"></div></div>
+  <div class="two"><div class="fld"><label>Ages</label><input id="f_ages" placeholder="5–7"></div>
+    <div class="fld"><label>Level</label><input id="f_level" placeholder="Rec"></div></div>
+  <div class="two"><div class="fld"><label>Day(s)</label><input id="f_day" placeholder="Tue"></div>
+    <div class="fld"><label>Time</label><input id="f_time" placeholder="4:00 PM"></div></div>
+  <div class="two"><div class="fld"><label>Coach</label><input id="f_coach"></div>
+    <div class="fld"><label>Room</label><input id="f_room"></div></div>
+  <div class="two"><div class="fld"><label>Capacity</label><input id="f_cap" type="number"></div>
+    <div class="fld"><label>Tuition ($/mo)</label><input id="f_tuition" type="number"></div></div>
+  <div class="mrow"><button class="btn" style="flex:1" onclick="saveClass()">Save</button><button class="mini del" id="cDel" onclick="delClass()" style="color:#b23b3b">Delete</button><button class="mini" onclick="closeC()">Cancel</button></div>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  var el=function(id){return document.getElementById(id);};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var money=function(n){n=+n||0;return '$'+Math.round(n).toLocaleString();};
+  var C=window.HUB_CONFIG||{}, BR=C.brand||{}, PC=C.programColors||{};
+  var CLASSES=[], FAMILIES=[], CUR=null, filter='All', present={};
+  el('eb').textContent=(BR.center||BR.name||'');
+
+  function pcolor(p){ return PC[p]||'#9a8b7d'; }
+  function full(c){ return (+c.enrolled||0) >= (+c.cap||0); }
+  function load(){ Promise.all([window.HUBDATA.list('classes'),window.HUBDATA.list('families')]).then(function(r){ CLASSES=r[0]||[]; FAMILIES=r[1]||[];
+    el('famList').innerHTML=FAMILIES.map(function(f){return '<option value="'+esc(f.family)+'">';}).join('');
+    el('progList').innerHTML=Object.keys(PC).map(function(p){return '<option value="'+esc(p)+'">';}).join('');
+    render(); }); }
+  function render(){
+    var progs=['All'].concat(Object.keys(PC).filter(function(p){return CLASSES.some(function(c){return c.program===p;});}));
+    el('filters').innerHTML=progs.map(function(p){return '<button class="flt'+(p===filter?' on':'')+'" data-p="'+esc(p)+'">'+esc(p)+'</button>';}).join('');
+    el('filters').querySelectorAll('[data-p]').forEach(function(b){b.addEventListener('click',function(){filter=b.getAttribute('data-p');render();});});
+    var list=CLASSES.filter(function(c){return filter==='All'||c.program===filter;});
+    var totEnr=CLASSES.reduce(function(s,c){return s+(+c.enrolled||0);},0);
+    var caps=CLASSES.reduce(function(s,c){return s+(+c.cap||0);},0);
+    el('kClasses').textContent=CLASSES.length; el('kEnrolled').textContent=totEnr;
+    el('kFill').textContent=(caps?Math.round(totEnr/caps*100):0)+'%';
+    el('kWait').textContent=CLASSES.filter(full).length;
+    el('grid').innerHTML=list.map(function(c){
+      var pct=Math.min(100,Math.round((+c.enrolled||0)/(+c.cap||1)*100));
+      var badge=c.status==='Upcoming'?'<span class="pill up">Upcoming</span>':(full(c)?'<span class="pill full">Full · waitlist</span>':'');
+      return '<div class="card" data-id="'+esc(c.id)+'"><div class="row"><span class="tag" style="background:'+pcolor(c.program)+'">'+esc(c.program)+'</span>'+badge+'</div>'+
+        '<div class="nm">'+esc(c.name||'')+'</div><div class="meta">'+esc(c.ages||'')+(c.level?' · '+esc(c.level):'')+'</div>'+
+        '<div class="when">📅 <b>'+esc(c.day||'')+'</b> · '+esc(c.time||'')+' &nbsp; 🏅 '+esc(c.coach||'')+'</div>'+
+        '<div class="bar2"><i class="'+(full(c)?'full':'')+'" style="width:'+pct+'%"></i></div>'+
+        '<div class="row"><span class="fill"><b>'+(+c.enrolled||0)+'</b> / '+(+c.cap||0)+' · '+esc(c.room||'')+'</span><span class="tu">'+money(c.tuition)+'<small>/mo</small></span></div></div>';
+    }).join('')||'<div class="stat">No classes in this program.</div>';
+    document.querySelectorAll('[data-id]').forEach(function(x){x.addEventListener('click',function(){openRoster(x.getAttribute('data-id'));});});
+  }
+  function openRoster(id){ CUR=CLASSES.find(function(x){return x.id===id;}); if(!CUR)return; present={};
+    el('mTitle').textContent=CUR.name; el('mSub').textContent=CUR.program+' · '+(CUR.ages||'')+' · '+(CUR.day||'')+' '+(CUR.time||'')+' · '+(CUR.coach||'');
+    renderRoster(); el('e_child').value=''; el('e_family').value=''; el('scrim').classList.add('on'); }
+  function renderRoster(){
+    var r=CUR.roster||[];
+    el('rlist').innerHTML=r.length?r.map(function(e,i){return '<div class="re"><span class="c">'+esc(e.child)+'</span><span class="fm">'+esc(e.family||'')+'</span><button class="chk'+(present[i]?' on':'')+'" data-i="'+i+'">'+(present[i]?'✓ Present':'Check in')+'</button></div>';}).join(''):'<div class="more">No named roster yet — enroll a child below.</div>';
+    var more=(+CUR.enrolled||0)-r.length;
+    el('moreEnrolled').textContent=more>0?('＋ '+more+' more enrolled (not shown)'):'';
+    el('rlist').querySelectorAll('[data-i]').forEach(function(b){b.addEventListener('click',function(){var i=+b.getAttribute('data-i');present[i]=!present[i];renderRoster();});});
+  }
+  function enrollKid(){ var child=el('e_child').value.trim(), fam=el('e_family').value.trim(); if(!child)return;
+    if(full(CUR)&&!confirm('This class is full ('+CUR.enrolled+'/'+CUR.cap+'). Add '+child+' to the waitlist?'))return;
+    CUR.roster=(CUR.roster||[]).concat([{child:child,family:fam}]); CUR.enrolled=(+CUR.enrolled||0)+1;
+    window.HUBDATA.save('classes',CUR).then(function(){ el('e_child').value=''; el('e_family').value=''; renderRoster(); load(); toast('Enrolled '+child+(full(CUR)?' (waitlist)':'')); });
+  }
+  function toast(m){var t=el('toast');t.textContent=m;t.classList.add('on');setTimeout(function(){t.classList.remove('on');},2200);}
+  function close2(){ el('scrim').classList.remove('on'); }
+
+  var F=['program','name','ages','level','day','time','coach','room','cap','tuition'];
+  function openNew(){ CUR=null; el('cTitle').textContent='New class'; F.forEach(function(k){el('f_'+k).value='';}); el('cDel').style.display='none'; el('cscrim').classList.add('on'); el('f_program').focus(); }
+  function saveClass(){ var rec=CUR?Object.assign({},CUR):{roster:[],enrolled:0}; F.forEach(function(k){var v=el('f_'+k).value; if(k==='cap'||k==='tuition')v=v===''?'':+v; rec[k]=v;}); window.HUBDATA.save('classes',rec).then(function(){closeC();load();}); }
+  function delClass(){ if(!CUR||!confirm('Delete this class?'))return; window.HUBDATA.del('classes',CUR.id).then(function(){closeC();load();}); }
+  function closeC(){ el('cscrim').classList.remove('on'); }
+  window.openNew=openNew;window.saveClass=saveClass;window.delClass=delClass;window.closeC=closeC;window.enrollKid=enrollKid;window.close2=close2;
+
+  window.AssistantContext=function(){ return { view:'class schedule', center:BR.center,
+    classes:CLASSES.map(function(c){return {program:c.program,name:c.name,ages:c.ages,day:c.day,time:c.time,coach:c.coach,enrolled:c.enrolled,cap:c.cap,tuition:c.tuition,full:full(c)};}) }; };
+  load();
+})();
+</script>
+</body>
+</html>

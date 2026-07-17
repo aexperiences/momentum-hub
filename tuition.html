@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Tuition &amp; Billing</title>
+<link rel="icon" href="/logo.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/config.js"></script>
+<style>
+  *{box-sizing:border-box}html,body{margin:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#2a201a);background:var(--paper,#fbf7f2);min-height:100vh}
+  h1,h2,h3{font-family:Georgia,serif;font-weight:800;margin:0}
+  .wrap{max-width:1080px;margin:0 auto;padding:20px 20px 70px}
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+  .sub{color:var(--ink2);font-size:13.5px;margin:2px 0 12px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:8px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px}
+  .kpi .n{font-family:Georgia,serif;font-weight:800;font-size:24px;color:var(--teal,#17a2a2)}
+  .kpi.soft .n{color:var(--ink2)}
+  .kpi .l{font-size:11.5px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+  h3.sec{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:20px 0 8px}
+  .progs{display:flex;flex-direction:column;gap:7px}
+  .prow{display:flex;align-items:center;gap:10px}
+  .prow .pn{width:120px;font-size:12.5px;font-weight:700}
+  .prow .track{flex:1;height:16px;border-radius:8px;background:var(--line2);overflow:hidden}
+  .prow .track i{display:block;height:100%;border-radius:8px}
+  .prow .pv{width:96px;text-align:right;font-family:Georgia,serif;font-weight:700;font-size:13px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:13px;overflow:hidden}
+  th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);padding:10px 13px;border-bottom:1px solid var(--line)}
+  td{padding:11px 13px;border-bottom:1px solid var(--line2);font-size:14px}
+  tr:last-child td{border-bottom:none}
+  td.r,th.r{text-align:right}
+  .tu{font-family:Georgia,serif;font-weight:800;color:var(--teal,#17a2a2)}
+  .ap{font-size:10.5px;font-weight:800;text-transform:uppercase;padding:2px 8px;border-radius:99px}
+  .ap.yes{background:#eef6f0;color:#2f6a52}.ap.no{background:#fbeee0;color:#a85f1f}
+  .mut{color:var(--mut)}
+  .stub{font-size:11px;color:var(--mut);margin-top:14px;line-height:1.5}
+</style>
+</head>
+<body>
+<script src="/hub-nav.js" defer></script>
+<script src="/data.js"></script>
+<script src="/assistant.js" defer></script>
+<div class="wrap">
+  <div class="eyebrow" id="eb"></div>
+  <h1>Tuition &amp; Billing</h1>
+  <div class="sub">Recurring monthly tuition is the engine. Autopay families bill automatically; new families get set up on enroll.</div>
+  <div class="cards">
+    <div class="kpi"><div class="n" id="kMrr">—</div><div class="l">Monthly recurring revenue</div></div>
+    <div class="kpi soft"><div class="n" id="kEnr">—</div><div class="l">Active enrollments</div></div>
+    <div class="kpi soft"><div class="n" id="kAvg">—</div><div class="l">Avg tuition / enrollment</div></div>
+    <div class="kpi soft"><div class="n" id="kAuto">—</div><div class="l">On autopay</div></div>
+  </div>
+  <h3 class="sec">Monthly revenue by program</h3>
+  <div class="progs" id="progs"></div>
+  <h3 class="sec">Family billing</h3>
+  <table><thead><tr><th>Family</th><th>Kids enrolled</th><th class="r">Monthly tuition</th><th>Autopay</th><th>Status</th></tr></thead><tbody id="rows"></tbody></table>
+  <div class="stub" id="stub"></div>
+</div>
+<script>
+(function(){
+  var el=function(id){return document.getElementById(id);};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var money=function(n){n=+n||0;return '$'+Math.round(n).toLocaleString();};
+  var C=window.HUB_CONFIG||{}, BR=C.brand||{}, PC=C.programColors||{};
+  var CLASSES=[], FAMILIES=[];
+  el('eb').textContent=(BR.center||BR.name||'');
+  el('stub').innerHTML=(C.billing&&C.billing.note?esc(C.billing.note)+'<br>':'')+'Payments are stubbed in this demo — no card is charged.';
+  var recurring=function(c){ return c.program!=='Camps'; };
+  function enrollmentsOf(fam){ var out=[]; CLASSES.forEach(function(c){ (c.roster||[]).forEach(function(e){ if((e.family||'')===fam) out.push(+c.tuition||0); }); }); return out; }
+
+  function load(){ Promise.all([window.HUBDATA.list('classes'),window.HUBDATA.list('families')]).then(function(r){ CLASSES=r[0]||[]; FAMILIES=r[1]||[]; render(); }); }
+  function render(){
+    var rec=CLASSES.filter(recurring);
+    var mrr=rec.reduce(function(s,c){return s+((+c.enrolled||0)*(+c.tuition||0));},0);
+    var enr=rec.reduce(function(s,c){return s+(+c.enrolled||0);},0);
+    el('kMrr').textContent=money(mrr); el('kEnr').textContent=enr;
+    el('kAvg').textContent=money(enr?mrr/enr:0);
+    el('kAuto').textContent=(FAMILIES.length?Math.round(FAMILIES.filter(function(f){return f.autopay;}).length/FAMILIES.length*100):0)+'%';
+    // by program
+    var byP={}; rec.forEach(function(c){ byP[c.program]=(byP[c.program]||0)+(+c.enrolled||0)*(+c.tuition||0); });
+    var max=Math.max.apply(null,Object.keys(byP).map(function(k){return byP[k];}).concat([1]));
+    el('progs').innerHTML=Object.keys(byP).sort(function(a,b){return byP[b]-byP[a];}).map(function(p){
+      return '<div class="prow"><div class="pn">'+esc(p)+'</div><div class="track"><i style="width:'+Math.round(byP[p]/max*100)+'%;background:'+(PC[p]||'#17a2a2')+'"></i></div><div class="pv">'+money(byP[p])+'</div></div>';
+    }).join('');
+    // family billing (named families)
+    var rows=FAMILIES.map(function(f){var e=enrollmentsOf(f.family);return {f:f,cnt:e.length,tu:e.reduce(function(s,x){return s+x;},0)};}).filter(function(o){return o.cnt>0;}).sort(function(a,b){return b.tu-a.tu;});
+    el('rows').innerHTML=rows.map(function(o){var f=o.f;
+      return '<tr><td>'+esc(f.family)+'<div class="mut" style="font-size:11.5px">'+esc(f.parent||'')+'</div></td>'+
+        '<td>'+o.cnt+' <span class="mut">('+esc((f.kids||[]).join(', '))+')</span></td>'+
+        '<td class="r tu">'+money(o.tu)+'</td>'+
+        '<td><span class="ap '+(f.autopay?'yes':'no')+'">'+(f.autopay?'Auto':'Manual')+'</span></td>'+
+        '<td>'+(f.autopay?'<span class="mut">Current · autopay</span>':'<span style="color:#a85f1f;font-weight:600">Set up autopay</span>')+'</td></tr>';
+    }).join('')||'<tr><td colspan="5" class="mut" style="padding:15px">No billed families yet.</td></tr>';
+  }
+  window.AssistantContext=function(){ var rec=CLASSES.filter(recurring); return { view:'tuition & billing',
+    mrr:rec.reduce(function(s,c){return s+((+c.enrolled||0)*(+c.tuition||0));},0),
+    activeEnrollments:rec.reduce(function(s,c){return s+(+c.enrolled||0);},0),
+    autopayPct:(FAMILIES.length?Math.round(FAMILIES.filter(function(f){return f.autopay;}).length/FAMILIES.length*100):0) }; };
+  load();
+})();
+</script>
+</body>
+</html>

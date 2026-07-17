@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Families &amp; Kids</title>
+<link rel="icon" href="/logo.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/config.js"></script>
+<style>
+  *{box-sizing:border-box}html,body{margin:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#2a201a);background:var(--paper,#fbf7f2);min-height:100vh}
+  h1,h2,h3{font-family:Georgia,serif;font-weight:800;margin:0}
+  .wrap{max-width:1080px;margin:0 auto;padding:20px 20px 70px}
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+  .bar{display:flex;align-items:center;gap:12px;margin:8px 0 16px;flex-wrap:wrap}.sp{flex:1}
+  .pill{font-size:12.5px;color:var(--ink2);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:7px 13px}.pill b{color:var(--teal,#17a2a2)}
+  .btn{background:linear-gradient(180deg,var(--teal,#17a2a2),#128585);color:#fff;border:none;border-radius:10px;padding:11px 17px;font-weight:700;font-family:Georgia,serif;font-size:14px;cursor:pointer}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:13px;overflow:hidden}
+  th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);padding:11px 13px;border-bottom:1px solid var(--line)}
+  td{padding:12px 13px;border-bottom:1px solid var(--line2);font-size:14px;vertical-align:top}
+  tr:last-child td{border-bottom:none}tr.row{cursor:pointer}tr.row:hover td{background:var(--cream)}
+  .nm{font-weight:700}.pa{font-size:12px;color:var(--mut)}
+  .kid{display:inline-block;font-size:11px;font-weight:700;background:rgba(23,162,162,.13);color:#0f7d7d;border-radius:99px;padding:2px 9px;margin:1px 2px 1px 0}
+  .enr{font-size:12px;color:var(--ink2)}
+  .tu{font-family:Georgia,serif;font-weight:800;color:var(--teal,#17a2a2)}
+  .ap{font-size:10.5px;font-weight:800;text-transform:uppercase;padding:2px 8px;border-radius:99px}
+  .ap.yes{background:#eef6f0;color:#2f6a52}.ap.no{background:#fbeee0;color:#a85f1f}
+  .mut{color:var(--mut);font-size:12.5px}
+  .scrim{position:fixed;inset:0;background:rgba(30,20,10,.5);z-index:60;display:none;align-items:center;justify-content:center;padding:18px}.scrim.on{display:flex}
+  .modal{background:var(--card);border-radius:16px;max-width:500px;width:100%;max-height:90vh;overflow:auto;padding:20px 22px;box-shadow:0 24px 60px rgba(0,0,0,.3)}
+  .modal h2{color:var(--teal,#17a2a2);font-size:20px;margin-bottom:2px}
+  .enrbox{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:8px 0 4px;font-size:12.5px}
+  .enrbox .er{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dotted var(--line)}
+  .enrbox .er:last-child{border-bottom:none}
+  .fld{margin-bottom:9px}.fld label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--mut);font-weight:700;margin-bottom:4px}
+  .fld input,.fld textarea{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 10px;font:inherit;font-size:13.5px;background:var(--paper);color:var(--ink)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .ck{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink2);margin:4px 0}
+  .mrow{display:flex;gap:9px;margin-top:12px}
+  .mini{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:10px 14px;font:inherit;font-weight:600;cursor:pointer;color:var(--ink2)}.del{color:#b23b3b;border-color:#e6c0c0}
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--teal,#17a2a2)!important;outline-offset:2px}
+</style>
+</head>
+<body>
+<script src="/hub-nav.js" defer></script>
+<script src="/data.js"></script>
+<script src="/assistant.js" defer></script>
+<div class="wrap">
+  <div class="eyebrow" id="eb"></div>
+  <h1>Families &amp; Kids</h1>
+  <div class="bar">
+    <span class="pill"><b id="pFam">—</b> families</span>
+    <span class="pill"><b id="pKids">—</b> kids</span>
+    <span class="pill"><b id="pEnr">—</b> enrollments</span>
+    <span class="pill"><b id="pAuto">—</b> on autopay</span>
+    <div class="sp"></div>
+    <button class="btn" onclick="openNew()">＋ Add family</button>
+  </div>
+  <table><thead><tr><th>Family</th><th>Kids</th><th>Enrollments</th><th>Contact</th><th>Monthly</th><th>Autopay</th></tr></thead><tbody id="rows"></tbody></table>
+</div>
+
+<div class="scrim" id="scrim" onclick="if(event.target===this)close2()"><div class="modal">
+  <h2 id="mTitle">Add family</h2>
+  <div id="enrWrap"></div>
+  <div class="two"><div class="fld"><label>Family name</label><input id="f_family"></div>
+    <div class="fld"><label>Parent / guardian</label><input id="f_parent"></div></div>
+  <div class="two"><div class="fld"><label>Phone</label><input id="f_phone"></div>
+    <div class="fld"><label>Email</label><input id="f_email"></div></div>
+  <div class="fld"><label>Kids (comma separated)</label><input id="f_kids" placeholder="Ava, Leo, Mia"></div>
+  <label class="ck"><input type="checkbox" id="f_autopay"> On autopay</label>
+  <div class="fld"><label>Notes</label><textarea id="f_notes" style="min-height:46px"></textarea></div>
+  <div class="mrow"><button class="btn" style="flex:1" onclick="saveIt()">Save</button><button class="mini del" id="delBtn" onclick="delIt()">Delete</button><button class="mini" onclick="close2()">Cancel</button></div>
+</div></div>
+
+<script>
+(function(){
+  var el=function(id){return document.getElementById(id);};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var money=function(n){n=+n||0;return '$'+Math.round(n).toLocaleString();};
+  var C=window.HUB_CONFIG||{}, BR=C.brand||{};
+  var FAMILIES=[], CLASSES=[], CUR=null;
+  el('eb').textContent=(BR.center||BR.name||'');
+
+  function enrollmentsOf(famName){ var out=[]; CLASSES.forEach(function(c){ (c.roster||[]).forEach(function(e){ if((e.family||'')===famName) out.push({child:e.child,cls:c.name,program:c.program,tuition:+c.tuition||0}); }); }); return out; }
+  function load(){ Promise.all([window.HUBDATA.list('families'),window.HUBDATA.list('classes')]).then(function(r){ FAMILIES=r[0]||[]; CLASSES=r[1]||[]; render(); }); }
+  function render(){
+    var rows=FAMILIES.map(function(f){ var e=enrollmentsOf(f.family); return {f:f,e:e,tu:e.reduce(function(s,x){return s+x.tuition;},0)}; }).sort(function(a,b){return b.tu-a.tu;});
+    el('pFam').textContent=FAMILIES.length;
+    el('pKids').textContent=FAMILIES.reduce(function(s,f){return s+((f.kids||[]).length);},0);
+    el('pEnr').textContent=rows.reduce(function(s,o){return s+o.e.length;},0);
+    el('pAuto').textContent=(FAMILIES.length?Math.round(FAMILIES.filter(function(f){return f.autopay;}).length/FAMILIES.length*100):0)+'%';
+    el('rows').innerHTML=rows.map(function(o){ var f=o.f;
+      return '<tr class="row" data-id="'+esc(f.id)+'"><td><div class="nm">'+esc(f.family||'—')+'</div><div class="pa">'+esc(f.parent||'')+'</div></td>'+
+        '<td>'+((f.kids||[]).map(function(k){return '<span class="kid">'+esc(k)+'</span>';}).join('')||'<span class="mut">—</span>')+'</td>'+
+        '<td class="enr">'+(o.e.length?o.e.length+' <span class="mut">('+o.e.slice(0,2).map(function(x){return esc(x.cls);}).join(', ')+(o.e.length>2?'…':'')+')':'<span class="mut">none</span>')+'</td>'+
+        '<td class="mut">'+esc(f.phone||'')+(f.email?'<br>'+esc(f.email):'')+'</td>'+
+        '<td class="tu">'+(o.tu?money(o.tu):'—')+'</td>'+
+        '<td><span class="ap '+(f.autopay?'yes':'no')+'">'+(f.autopay?'Auto':'Manual')+'</span></td></tr>';
+    }).join('')||'<tr><td colspan="6" class="mut" style="padding:16px">No families yet.</td></tr>';
+    document.querySelectorAll('[data-id]').forEach(function(r){r.addEventListener('click',function(){openEdit(r.getAttribute('data-id'));});});
+  }
+  var F=['family','parent','phone','email','notes'];
+  function fillEnr(f){ if(!f){el('enrWrap').innerHTML='';return;} var e=enrollmentsOf(f.family); if(!e.length){el('enrWrap').innerHTML='';return;}
+    el('enrWrap').innerHTML='<div style="font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--mut);font-weight:700;margin-bottom:4px">Enrollments</div><div class="enrbox">'+e.map(function(x){return '<div class="er"><span>'+esc(x.child)+' · '+esc(x.cls)+'</span><b>'+money(x.tuition)+'/mo</b></div>';}).join('')+'<div class="er" style="border-top:1px solid var(--line);margin-top:3px;padding-top:5px"><b>Monthly total</b><b style="color:var(--teal)">'+money(e.reduce(function(s,x){return s+x.tuition;},0))+'</b></div></div>'; }
+  function openNew(){ CUR=null; el('mTitle').textContent='Add family'; F.forEach(function(k){el('f_'+k).value='';}); el('f_kids').value=''; el('f_autopay').checked=false; el('enrWrap').innerHTML=''; el('delBtn').style.display='none'; el('scrim').classList.add('on'); el('f_family').focus(); }
+  function openEdit(id){ CUR=FAMILIES.find(function(x){return x.id===id;}); if(!CUR)return; el('mTitle').textContent='Edit family'; F.forEach(function(k){el('f_'+k).value=CUR[k]==null?'':CUR[k];}); el('f_kids').value=(CUR.kids||[]).join(', '); el('f_autopay').checked=!!CUR.autopay; fillEnr(CUR); el('delBtn').style.display=''; el('scrim').classList.add('on'); }
+  function saveIt(){ var rec=CUR?Object.assign({},CUR):{}; F.forEach(function(k){rec[k]=el('f_'+k).value;}); rec.kids=el('f_kids').value.split(',').map(function(s){return s.trim();}).filter(Boolean); rec.autopay=el('f_autopay').checked; window.HUBDATA.save('families',rec).then(function(){close2();load();}); }
+  function delIt(){ if(!CUR||!confirm('Delete this family?'))return; window.HUBDATA.del('families',CUR.id).then(function(){close2();load();}); }
+  function close2(){ el('scrim').classList.remove('on'); }
+  window.openNew=openNew;window.saveIt=saveIt;window.delIt=delIt;window.close2=close2;
+  window.AssistantContext=function(){ return { view:'families & kids', families:FAMILIES.map(function(f){var e=enrollmentsOf(f.family);return {family:f.family,parent:f.parent,kids:f.kids,enrollments:e.length,monthlyTuition:e.reduce(function(s,x){return s+x.tuition;},0),autopay:f.autopay};}) }; };
+  load();
+})();
+</script>
+</body>
+</html>

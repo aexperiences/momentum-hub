@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Momentum Sports and Play — In Good Hands</title>
+<link rel="icon" href="/logo.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,800&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#f6f3ee;--card:#fff;--ink:#2a2622;--ink2:#55504a;--mut:#948c81;--line:#e6ddd0;--line2:#f2ece1;--coral:#d97e5f;--coral2:#c56a4b;--coral3:#a5563b;--sage:#5f978f;--sage2:#4d857d}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--cream);line-height:1.55}
+  h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:800;letter-spacing:-.01em;line-height:1.1}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 22px}
+  .sec{padding:44px 0}
+  .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--coral2);font-weight:700}
+  p{font-size:15px;color:var(--ink2)}
+  /* hero */
+  .hero{background:radial-gradient(900px 400px at 80% -10%, rgba(95,151,143,.45), transparent 60%),linear-gradient(160deg,#d97e5f,#c56a4b 60%,#a5563b);color:#fff;text-align:center;padding:64px 22px 56px}
+  .wm .m{font-size:40px;font-weight:300;letter-spacing:.4em;color:#fff}
+  .wm .s{font-size:11px;font-weight:500;letter-spacing:.42em;color:rgba(255,255,255,.85);margin-top:4px}
+  .hero .kick{margin-top:34px;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#ffe6da;font-weight:700}
+  .hero h1{font-size:52px;color:#fff;margin:12px 0 12px}
+  .hero .lead{font-size:17px;color:#fff2ec;max-width:620px;margin:0 auto;opacity:.96}
+  .hero .tag{margin-top:20px;font-family:Fraunces,serif;font-style:italic;font-size:18px;color:#ffe6da}
+  .band{background:var(--ink);color:#fff;padding:16px 0}
+  .band .wrap{display:flex;align-items:center;gap:12px;font-size:13px}
+  .band b{color:#f0c3b1}
+  .band .r{margin-left:auto;font-size:10px;letter-spacing:.14em;color:#b9b0a6;text-transform:uppercase}
+  /* note */
+  .note h2{font-size:30px;color:var(--ink);margin:6px 0 14px;max-width:760px}
+  .note p{font-size:15.5px;margin-bottom:12px;max-width:800px}
+  .note .sig{font-family:Fraunces,serif;font-weight:800;font-size:16px;color:var(--coral2)}
+  .p2p{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--sage);border-radius:14px;padding:18px 22px;margin-top:18px;max-width:820px}
+  .p2p p{font-size:14.5px;color:var(--ink2)}
+  /* box */
+  .box{background:#fff}
+  .box h2{font-size:30px;margin:6px 0 8px}
+  .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:22px}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  .col{background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .col .ct{font-family:Fraunces,serif;font-weight:800;font-size:16px;margin-bottom:9px;display:flex;align-items:center;gap:9px}
+  .col ul{list-style:none}
+  .col li{font-size:12.8px;color:var(--ink2);line-height:1.5;padding:5px 0 5px 16px;position:relative;border-bottom:1px dotted var(--line)}
+  .col li:last-child{border-bottom:none}
+  .col li::before{content:"›";position:absolute;left:0;color:var(--coral);font-weight:800}
+  .replbar{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+  .replbar .x{flex:1;min-width:200px;background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:12px 15px;font-size:12.5px;color:var(--ink2)}
+  .replbar .x b{display:block;color:var(--coral2);font-size:13.5px;font-family:Fraunces,serif;font-weight:800;margin-bottom:2px}
+  .live{text-align:center;background:var(--cream);border:1px dashed var(--line);border-radius:14px;padding:16px;margin-top:22px}
+  .live a{color:var(--sage2);font-weight:700;text-decoration:none;border-bottom:2px solid var(--sage);padding-bottom:1px;margin:0 8px}
+  .live .pv{font-size:12px;color:var(--mut);margin-top:6px}
+  /* steps */
+  .steps{counter-reset:s;list-style:none;margin-top:18px;max-width:820px}
+  .steps li{position:relative;padding:11px 0 11px 44px;border-bottom:1px solid var(--line2);font-size:14.5px;color:var(--ink2)}
+  .steps li b{color:var(--ink)}
+  .steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:10px;width:28px;height:28px;border-radius:50%;background:var(--coral);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+  /* deal */
+  .deal{background:#fff}
+  .freebanner{background:linear-gradient(150deg,var(--sage),var(--sage2));color:#fff;border-radius:16px;padding:18px 24px;margin:16px 0 18px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .freebanner .big{font-family:Fraunces,serif;font-weight:800;font-size:34px}
+  .freebanner .t{font-size:14px;flex:1;min-width:260px}
+  .freebanner .t b{font-weight:800}
+  .tiers{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  @media(max-width:760px){.tiers{grid-template-columns:1fr}}
+  .tier{border:1px solid var(--line);border-radius:15px;overflow:hidden;background:#fff}
+  .tier .h{padding:14px 16px;color:#fff}
+  .tier.a .h{background:#8a8178}.tier.b .h{background:linear-gradient(160deg,var(--coral),var(--coral2))}.tier.c .h{background:linear-gradient(160deg,var(--sage),var(--sage2))}
+  .tier .h .n{font-family:Fraunces,serif;font-weight:800;font-size:17px}
+  .tier .h .badge{font-size:9px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;opacity:.92}
+  .tier .b2{padding:15px 17px}
+  .tier .pr{font-family:Fraunces,serif;font-weight:800;font-size:30px;color:var(--ink);line-height:1}
+  .tier .pr small{font-size:13px;font-weight:600;color:var(--mut)}
+  .tier .cap{font-size:12.5px;color:var(--ink2);margin:8px 0 4px}
+  .tier ul{list-style:none;margin-top:6px}
+  .tier li{font-size:12.5px;color:var(--ink2);padding:5px 0 5px 16px;position:relative}
+  .tier li::before{content:"✓";position:absolute;left:0;color:var(--coral);font-weight:800;font-size:11px}
+  .tuition{background:#fbf2ec;border:1px solid #f0d9cb;border-radius:13px;padding:14px 18px;font-size:13.5px;color:#7a5a48;margin-top:18px}
+  .tuition b{color:var(--coral2)}
+  .starnote{font-size:11.5px;color:var(--mut);margin-top:10px}
+  .gift{background:var(--ink);color:#fff;text-align:center;padding:40px 22px}
+  .gift h2{color:#fff;font-size:26px}
+  .gift p{color:#cfc7bd;max-width:680px;margin:10px auto 0}
+  /* resume */
+  .resume{background:var(--cream)}
+  .rhead{font-size:19px;font-family:Fraunces,serif;font-weight:800}
+  .rmeta{font-size:12.5px;color:var(--mut);margin:3px 0 12px}
+  .rsum{font-size:13.5px;color:var(--ink2);max-width:860px;margin-bottom:18px}
+  .rsub{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--coral2);font-weight:700;margin:16px 0 8px}
+  .job{margin-bottom:12px}
+  .job .jt{font-weight:700;font-size:14px;color:var(--ink)}
+  .job .jm{font-size:12px;color:var(--mut);margin-bottom:3px}
+  .job ul{margin:2px 0 0 16px}.job li{font-size:12.5px;color:var(--ink2);line-height:1.5}
+  .skills{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:640px){.skills{grid-template-columns:1fr}}
+  .skill{background:#fff;border:1px solid var(--line);border-radius:11px;padding:11px 13px}
+  .skill .st{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--coral2);font-weight:700;margin-bottom:3px}
+  .skill .sd{font-size:12.5px;color:var(--ink2)}
+  .close{text-align:center;padding:40px 22px}
+  .close h2{font-size:26px}
+  .close p{max-width:640px;margin:10px auto 0}
+  .close .sig{font-family:Fraunces,serif;font-weight:800;font-size:18px;color:var(--coral2);margin-top:14px}
+  .foot{border-top:1px solid var(--line);padding:18px 0;display:flex;align-items:center;gap:9px}
+  .foot img{width:22px;height:22px}
+  .foot .t{font-size:11px;color:var(--mut)}
+  .foot .r{margin-left:auto;font-size:11px;color:var(--mut)}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <img class="wmimg" src="/momentum-logo-white.svg" alt="Momentum Sports and Play"
+       onerror="this.style.display='none';document.getElementById('wmtext').style.display='block'">
+  <div class="wm" id="wmtext" style="display:none"><div class="m">MOMENTUM</div><div class="s">SPORTS AND PLAY</div></div>
+  <div class="kick">A gift to Momentum</div>
+  <h1>You're in good hands.</h1>
+  <div class="lead">A brand-new website and a full set of tools to run the gym — built for Momentum Sports and Play, free.</div>
+  <div class="tag">For Josh &amp; Katie · Stay in Motion</div>
+</header>
+
+<div class="band"><div class="wrap"><b>Momentum&nbsp;Hub</b> — the operating system that runs the whole gym, powered by the AE Hub engine.<span class="r">Accelerated Experiences, LLC</span></div></div>
+
+<section class="sec note"><div class="wrap">
+  <div class="eyebrow">I'm a Momentum dad</div>
+  <h2>I'm not a vendor. I'm a dad whose kids are growing up at your gym.</h2>
+  <p>Josh &amp; Katie — my name is <b>Anthony Esposito</b>. My three kids are at Momentum every week — cheer and ninja — and our family happily pays you about <b>$600 a month</b>. That place is worth every dollar to us.</p>
+  <p>I also run <b>Accelerated Experiences, LLC</b>, a one-person studio where I design and build websites, apps and AI tools end to end. Over the last few days I quietly built Momentum a complete new <b>website</b> and a full stack of <b>tools to run the gym</b> — together I call it the <b>Momentum Hub</b> — already loaded with your real programs, levels and pricing. And I'm giving it to you free. This page walks you through all of it.</p>
+  <div class="sig">— Anthony</div>
+  <div class="p2p"><p>I'll be honest with you, because honesty is the whole point of what I build. I'm autistic, ADHD, and dyslexic — big rooms and formal pitches have never been my strong suit. But caring about something and building it with everything I've got? That, I can do all day. So please read this as me talking to you, not selling you. I'd love to skip the pitch and just sit down over coffee — one Momentum family, to the two people who built the place.</p></div>
+</div></section>
+
+<section class="sec box"><div class="wrap">
+  <div class="eyebrow">What's in the box</div>
+  <h2>One system — everything connected.</h2>
+  <p style="max-width:800px">Not a pile of separate apps. One hub where a new enrollment, a tuition payment, a coach's schedule and a family's info all land in the same place. Here's everything inside:</p>
+  <div class="grid">
+    <div class="col"><div class="ct">🤸 Front desk &amp; classes</div><ul>
+      <li>Public website — programs, schedule &amp; online enrollment</li>
+      <li>Class schedule — waitlists, rosters, one-tap check-in</li>
+      <li>Parent portal — families enroll, manage kids &amp; pay</li></ul></div>
+    <div class="col"><div class="ct">🥇 Programs &amp; staff</div><ul>
+      <li>Every program loaded — Rec Gym L1–4 + PreComp</li>
+      <li>Momentum Ninjas (belt levels), Exhibition + Ignite cheer</li>
+      <li>Tumbling, STEAM, preschool, homeschool, camps</li>
+      <li>Coaches &amp; staff — certs, schedules, who teaches what</li></ul></div>
+    <div class="col"><div class="ct">💳 The money</div><ul>
+      <li>Recurring tuition + autopay — billed the 1st, flat 47-week rate</li>
+      <li>Family billing — sibling &amp; multi-class discounts, reg fees</li>
+      <li>Revenue by program — your monthly recurring revenue at a glance</li></ul></div>
+    <div class="col"><div class="ct">🤝 The families</div><ul>
+      <li>Families &amp; kids — every family, every child, one place</li>
+      <li>One sign-in for your whole team</li>
+      <li>Attendance — who's here today, per class</li></ul></div>
+    <div class="col"><div class="ct">✨ The help</div><ul>
+      <li>AI front desk (Frankie) — writes class descriptions, enrollment &amp; welcome emails, waitlist notices</li>
+      <li>The family newsletter, in your voice</li>
+      <li>Your brand, your domain — export anything, it's your data</li></ul></div>
+    <div class="col"><div class="ct">🧭 The cockpit</div><ul>
+      <li>Command Center — the whole gym at a glance</li>
+      <li>Roles &amp; permissions — the right people see the right things</li>
+      <li>Grows with you — add whatever comes next</li></ul></div>
+  </div>
+  <div class="replbar">
+    <div class="x"><b>Replaces your Wix site</b>one branded home you own — on your own domain</div>
+    <div class="x"><b>Replaces The Studio Director</b>enrollment, tuition &amp; the parent portal, in-house</div>
+    <div class="x"><b>No per-family platform fee</b>your tuition stays yours</div>
+  </div>
+  <div class="live">It's built and running on a <b>private preview</b> — nobody can see it but you.
+    <div style="margin-top:8px"><a href="/hub.html">Step inside the hub →</a><a href="/schedule.html">See the class schedule →</a></div>
+    <div class="pv">…or better, let me just show you in person.</div>
+  </div>
+</div></section>
+
+<section class="sec"><div class="wrap">
+  <div class="eyebrow">Going live</div>
+  <h2>Four simple steps — you're always in control.</h2>
+  <ol class="steps">
+    <li><b>You proof it.</b> Click through everything and tell me what to change — classes, times, prices, photos, staff.</li>
+    <li><b>I make your changes.</b> As many rounds as you want, until it feels like Momentum.</li>
+    <li><b>Point momentumsportsandplay.com at it.</b> You already own it — you flip the switch, and you're live.</li>
+    <li><b>Enroll your way.</b> Keep The Studio Director if you prefer, or run enrollment &amp; tuition here. Entirely your call.</li>
+  </ol>
+</div></section>
+
+<section class="sec deal"><div class="wrap">
+  <div class="eyebrow">Your options — including one that's free, forever</div>
+  <h2>The build is a gift. Where we go next is your call.</h2>
+  <div class="freebanner"><div class="big">Build: $0</div><div class="t">The whole website &amp; hub is <b>a gift — no invoice for the build</b>, because my kids grow up at your gym. However you want to run it from here:</div></div>
+  <div class="tiers">
+    <div class="tier a"><div class="h"><div class="n">Take the Keys</div><div class="badge">Always free</div></div>
+      <div class="b2"><div class="pr">$0<small> / forever</small></div><div class="cap">Everything, as-is — I hand it over and teach your team.</div><ul><li>The whole website &amp; every tool, yours</li><li>I walk you &amp; your staff through all of it</li><li>You own it — no strings, no lock-in</li></ul></div></div>
+    <div class="tier b"><div class="h"><div class="n">Lights On</div><div class="badge">Most popular</div></div>
+      <div class="b2"><div class="pr">$149<small> / mo</small></div><div class="cap">I keep it running so you never think about it.</div><ul><li>Hosting, security, backups &amp; monitoring</li><li>Your session &amp; price updates</li><li>Fixes &amp; tweaks — a real person (me) to call</li></ul></div></div>
+    <div class="tier c"><div class="h"><div class="n">Full House</div><div class="badge">Done with you</div></div>
+      <div class="b2"><div class="pr">$599<small> / mo</small></div><div class="cap">I actively run the tools with you.</div><ul><li>Everything in Lights On</li><li>Enrollment setup each session</li><li>Family marketing + new features on request</li></ul></div></div>
+  </div>
+  <div class="tuition">And since we're already a paying Momentum family — if it's ever easier, we can run part of this <b>against our tuition</b>. Whatever works best for you two; I just want to help Momentum grow.</div>
+  <div class="starnote">Starting points — the lowest I can personally offer a gym my family loves. We'll tailor the exact plan to your budget, and the free option never expires, so you're never locked in.</div>
+</div></section>
+
+<section class="gift"><div class="wrap">
+  <h2>Everything built so far — free. There's no invoice coming.</h2>
+  <p>What I've already built is a gift to a gym my family loves. Where we go from here is entirely your choice — keep it all in-house for free, or let me keep it humming. Either way, I'm still building, polishing something new almost every day.</p>
+</div></section>
+
+<section class="sec resume"><div class="wrap">
+  <div class="eyebrow">For the record</div>
+  <h2>The full résumé — because you know me, not my company yet.</h2>
+  <div style="margin-top:16px" class="rhead">Anthony Esposito</div>
+  <div class="rmeta">Digital Architect &amp; Founder · Marketing · Product &nbsp;·&nbsp; anthonye@aexperiences.studio · aexperiences.com · Post Falls, Idaho</div>
+  <div class="rsum">Marketing head and software founder. I build and ship live consumer apps, an AI-driven business operating platform, and done-for-you web &amp; software — running the full stack from strategy and brand through production code and launch, solo. My marketing roots are in database and audience analytics: household-level segmentation and direct-response targeting that now drive how I position, build, and launch products.</div>
+
+  <div class="rsub">Experience</div>
+  <div class="job"><div class="jt">Founder &amp; Digital Architect — Accelerated Experiences, LLC</div><div class="jm">2025 – Present · Post Falls, ID</div><ul>
+    <li>Solo product studio: concept → design → code → payments → launch, entirely in-house.</li>
+    <li>Shipped the ESPO app family — ESPO Music (guitar, bass, piano, harmonica, ukulele) plus ESPO Learning, Genius, Drama &amp; Curriculum.</li>
+    <li>MarketNarc / The Narcs — plain-English tools that decode medical bills, benefits &amp; taxes and give honest market reads.</li>
+    <li>AEHub — an AI-agent "company-in-a-box," built to white-label as B2B SaaS; wired payment billing, Google Play, SEO &amp; a cross-linked web of brand sites.</li>
+    <li>Done-for-you client work — first client: Lake City Playhouse (website + staff / education platform).</li></ul></div>
+  <div class="job"><div class="jt">Marketing Analyst — The Press Democrat (New York Times Media Group)</div><div class="jm">2004 – 2008 · Santa Rosa, CA</div><ul>
+    <li>Rose from graduate to Marketing Analyst in two years across the Press Democrat and its magazines &amp; websites.</li>
+    <li>Built the company's direct-mail system in FileMaker; applied PRIZM / Claritas household segmentation &amp; income data to targeting.</li>
+    <li>Conceived and launched new products from the data (sonomapets.com, santarosamom.com). Recognized with the Chairman's Award.</li></ul></div>
+  <div class="job"><div class="jt">Market Researcher — Bay Area News Group</div><div class="jm">2008 – 2010 · Vallejo / Vacaville / Woodland, CA</div><ul>
+    <li>Ran PRIZM household segmentation &amp; audience research; productized direct mail as a revenue product.</li></ul></div>
+  <div class="job"><div class="jt">Marketing &amp; Management — Senior Living &amp; Hospice</div><div class="jm">2010 – 2024 · Idaho / Washington</div><ul>
+    <li>Marketing Director, Auburn Crest Hospice (Coeur d'Alene) · Community Education Manager, River City Hospice (Post Falls) · General Manager, Holiday Retirement (Spokane) · Avalon Care Center (Spokane).</li></ul></div>
+
+  <div class="rsub">Core skills</div>
+  <div class="skills">
+    <div class="skill"><div class="st">Product &amp; Software</div><div class="sd">Product design · full-stack web (HTML/JS, Vercel) · AI &amp; agent systems · payments / checkout · SEO</div></div>
+    <div class="skill"><div class="st">Marketing &amp; Analytics</div><div class="sd">Household segmentation (PRIZM / Claritas) · database &amp; direct marketing · brand &amp; campaign strategy · copywriting</div></div>
+    <div class="skill"><div class="st">Media</div><div class="sd">Video &amp; YouTube · podcast production · brand identity &amp; design · community outreach</div></div>
+    <div class="skill"><div class="st">Leadership</div><div class="sd">Project management · community &amp; referral development · end-to-end ownership</div></div>
+  </div>
+
+  <div class="rsub">Education</div>
+  <div class="rsum" style="margin-bottom:0">B.S., Communication / Media — University of Idaho (2003) · Minors: Advertising &amp; Public Relations</div>
+</div></section>
+
+<section class="close"><div class="wrap">
+  <h2>I truly want to help Momentum thrive.</h2>
+  <p>I'd be honored to walk you through all of it in person — just a conversation, no big presentation. Whenever you're ready, I'm ready.</p>
+  <div class="sig">— Anthony &amp; the Esposito Family</div>
+</div></section>
+
+<div class="wrap"><div class="foot"><img src="/ae-mark.png" alt="Accelerated Experiences"><div class="t">Powered by · Accelerated Experiences, LLC · A gift from the Esposito Family</div><div class="r">Momentum Sports and Play · Coeur d'Alene, Idaho</div></div></div>
+
+</body>
+</html>

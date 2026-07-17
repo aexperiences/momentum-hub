@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Team App</title>
+<link rel="icon" href="/logo.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/config.js"></script>
+<style>
+  *{box-sizing:border-box}html,body{margin:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#2a201a);background:var(--paper,#fbf7f2);min-height:100vh}
+  h1,h2,h3{font-family:Georgia,serif;font-weight:800;margin:0}
+  .wrap{max-width:1180px;margin:0 auto;padding:20px 20px 70px}
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+  .kpis{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 16px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 14px}
+  .stat .n{font-family:Georgia,serif;font-weight:800;font-size:20px;color:var(--accent)}
+  .stat .l{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+  .grid{display:grid;grid-template-columns:250px 1fr;gap:16px;align-items:start}
+  @media(max-width:840px){.grid{grid-template-columns:1fr}}
+  .rail{display:flex;flex-direction:column;gap:8px;position:sticky;top:16px}
+  .team{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;cursor:pointer;border-left:4px solid var(--accent);transition:.12s}
+  .team:hover{background:var(--cream)}
+  .team.on{border-color:var(--accent);box-shadow:0 4px 14px rgba(80,50,20,.08)}
+  .team .tn{font-weight:800;font-size:14px}
+  .team .tm{font-size:11px;color:var(--mut);margin-top:2px}
+  .lv{display:inline-block;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:2px 7px;border-radius:99px;margin-top:6px}
+  .lv.comp{background:#fbeee0;color:#a85f1f}.lv.exh{background:#e7f2f0;color:#2f6a68}.lv.rec{background:#eef4e8;color:#4a6a2f}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:14px}
+  .thead{display:flex;align-items:flex-start;gap:12px;margin-bottom:2px}
+  .thead .tt{font-family:Georgia,serif;font-weight:800;font-size:21px}
+  .thead .meta{font-size:12.5px;color:var(--mut);margin-top:3px}
+  .sp{flex:1}
+  .btn{background:linear-gradient(180deg,var(--accent),var(--accent2));color:var(--onAccent);border:none;border-radius:9px;padding:9px 13px;font-weight:700;font-family:Georgia,serif;font-size:13px;cursor:pointer}
+  .sec-t{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);font-weight:700;margin:4px 0 10px;display:flex;align-items:center;gap:8px}
+  .ev{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:9px}
+  .ev .er{display:flex;align-items:center;gap:10px}
+  .ev .type{font-size:10px;font-weight:800;text-transform:uppercase;padding:2px 8px;border-radius:99px}
+  .type.Practice{background:rgba(0,0,0,.06);color:var(--ink2)}.type.Competition{background:#fbeee0;color:#a85f1f}.type.Showcase{background:#efe9f6;color:#6a3d9c}.type.Event{background:#e7f2f0;color:#2f6a68}
+  .ev .evt{font-weight:700;font-size:14px}
+  .ev .when{font-size:12px;color:var(--ink2);margin-top:3px}
+  .ev .when b{color:var(--ink)}
+  .rsvp{display:flex;gap:7px;margin-top:10px}
+  .rb{flex:1;border:1px solid var(--line);background:var(--paper);border-radius:9px;padding:7px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;color:var(--ink2);text-align:center}
+  .rb .c{display:block;font-size:15px;font-family:Georgia,serif}
+  .rb.go.on{background:#eef6f0;border-color:#bfe0cb;color:#2f6a52}
+  .rb.mb.on{background:#fbf4e9;border-color:#e6d3ad;color:#a9741a}
+  .rb.no.on{background:#fbecec;border-color:#e6c0c0;color:#b23b3b}
+  .roster{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  @media(max-width:560px){.roster{grid-template-columns:1fr}}
+  .ath{display:flex;align-items:center;gap:9px;border:1px solid var(--line2);border-radius:10px;padding:8px 11px}
+  .ath .av{width:30px;height:30px;border-radius:8px;background:var(--accent);color:var(--onAccent);display:grid;place-items:center;font-weight:800;font-size:12px;flex:none}
+  .ath .an{font-weight:700;font-size:13px}.ath .ap{font-size:11px;color:var(--mut)}
+  .msg{border-bottom:1px solid var(--line2);padding:9px 0}
+  .msg:last-child{border-bottom:none}
+  .msg .mh{font-size:12px;color:var(--mut)}.msg .mh b{color:var(--accent)}
+  .msg .mt{font-size:13.5px;color:var(--ink);margin-top:2px}
+  .post{display:flex;gap:8px;margin-top:10px}
+  .post input{flex:1;border:1px solid var(--line);border-radius:9px;padding:9px 11px;font:inherit;font-size:13px;background:var(--paper);color:var(--ink)}
+  .mut{color:var(--mut)}
+  .scrim{position:fixed;inset:0;background:rgba(30,20,10,.5);z-index:60;display:none;align-items:center;justify-content:center;padding:18px}.scrim.on{display:flex}
+  .modal{background:var(--card);border-radius:16px;max-width:460px;width:100%;padding:20px 22px;box-shadow:0 24px 60px rgba(0,0,0,.3)}
+  .modal h2{color:var(--accent);font-size:19px;margin-bottom:10px}
+  .fld{margin-bottom:9px}.fld label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--mut);font-weight:700;margin-bottom:4px}
+  .fld input,.fld select{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 10px;font:inherit;font-size:13.5px;background:var(--paper);color:var(--ink)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .mrow{display:flex;gap:9px;margin-top:12px}
+  .mini{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:9px 13px;font:inherit;font-weight:600;cursor:pointer;color:var(--ink2)}
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent)!important;outline-offset:2px}
+</style>
+</head>
+<body>
+<script src="/hub-nav.js" defer></script>
+<script src="/data.js"></script>
+<script src="/assistant.js" defer></script>
+<div class="wrap">
+  <div class="eyebrow" id="eb"></div>
+  <h1>Team App</h1>
+  <div class="kpis">
+    <div class="stat"><div class="n" id="kTeams">—</div><div class="l">Teams</div></div>
+    <div class="stat"><div class="n" id="kAth">—</div><div class="l">Athletes</div></div>
+    <div class="stat"><div class="n" id="kEv">—</div><div class="l">Upcoming events</div></div>
+    <div class="stat"><div class="n" id="kComp">—</div><div class="l">Competitive teams</div></div>
+  </div>
+  <div class="grid">
+    <div class="rail" id="rail"></div>
+    <div id="main"></div>
+  </div>
+</div>
+
+<div class="scrim" id="evScrim" onclick="if(event.target===this)closeEv()"><div class="modal">
+  <h2>New event</h2>
+  <div class="two"><div class="fld"><label>Type</label><select id="f_type"><option>Practice</option><option>Competition</option><option>Showcase</option><option>Event</option></select></div>
+    <div class="fld"><label>Title</label><input id="f_title" placeholder="Full routine run"></div></div>
+  <div class="two"><div class="fld"><label>Date</label><input id="f_date" type="date"></div>
+    <div class="fld"><label>Time</label><input id="f_time" placeholder="6:00 PM"></div></div>
+  <div class="fld"><label>Location</label><input id="f_location" placeholder="Gym B"></div>
+  <div class="mrow"><button class="btn" style="flex:1" onclick="saveEv()">Add event</button><button class="mini" onclick="closeEv()">Cancel</button></div>
+</div></div>
+
+<script>
+(function(){
+  var el=function(id){return document.getElementById(id);};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var C=window.HUB_CONFIG||{}, BR=C.brand||{};
+  var TEAMS=[], EVENTS=[], MSGS=[], curId=null, myResp={};
+  try{myResp=JSON.parse(localStorage.getItem('mom_rsvp')||'{}');}catch(e){myResp={};}
+  el('eb').textContent=(BR.center||BR.name||'')+' · Parents & coaches';
+  var lvClass=function(l){l=String(l||'').toLowerCase();return l.indexOf('comp')>=0?'comp':(l.indexOf('exh')>=0?'exh':'rec');};
+  var initials=function(n){var p=String(n||'').trim().split(' ');return ((p[0]||' ')[0]+((p[1]||'')[0]||'')).toUpperCase();};
+  var evsOf=function(t){return EVENTS.filter(function(e){return e.team===t;}).sort(function(a,b){return (a.date||'').localeCompare(b.date||'');});};
+  var future=function(e){return !e.date || e.date>=new Date().toISOString().slice(0,10);};
+
+  function load(){ Promise.all([window.HUBDATA.list('teams'),window.HUBDATA.list('teamevents'),window.HUBDATA.list('teammsgs')]).then(function(r){
+    TEAMS=r[0]||[]; EVENTS=r[1]||[]; MSGS=r[2]||[];
+    if(!curId&&TEAMS.length)curId=TEAMS[0].id;
+    renderKpis(); renderRail(); renderMain(); }); }
+  function renderKpis(){
+    el('kTeams').textContent=TEAMS.length;
+    el('kAth').textContent=TEAMS.reduce(function(s,t){return s+((t.roster||[]).length);},0);
+    el('kEv').textContent=EVENTS.filter(future).length;
+    el('kComp').textContent=TEAMS.filter(function(t){return lvClass(t.level)==='comp';}).length;
+  }
+  function renderRail(){
+    el('rail').innerHTML=TEAMS.map(function(t){
+      return '<div class="team'+(t.id===curId?' on':'')+'" data-id="'+esc(t.id)+'" style="border-left-color:'+(t.color||'var(--accent)')+'"><div class="tn">'+esc(t.name)+'</div><div class="tm">'+esc(t.age||'')+' · '+((t.roster||[]).length)+' athletes</div><span class="lv '+lvClass(t.level)+'">'+esc(t.level||'')+'</span></div>';
+    }).join('');
+    el('rail').querySelectorAll('[data-id]').forEach(function(x){x.addEventListener('click',function(){curId=x.getAttribute('data-id');renderRail();renderMain();});});
+  }
+  function renderMain(){
+    var t=TEAMS.find(function(x){return x.id===curId;}); if(!t){el('main').innerHTML='';return;}
+    var evs=evsOf(t.name);
+    el('main').innerHTML=
+      '<div class="panel"><div class="thead"><div><div class="tt">'+esc(t.name)+'</div><div class="meta">'+esc(t.level||'')+' · '+esc(t.age||'')+' · 🏅 '+esc(t.coach||'')+' · '+((t.roster||[]).length)+' athletes</div></div><div class="sp"></div><button class="btn" onclick="openEv()">＋ Event</button></div></div>'+
+      '<div class="panel"><div class="sec-t">📅 Schedule &amp; RSVP</div><div id="sched"></div></div>'+
+      '<div class="panel"><div class="sec-t">👧 Roster</div><div class="roster">'+((t.roster||[]).map(function(a){return '<div class="ath"><div class="av">'+esc(initials(a.athlete))+'</div><div><div class="an">'+esc(a.athlete)+'</div><div class="ap">'+esc(a.parent||'')+(a.phone?' · '+esc(a.phone):'')+'</div></div></div>';}).join('')||'<div class="mut">No athletes yet.</div>')+'</div></div>'+
+      '<div class="panel"><div class="sec-t">📣 Announcements</div><div id="msgs"></div><div class="post"><input id="postText" placeholder="Post to the team…"><button class="btn" onclick="postMsg()">Post</button></div></div>';
+    renderSched(t); renderMsgs(t.name);
+  }
+  function renderSched(t){
+    var evs=evsOf(t.name);
+    el('sched').innerHTML=evs.length?evs.map(function(e){
+      var mine=myResp[e.id];
+      return '<div class="ev"><div class="er"><span class="type '+esc(e.type||'Event')+'">'+esc(e.type||'Event')+'</span><span class="evt">'+esc(e.title||'')+'</span></div>'+
+        '<div class="when">📅 <b>'+esc(e.date||'')+'</b> · '+esc(e.time||'')+(e.location?' · 📍 '+esc(e.location):'')+'</div>'+
+        '<div class="rsvp"><button class="rb go'+(mine==='go'?' on':'')+'" data-ev="'+esc(e.id)+'" data-r="go"><span class="c">'+(+e.going||0)+'</span>Going</button>'+
+        '<button class="rb mb'+(mine==='mb'?' on':'')+'" data-ev="'+esc(e.id)+'" data-r="mb"><span class="c">'+(+e.maybe||0)+'</span>Maybe</button>'+
+        '<button class="rb no'+(mine==='no'?' on':'')+'" data-ev="'+esc(e.id)+'" data-r="no"><span class="c">'+(+e.out||0)+'</span>Out</button></div></div>';
+    }).join(''):'<div class="mut">No events yet — add a practice or competition.</div>';
+    el('sched').querySelectorAll('[data-ev]').forEach(function(b){b.addEventListener('click',function(){rsvp(b.getAttribute('data-ev'),b.getAttribute('data-r'));});});
+  }
+  var KEYMAP={go:'going',mb:'maybe',no:'out'};
+  function rsvp(evId,r){
+    var e=EVENTS.find(function(x){return x.id===evId;}); if(!e)return;
+    var prev=myResp[evId];
+    if(prev===r){ e[KEYMAP[r]]=Math.max(0,(+e[KEYMAP[r]]||0)-1); delete myResp[evId]; }
+    else { if(prev)e[KEYMAP[prev]]=Math.max(0,(+e[KEYMAP[prev]]||0)-1); e[KEYMAP[r]]=(+e[KEYMAP[r]]||0)+1; myResp[evId]=r; }
+    try{localStorage.setItem('mom_rsvp',JSON.stringify(myResp));}catch(x){}
+    window.HUBDATA.save('teamevents',e).then(function(){ var t=TEAMS.find(function(x){return x.id===curId;}); renderSched(t); });
+  }
+  function renderMsgs(team){
+    var m=MSGS.filter(function(x){return x.team===team;}).sort(function(a,b){return (b.ts||'').localeCompare(a.ts||'');});
+    el('msgs').innerHTML=m.length?m.map(function(x){return '<div class="msg"><div class="mh"><b>'+esc(x.author||'Coach')+'</b> · '+esc((x.ts||'').slice(0,10))+'</div><div class="mt">'+esc(x.text||'')+'</div></div>';}).join(''):'<div class="mut">No announcements yet.</div>';
+  }
+  window.postMsg=function(){ var t=TEAMS.find(function(x){return x.id===curId;}); var txt=el('postText').value.trim(); if(!t||!txt)return;
+    window.HUBDATA.save('teammsgs',{team:t.name,author:'You',text:txt,ts:new Date().toISOString()}).then(function(){ el('postText').value=''; window.HUBDATA.list('teammsgs').then(function(a){MSGS=a||[];renderMsgs(t.name);}); }); };
+
+  function openEv(){ ['type','title','date','time','location'].forEach(function(k){el('f_'+k).value=k==='type'?'Practice':'';}); el('evScrim').classList.add('on'); }
+  window.openEv=openEv;
+  window.closeEv=function(){ el('evScrim').classList.remove('on'); };
+  window.saveEv=function(){ var t=TEAMS.find(function(x){return x.id===curId;}); if(!t)return;
+    var rec={team:t.name,type:el('f_type').value,title:el('f_title').value,date:el('f_date').value,time:el('f_time').value,location:el('f_location').value,going:0,maybe:0,out:0};
+    window.HUBDATA.save('teamevents',rec).then(function(){ closeEv(); window.HUBDATA.list('teamevents').then(function(a){EVENTS=a||[];renderKpis();renderSched(t);}); }); };
+
+  window.AssistantContext=function(){ var t=TEAMS.find(function(x){return x.id===curId;}); return { view:'team app', teams:TEAMS.map(function(x){return {name:x.name,level:x.level,age:x.age,coach:x.coach,athletes:(x.roster||[]).length};}),
+    currentTeam:t?{name:t.name,upcoming:evsOf(t.name).filter(future).map(function(e){return e.type+' '+e.title+' '+e.date;})}:null }; };
+  load();
+})();
+</script>
+</body>
+</html>
