@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Books &amp; Margins</title>
+<link rel="icon" href="/logo.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/config.js"></script>
+<style>
+  *{box-sizing:border-box}html,body{margin:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#0f1417);background:var(--paper,#f5f8f8);min-height:100vh}
+  h1,h2,h3{font-family:Georgia,serif;font-weight:800;margin:0}
+  .wrap{max-width:1100px;margin:0 auto;padding:20px 20px 70px}
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+  .sub{color:var(--ink2);font-size:13.5px;margin:2px 0 14px}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:8px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px}
+  .kpi .n{font-family:Georgia,serif;font-weight:800;font-size:24px}
+  .kpi.rev .n{color:var(--accent)} .kpi.exp .n{color:#b23b3b} .kpi.net .n{color:#0a6f6f} .kpi.mar .n{color:var(--ink)}
+  .kpi .l{font-size:11.5px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+  .kpi .d{font-size:11px;color:var(--mut);margin-top:4px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;margin-top:6px}
+  @media(max-width:820px){.cols{grid-template-columns:1fr}}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-top:16px}
+  .panel h3{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin-bottom:12px}
+  /* P&L */
+  .pl{width:100%;border-collapse:collapse}
+  .pl td{padding:6px 0;font-size:13.5px;border-bottom:1px solid var(--line2)}
+  .pl td.r{text-align:right;font-variant-numeric:tabular-nums}
+  .pl .grp{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent3);font-weight:800;padding-top:12px}
+  .pl .sub td{color:var(--ink2)}
+  .pl .tot td{font-weight:800;border-top:2px solid var(--line);border-bottom:none;padding-top:8px}
+  .pl .net td{font-family:Georgia,serif;font-weight:800;font-size:16px;color:#0a6f6f;border-top:2px solid var(--ink);padding-top:10px}
+  /* bars */
+  .bar{margin-bottom:9px}
+  .bar .t{display:flex;font-size:12.5px;margin-bottom:3px}
+  .bar .t .nm{font-weight:600}.bar .t .vl{margin-left:auto;color:var(--ink2);font-variant-numeric:tabular-nums}
+  .bar .tk{height:15px;border-radius:8px;background:var(--line2);overflow:hidden}
+  .bar .tk i{display:block;height:100%;border-radius:8px}
+  .chip{font-size:9.5px;font-weight:800;text-transform:uppercase;padding:1px 6px;border-radius:99px;margin-left:6px}
+  .chip.full{background:#d3efee;color:#0a6f6f}.chip.low{background:#f2e6e6;color:#a33}
+  .census{display:flex;align-items:center;gap:16px;margin-bottom:14px}
+  .gauge{--p:0;width:96px;height:96px;border-radius:50%;flex:none;background:conic-gradient(var(--accent) calc(var(--p)*1%), var(--line2) 0);display:grid;place-items:center}
+  .gauge .in{width:70px;height:70px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-family:Georgia,serif;font-weight:800;font-size:20px;color:var(--accent)}
+  .census .cx{font-size:13px;color:var(--ink2);line-height:1.5}.census .cx b{color:var(--ink);font-size:15px}
+  /* ledger */
+  table.led{width:100%;border-collapse:collapse}
+  table.led th{text-align:left;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);padding:8px 8px;border-bottom:1px solid var(--line)}
+  table.led td{padding:9px 8px;border-bottom:1px solid var(--line2);font-size:13px}
+  table.led td.r,table.led th.r{text-align:right;font-variant-numeric:tabular-nums}
+  .cat{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--cream);color:var(--accent3)}
+  .x{color:#b23b3b;cursor:pointer;font-weight:800;border:none;background:none;font-size:14px}
+  .add{display:grid;grid-template-columns:1.1fr 1.6fr 1.2fr .9fr .9fr auto;gap:8px;margin-bottom:12px}
+  @media(max-width:820px){.add{grid-template-columns:1fr 1fr}}
+  .add input,.add select{border:1px solid var(--line);border-radius:9px;padding:9px 10px;font:inherit;font-size:13px;background:var(--paper);color:var(--ink);width:100%}
+  .btn{background:linear-gradient(180deg,var(--accent),var(--accent2));color:var(--onAccent);border:none;border-radius:9px;padding:9px 14px;font-weight:700;font-family:Georgia,serif;font-size:13px;cursor:pointer}
+  .mut{color:var(--mut)}
+  .foot{font-size:11px;color:var(--mut);margin-top:12px;line-height:1.5}
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent)!important;outline-offset:2px}
+</style>
+</head>
+<body>
+<script src="/hub-nav.js" defer></script>
+<script src="/data.js"></script>
+<script src="/assistant.js" defer></script>
+<div class="wrap">
+  <div class="eyebrow" id="eb"></div>
+  <h1>Books &amp; Margins</h1>
+  <div class="sub">Recurring tuition revenue vs. real expenses — line out every cost, see your monthly profit and margin, and how full your classes are.</div>
+
+  <div class="kpis">
+    <div class="kpi rev"><div class="n" id="kRev">—</div><div class="l">Monthly revenue</div><div class="d" id="kRevd"></div></div>
+    <div class="kpi exp"><div class="n" id="kExp">—</div><div class="l">Monthly expenses</div><div class="d" id="kExpd"></div></div>
+    <div class="kpi net"><div class="n" id="kNet">—</div><div class="l">Net profit / mo</div><div class="d">Revenue − expenses</div></div>
+    <div class="kpi mar"><div class="n" id="kMar">—</div><div class="l">Net margin</div><div class="d" id="kMard"></div></div>
+  </div>
+
+  <div class="cols">
+    <div class="panel" style="margin-top:16px"><h3>Profit &amp; Loss — monthly</h3><table class="pl" id="pl"></table>
+      <div class="foot">Revenue = enrolled × tuition across recurring classes. Payments are stubbed in this demo.</div></div>
+    <div class="panel" style="margin-top:16px"><h3>Expenses by category</h3><div id="catbars"></div></div>
+  </div>
+
+  <div class="panel"><h3>Class fullness vs. capacity (census)</h3>
+    <div class="census"><div class="gauge" id="gauge"><div class="in" id="gaugeN">—</div></div>
+      <div class="cx">Overall census: <b id="cenSum">—</b><br>Empty seats are lost revenue — this is your at-a-glance fill rate across every class.</div></div>
+    <div id="fullbars"></div>
+  </div>
+
+  <div class="panel"><h3>Expense ledger — line out &amp; enter costs</h3>
+    <div class="add">
+      <input id="a_date" type="date">
+      <input id="a_vendor" placeholder="Vendor / payee">
+      <select id="a_cat"></select>
+      <input id="a_amt" type="number" placeholder="Amount" min="0" step="0.01">
+      <select id="a_method"><option>Card</option><option>ACH</option><option>Cash</option><option>Check</option><option>Auto</option></select>
+      <button class="btn" onclick="addExp()">Add</button>
+    </div>
+    <table class="led"><thead><tr><th>Date</th><th>Vendor</th><th>Category</th><th>Method</th><th class="r">Amount</th><th></th></tr></thead><tbody id="rows"></tbody>
+      <tfoot><tr><td colspan="4" class="r" style="font-weight:800;padding-top:10px">Total monthly expenses</td><td class="r" id="expTot" style="font-weight:800;padding-top:10px"></td><td></td></tr></tfoot></table>
+  </div>
+</div>
+
+<script>
+(function(){
+  var el=function(id){return document.getElementById(id);};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var money=function(n){n=+n||0;return (n<0?'-$':'$')+Math.abs(Math.round(n)).toLocaleString();};
+  var C=window.HUB_CONFIG||{}, BR=C.brand||{}, PC=C.programColors||{};
+  var CATS=["Payroll","Occupancy","Utilities","Insurance","Equipment","Facilities","Marketing","Fees","Software","Supplies","Programs","Other"];
+  var CLASSES=[], EXP=[];
+  el('eb').textContent=(BR.center||BR.name||'');
+  el('a_cat').innerHTML=CATS.map(function(c){return '<option>'+c+'</option>';}).join('');
+  el('a_date').value=new Date().toISOString().slice(0,10);
+  var recurring=function(c){return c.program!=='Camps';};
+  var teal=function(p){return p>=90?'#0a6f6f':(p>=60?'#0f9d9d':(p>=35?'#14b8a6':'#7fc9c4'));};
+
+  function load(){ Promise.all([window.HUBDATA.list('classes'),window.HUBDATA.list('expenses')]).then(function(r){ CLASSES=r[0]||[]; EXP=r[1]||[]; render(); }); }
+
+  function revByProgram(){ var m={}; CLASSES.filter(recurring).forEach(function(c){ m[c.program]=(m[c.program]||0)+(+c.enrolled||0)*(+c.tuition||0); }); return m; }
+  function expByCat(){ var m={}; EXP.forEach(function(e){ var k=e.category||'Other'; m[k]=(m[k]||0)+(+e.amount||0); }); return m; }
+
+  function render(){
+    var rev=CLASSES.filter(recurring).reduce(function(s,c){return s+(+c.enrolled||0)*(+c.tuition||0);},0);
+    var exp=EXP.reduce(function(s,e){return s+(+e.amount||0);},0);
+    var net=rev-exp, mar=rev?net/rev*100:0;
+    var enr=CLASSES.filter(recurring).reduce(function(s,c){return s+(+c.enrolled||0);},0);
+    var cap=CLASSES.filter(recurring).reduce(function(s,c){return s+(+c.cap||0);},0);
+    var cen=cap?enr/cap*100:0;
+    el('kRev').textContent=money(rev); el('kRevd').textContent=Math.round(rev*12/1000)+'K / yr';
+    el('kExp').textContent=money(exp); el('kExpd').textContent=EXP.length+' line items';
+    el('kNet').textContent=money(net);
+    el('kMar').textContent=Math.round(mar)+'%'; el('kMard').textContent=mar>=15?'Healthy':(mar>=0?'Thin — watch costs':'Losing money');
+
+    // P&L
+    var rp=revByProgram(), ec=expByCat();
+    var pl='<tr class="grp"><td>Revenue</td><td class="r">Monthly</td></tr>';
+    Object.keys(rp).sort(function(a,b){return rp[b]-rp[a];}).forEach(function(p){ pl+='<tr class="sub"><td>Tuition — '+esc(p)+'</td><td class="r">'+money(rp[p])+'</td></tr>'; });
+    pl+='<tr class="tot"><td>Total revenue</td><td class="r">'+money(rev)+'</td></tr>';
+    pl+='<tr class="grp"><td>Expenses</td><td class="r"></td></tr>';
+    Object.keys(ec).sort(function(a,b){return ec[b]-ec[a];}).forEach(function(k){ pl+='<tr class="sub"><td>'+esc(k)+'</td><td class="r">('+money(ec[k]).replace('$','$')+')</td></tr>'; });
+    pl+='<tr class="tot"><td>Total expenses</td><td class="r">('+money(exp)+')</td></tr>';
+    pl+='<tr class="net"><td>Net operating income</td><td class="r">'+money(net)+'  ·  '+Math.round(mar)+'%</td></tr>';
+    el('pl').innerHTML=pl;
+
+    // category bars
+    var maxc=Math.max.apply(null,Object.keys(ec).map(function(k){return ec[k];}).concat([1]));
+    el('catbars').innerHTML=Object.keys(ec).sort(function(a,b){return ec[b]-ec[a];}).map(function(k){
+      return '<div class="bar"><div class="t"><span class="nm">'+esc(k)+'</span><span class="vl">'+money(ec[k])+'</span></div><div class="tk"><i style="width:'+Math.round(ec[k]/maxc*100)+'%;background:var(--accent3)"></i></div></div>';
+    }).join('')||'<div class="mut">No expenses yet.</div>';
+
+    // census gauge + class bars
+    el('gauge').style.setProperty('--p',Math.round(cen));
+    el('gaugeN').textContent=Math.round(cen)+'%';
+    el('cenSum').textContent=enr+' / '+cap+' seats filled';
+    el('fullbars').innerHTML=CLASSES.filter(recurring).map(function(c){
+      var p=(+c.cap)?Math.round((+c.enrolled||0)/(+c.cap)*100):0;
+      var chip=p>=100?'<span class="chip full">Full</span>':(p<40?'<span class="chip low">Low</span>':'');
+      return {c:c,p:p,chip:chip};
+    }).sort(function(a,b){return b.p-a.p;}).map(function(o){var c=o.c;
+      return '<div class="bar"><div class="t"><span class="nm">'+esc(c.name)+o.chip+'</span><span class="vl">'+(+c.enrolled||0)+'/'+(+c.cap||0)+' · '+o.p+'%</span></div><div class="tk"><i style="width:'+Math.min(100,o.p)+'%;background:'+teal(o.p)+'"></i></div></div>';
+    }).join('');
+
+    // ledger
+    el('rows').innerHTML=EXP.slice().sort(function(a,b){return (b.date||'').localeCompare(a.date||'');}).map(function(e){
+      return '<tr><td>'+esc(e.date||'')+'</td><td>'+esc(e.vendor||'')+'<div class="mut" style="font-size:11px">'+esc(e.notes||'')+'</div></td><td><span class="cat">'+esc(e.category||'Other')+'</span></td><td>'+esc(e.method||'')+'</td><td class="r">'+money(e.amount)+'</td><td class="r"><button class="x" data-del="'+esc(e.id)+'" title="Delete">×</button></td></tr>';
+    }).join('')||'<tr><td colspan="6" class="mut" style="padding:14px">No expenses yet — add one above.</td></tr>';
+    el('expTot').textContent=money(exp);
+    el('rows').querySelectorAll('[data-del]').forEach(function(b){b.addEventListener('click',function(){delExp(b.getAttribute('data-del'));});});
+  }
+
+  window.addExp=function(){ var amt=parseFloat(el('a_amt').value); if(!(amt>0)||!el('a_vendor').value.trim())return;
+    window.HUBDATA.save('expenses',{date:el('a_date').value,vendor:el('a_vendor').value.trim(),category:el('a_cat').value,amount:amt,method:el('a_method').value,notes:''}).then(function(){ el('a_vendor').value='';el('a_amt').value=''; window.HUBDATA.list('expenses').then(function(a){EXP=a||[];render();}); }); };
+  function delExp(id){ window.HUBDATA.del('expenses',id).then(function(){ window.HUBDATA.list('expenses').then(function(a){EXP=a||[];render();}); }); }
+
+  window.AssistantContext=function(){ var rev=CLASSES.filter(recurring).reduce(function(s,c){return s+(+c.enrolled||0)*(+c.tuition||0);},0); var exp=EXP.reduce(function(s,e){return s+(+e.amount||0);},0);
+    var enr=CLASSES.filter(recurring).reduce(function(s,c){return s+(+c.enrolled||0);},0), cap=CLASSES.filter(recurring).reduce(function(s,c){return s+(+c.cap||0);},0);
+    return { view:'books & margins', monthlyRevenue:rev, monthlyExpenses:exp, netProfit:rev-exp, marginPct:rev?Math.round((rev-exp)/rev*100):0, censusPct:cap?Math.round(enr/cap*100):0 }; };
+  load();
+})();
+</script>
+</body>
+</html>
