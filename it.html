@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>System Health</title>
+<link rel="icon" href="/logo.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/config.js"></script>
+<script src="/skins.js"></script>
+<style>
+  *{box-sizing:border-box}html,body{margin:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#2a201a);background:var(--paper,#fbf7f2);min-height:100vh}
+  h1,h2,h3{font-family:Georgia,serif;font-weight:800;margin:0}
+  .wrap{max-width:1000px;margin:0 auto;padding:20px 20px 70px}
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+  .bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:8px 0 14px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 14px}
+  .stat .n{font-family:Georgia,serif;font-weight:800;font-size:20px;color:var(--accent)}
+  .stat .l{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+  .sp{flex:1}
+  .note{background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:12px 15px;font-size:13px;color:var(--ink2);margin-bottom:14px}
+  .sys{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:11px;box-shadow:0 4px 14px rgba(80,50,20,.05);display:flex;gap:13px;align-items:flex-start}
+  .light{width:14px;height:14px;border-radius:99px;flex:none;margin-top:4px}
+  .light.CLEAR{background:#3f9e6b;box-shadow:0 0 0 4px rgba(63,158,107,.15)}
+  .light.WATCH{background:#d9932f;box-shadow:0 0 0 4px rgba(217,147,47,.15)}
+  .light.INTERVENE{background:#c24a4a;box-shadow:0 0 0 4px rgba(194,74,74,.15)}
+  .sys .nm{font-family:Georgia,serif;font-weight:800;font-size:16px}
+  .sys .area{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);margin:1px 0 5px}
+  .sys .txt{font-size:13px;color:var(--ink2)}
+  .pill{margin-left:auto;flex:none;font-size:10px;font-weight:800;text-transform:uppercase;padding:3px 10px;border-radius:99px}
+  .pill.CLEAR{background:#eef6f0;color:#2f6a52}.pill.WATCH{background:#fbeee0;color:#a85f1f}.pill.INTERVENE{background:#fdeaea;color:#b23b3b}
+  .foot{font-size:12px;color:var(--mut);margin-top:14px}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--accent)!important;outline-offset:2px}
+</style>
+</head>
+<body>
+<script src="/hub-nav.js" defer></script>
+<script src="/data.js"></script>
+<script src="/assistant.js" defer></script>
+<div class="wrap">
+  <div class="eyebrow" id="eb"></div>
+  <h1>System Health</h1>
+  <div class="bar">
+    <div class="stat"><div class="n" id="kClear">—</div><div class="l">Clear</div></div>
+    <div class="stat"><div class="n" id="kWatch">—</div><div class="l">Watch</div></div>
+    <div class="stat"><div class="n" id="kSaving">—</div><div class="l">Software being replaced</div></div>
+    <div class="sp"></div>
+  </div>
+  <div class="note"><b>The system board:</b> every tool the gym actually runs on, in one glance, in plain English. Green means leave it alone. Amber means someone should look this month — the note says exactly what and why. Nothing here needs a login to check; deeper live checks (your domain's email security, HTTPS, the evidence trail) live in <a href="/comply.html" style="color:var(--accent);font-weight:700">Comply · Trust Center</a>.</div>
+  <div id="board"></div>
+  <div class="foot" id="foot"></div>
+</div>
+<script>
+(function(){
+  var el=function(id){return document.getElementById(id);};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var C=window.HUB_CONFIG||{}, BR=C.brand||{};
+  var SYS=[];
+  el('eb').textContent=(BR.center||BR.name||'');
+  function load(){ window.HUBDATA.list('systems').then(function(r){ SYS=r||[]; render(); }); }
+  function render(){
+    el('kClear').textContent=SYS.filter(function(s){return s.status==='CLEAR';}).length+' / '+SYS.length;
+    el('kWatch').textContent=SYS.filter(function(s){return s.status!=='CLEAR';}).length;
+    var legacy=SYS.find(function(s){return s.area==='Legacy';});
+    el('kSaving').textContent=legacy?'$159/mo':'—';
+    el('board').innerHTML=SYS.map(function(s){
+      return '<div class="sys"><span class="light '+esc(s.status)+'"></span><div style="flex:1"><div style="display:flex;align-items:center;gap:9px"><span class="nm">'+esc(s.name)+'</span><span class="pill '+esc(s.status)+'">'+esc(s.status)+'</span></div><div class="area">'+esc(s.area||'')+'</div><div class="txt">'+esc(s.note||'')+'</div></div></div>';
+    }).join('');
+    el('foot').textContent='Board reviewed with each hub update · statuses are set by a human, on purpose — a light never changes without someone deciding it should.';
+  }
+  window.AssistantContext=function(){ return { view:'system health board', center:BR.center,
+    systems:SYS.map(function(s){return {name:s.name,area:s.area,status:s.status,note:s.note};}) }; };
+  load();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>AI Staff</title>
+<link rel="icon" href="/logo.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/config.js"></script>
+<script src="/skins.js"></script>
+<style>
+  *{box-sizing:border-box}html,body{margin:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#2a201a);background:var(--paper,#fbf7f2);min-height:100vh}
+  h1,h2,h3{font-family:Georgia,serif;font-weight:800;margin:0}
+  .wrap{max-width:1080px;margin:0 auto;padding:20px 20px 70px}
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+  .bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:8px 0 14px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 14px}
+  .stat .n{font-family:Georgia,serif;font-weight:800;font-size:20px;color:var(--accent)}
+  .stat .l{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+  .sp{flex:1}
+  h2.sec{font-size:18px;margin:18px 0 10px}
+  .note{background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:12px 15px;font-size:13px;color:var(--ink2);margin-bottom:14px}
+  .hero{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;box-shadow:0 6px 18px rgba(80,50,20,.06);display:flex;gap:16px;align-items:flex-start;margin-bottom:14px}
+  .face{width:52px;height:52px;border-radius:14px;background:linear-gradient(160deg,var(--accent),var(--accent3));display:grid;place-items:center;font-size:26px;flex:none}
+  .hero .nm{font-family:Georgia,serif;font-weight:800;font-size:20px}
+  .hero .rl{font-size:12px;color:var(--mut);margin:1px 0 7px}
+  .hero .tx{font-size:13.5px;color:var(--ink2)}
+  .live{display:inline-block;font-size:10px;font-weight:800;text-transform:uppercase;background:#eef6f0;color:#2f6a52;border:1px solid #bfe0cb;padding:2px 9px;border-radius:99px;margin-left:8px}
+  .soon{display:inline-block;font-size:10px;font-weight:800;text-transform:uppercase;background:var(--cream);color:var(--mut);border:1px solid var(--line);padding:2px 9px;border-radius:99px;margin-left:8px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:13px}
+  .seat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:0 4px 14px rgba(80,50,20,.05)}
+  .seat .nm{font-family:Georgia,serif;font-weight:800;font-size:15.5px}
+  .seat .rm{font-size:11px;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin:2px 0 6px}
+  .seat .tx{font-size:12.5px;color:var(--ink2)}
+  .feed{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 16px;box-shadow:0 4px 14px rgba(80,50,20,.05)}
+  .ev{display:flex;gap:11px;align-items:baseline;padding:9px 0;border-bottom:1px dotted var(--line);font-size:13px}
+  .ev:last-child{border-bottom:none}
+  .ev .t{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--mut);white-space:nowrap}
+  .ev .who{font-weight:700;color:var(--accent);white-space:nowrap}
+  .demo{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--mut)}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--accent)!important;outline-offset:2px}
+</style>
+</head>
+<body>
+<script src="/hub-nav.js" defer></script>
+<script src="/data.js"></script>
+<script src="/assistant.js" defer></script>
+<div class="wrap">
+  <div class="eyebrow" id="eb"></div>
+  <h1>AI Staff</h1>
+  <div class="bar">
+    <div class="stat"><div class="n">1</div><div class="l">On duty today</div></div>
+    <div class="stat"><div class="n">5</div><div class="l">Seats designed</div></div>
+    <div class="stat"><div class="n" id="kRooms">—</div><div class="l">Rooms they cover</div></div>
+    <div class="sp"></div>
+  </div>
+  <div class="note"><b>What is actually running on this page:</b> one honest answer. <b>Frankie is real and on duty</b> — the assistant button on every room of this hub, grounded in your live class, family and tuition data. The other seats below are the designed org this system grows into: each one switches on per department, when you want it, never before. Nothing pretends to be running that isn't.</div>
+
+  <div class="hero">
+    <div class="face">🤖</div>
+    <div>
+      <div class="nm" id="fName">Frankie<span class="live">Live now</span></div>
+      <div class="rl" id="fRole"></div>
+      <div class="tx" id="fBlurb"></div>
+      <div class="tx" style="margin-top:7px;color:var(--mut)">Grounded in the hub's own records — Frankie never invents a class, a price, a coach or a date. If it isn't in the data, Frankie says "verify."</div>
+    </div>
+  </div>
+
+  <h2 class="sec">The chain, top to bottom — seats that light up as you grow</h2>
+  <div class="grid" id="seats"></div>
+
+  <h2 class="sec">How a day flows through the system <span class="demo">· illustrative walkthrough, seeded demo data</span></h2>
+  <div class="feed" id="feed"></div>
+</div>
+<script>
+(function(){
+  var el=function(id){return document.getElementById(id);};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var C=window.HUB_CONFIG||{}, BR=C.brand||{}, A=C.assistant||{};
+  el('eb').textContent=(BR.center||BR.name||'');
+  el('fRole').textContent=(A.role||'Front desk & enrollment')+' · answers on every page of this hub';
+  el('fBlurb').textContent=A.blurb||'';
+  el('kRooms').textContent=(C.sections||[]).length-1;
+  var SEATS=[
+    {nm:'Frankie', rm:'Front Desk · live now', tx:'Class descriptions, enrollment & welcome emails, waitlist notes, closure alerts, the family newsletter — drafted from live data, sent by a human.'},
+    {nm:'The Enrollment Agent', rm:'Growth Funnel · switches on later', tx:'Watches the funnel: nudges stale leads, drafts the follow-up after every trial, flags when a waitlist is long enough to justify opening a second class.'},
+    {nm:'The Billing Agent', rm:'Tuition & Books · switches on later', tx:'Chases the 1st-of-month gently: drafts autopay-failed notes, spots families off autopay, and rolls the month into Books & Margins.'},
+    {nm:'The Team Messenger', rm:'Team App · switches on later', tx:'Turns a coach\'s one-liner into the full travel brief — hotel block, call time, carpool note — and drafts the reminder cadence before each competition.'},
+    {nm:'The Watchman', rm:'Comply · Waivers · HR · switches on later', tx:'Runs the trust-center checks on a schedule, watches waiver and cert expiries, and puts one plain-English line on an owner\'s desk when something needs a human.'}
+  ];
+  el('seats').innerHTML=SEATS.map(function(s,i){
+    return '<div class="seat"><div class="nm">'+esc(s.nm)+(i===0?'<span class="live">Live</span>':'<span class="soon">Designed</span>')+'</div><div class="rm">'+esc(s.rm)+'</div><div class="tx">'+esc(s.tx)+'</div></div>';
+  }).join('');
+  var FEED=[
+    ['8:00 AM','Billing','Autopay ran for the 1st — 5 of 6 families collected; Whitfield flagged (not on autopay).'],
+    ['8:02 AM','Watchman','Waiver check: Bennett expires in 11 days → renewal note drafted for the front desk.'],
+    ['9:15 AM','Front Desk','Lead came in from Facebook (Harper, 5, gymnastics) → added to the funnel as New.'],
+    ['9:20 AM','Frankie','Drafted the trial-invite email for Harper\'s mom — front desk approved and sent it.'],
+    ['4:05 PM','Front Desk','Rec Gym L1 checked in: 11 of 12 on the floor.'],
+    ['5:30 PM','Enrollment','Spot opened in Ninja White & Blue → Milo Kraft is #1 on the waitlist → promote card queued.'],
+    ['6:40 PM','Team Messenger','Coach Jordan\'s note went out to Flare: bring both bows Thursday.'],
+    ['9:00 PM','Watchman','Nightly: 6 systems green, 2 amber · trust-center run sealed into the evidence chain.']
+  ];
+  el('feed').innerHTML=FEED.map(function(e){return '<div class="ev"><span class="t">'+e[0]+'</span><span class="who">'+esc(e[1])+'</span><span>'+esc(e[2])+'</span></div>';}).join('');
+  window.AssistantContext=function(){ return { view:'AI staff org', center:BR.center,
+    live:'Frankie (front desk assistant)', designedSeats:SEATS.map(function(s){return s.nm+' — '+s.rm;}) }; };
+})();
+</script>
+</body>
+</html>

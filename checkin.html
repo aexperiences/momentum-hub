@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Check-in &amp; Attendance</title>
+<link rel="icon" href="/logo.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/config.js"></script>
+<script src="/skins.js"></script>
+<style>
+  *{box-sizing:border-box}html,body{margin:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#2a201a);background:var(--paper,#fbf7f2);min-height:100vh}
+  h1,h2,h3{font-family:Georgia,serif;font-weight:800;margin:0}
+  .wrap{max-width:1200px;margin:0 auto;padding:20px 20px 70px}
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+  .bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:8px 0 12px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 14px}
+  .stat .n{font-family:Georgia,serif;font-weight:800;font-size:20px;color:var(--accent)}
+  .stat .l{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+  .sp{flex:1}
+  .filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+  .flt{border:1px solid var(--line);background:var(--card);border-radius:99px;padding:7px 13px;font-size:12.5px;font-weight:600;color:var(--ink2);cursor:pointer}
+  .flt.on{background:var(--accent);color:var(--onAccent);border-color:transparent}
+  h2.sec{font-size:18px;margin:18px 0 10px;color:var(--ink)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:13px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 15px;box-shadow:0 4px 14px rgba(80,50,20,.05)}
+  .tag{display:inline-block;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#fff;padding:2px 9px;border-radius:99px}
+  .nm{font-family:Georgia,serif;font-weight:800;font-size:17px;margin:8px 0 2px}
+  .meta{font-size:12px;color:var(--mut)}
+  .kids{display:flex;flex-direction:column;gap:5px;margin-top:10px}
+  .kid{display:flex;align-items:center;gap:9px;font-size:13.5px;border-bottom:1px dotted var(--line);padding:6px 0}
+  .kid .fm{color:var(--mut);font-size:11.5px}
+  .chk{margin-left:auto;font-size:12px;border:1px solid var(--line);background:var(--card);border-radius:9px;padding:7px 13px;cursor:pointer;color:var(--ink2);font-weight:600}
+  .chk.on{background:#eef6f0;border-color:#bfe0cb;color:#2f6a52;font-weight:700}
+  .save{margin-top:10px;width:100%;background:linear-gradient(180deg,var(--accent),var(--accent2));color:var(--onAccent);border:none;border-radius:10px;padding:10px;font-weight:700;font-family:Georgia,serif;font-size:14px;cursor:pointer}
+  .none{font-size:13px;color:var(--mut);padding:6px 0}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  th{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--cream)}
+  td{font-size:13px;padding:10px 12px;border-bottom:1px solid var(--line2)}
+  tr:last-child td{border-bottom:none}
+  .pct{font-family:Georgia,serif;font-weight:800;color:var(--accent)}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:13.5px;opacity:0;transition:.25s;pointer-events:none;z-index:80}.toast.on{opacity:1}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--accent)!important;outline-offset:2px}
+</style>
+</head>
+<body>
+<script src="/hub-nav.js" defer></script>
+<script src="/data.js"></script>
+<script src="/assistant.js" defer></script>
+<div class="wrap">
+  <div class="eyebrow" id="eb"></div>
+  <h1>Check-in &amp; Attendance</h1>
+  <div class="bar">
+    <div class="stat"><div class="n" id="kToday">—</div><div class="l">Classes today</div></div>
+    <div class="stat"><div class="n" id="kExpected">—</div><div class="l">Kids expected</div></div>
+    <div class="stat"><div class="n" id="kIn">—</div><div class="l">Checked in now</div></div>
+    <div class="stat"><div class="n" id="kRate">—</div><div class="l">7-day attendance</div></div>
+    <div class="sp"></div>
+  </div>
+  <div class="filters" id="days"></div>
+  <div class="grid" id="grid"></div>
+  <h2 class="sec">The floor log</h2>
+  <table>
+    <thead><tr><th>Date</th><th>Class</th><th>Coach</th><th>Present</th><th>Rate</th><th>Notes</th></tr></thead>
+    <tbody id="log"></tbody>
+  </table>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+(function(){
+  var el=function(id){return document.getElementById(id);};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var C=window.HUB_CONFIG||{}, BR=C.brand||{}, PC=C.programColors||{};
+  var DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var CLASSES=[], LOG=[], day=DAYS[new Date().getDay()], present={};
+  el('eb').textContent=(BR.center||BR.name||'');
+  function pcolor(p){ return PC[p]||'#9a8b7d'; }
+  function onDay(c,d){ return String(c.day||'').indexOf(d)>=0; }
+  function load(){ Promise.all([window.HUBDATA.list('classes'),window.HUBDATA.list('attendance')]).then(function(r){ CLASSES=r[0]||[]; LOG=(r[1]||[]).slice().sort(function(a,b){return String(b.date).localeCompare(String(a.date));}); render(); }); }
+  function render(){
+    el('days').innerHTML=DAYS.map(function(d){return '<button class="flt'+(d===day?' on':'')+'" data-d="'+d+'">'+d+'</button>';}).join('');
+    el('days').querySelectorAll('[data-d]').forEach(function(b){b.addEventListener('click',function(){day=b.getAttribute('data-d');present={};render();});});
+    var todays=CLASSES.filter(function(c){return onDay(c,day);});
+    var expected=todays.reduce(function(s,c){return s+(+c.enrolled||0);},0);
+    var inNow=0; Object.keys(present).forEach(function(k){ Object.keys(present[k]||{}).forEach(function(i){ if(present[k][i])inNow++; }); });
+    el('kToday').textContent=todays.length; el('kExpected').textContent=expected; el('kIn').textContent=inNow;
+    var cut=new Date(Date.now()-7*864e5).toISOString().slice(0,10);
+    var wk=LOG.filter(function(a){return String(a.date)>=cut;});
+    var p=wk.reduce(function(s,a){return s+(+a.present||0);},0), o=wk.reduce(function(s,a){return s+(+a.of||0);},0);
+    el('kRate').textContent=o?Math.round(p/o*100)+'%':'—';
+    el('grid').innerHTML=todays.map(function(c){
+      var r=c.roster||[], pk=present[c.id]||{};
+      var kids=r.length?r.map(function(e,i){return '<div class="kid"><b>'+esc(e.child)+'</b><span class="fm">'+esc(e.family||'')+'</span><button class="chk'+(pk[i]?' on':'')+'" data-c="'+esc(c.id)+'" data-i="'+i+'">'+(pk[i]?'✓ In':'Check in')+'</button></div>';}).join(''):'<div class="none">No named roster — '+(+c.enrolled||0)+' enrolled. Log the class count below.</div>';
+      var more=(+c.enrolled||0)-r.length;
+      return '<div class="card"><span class="tag" style="background:'+pcolor(c.program)+'">'+esc(c.program)+'</span>'+
+        '<div class="nm">'+esc(c.name||'')+'</div><div class="meta">🕐 '+esc(c.time||'')+' · '+esc(c.room||'')+' · 🏅 '+esc(c.coach||'')+'</div>'+
+        '<div class="kids">'+kids+(more>0?'<div class="none">＋ '+more+' more enrolled (not on the named roster)</div>':'')+'</div>'+
+        '<button class="save" data-s="'+esc(c.id)+'">Log attendance →</button></div>';
+    }).join('')||'<div class="card"><div class="none">No classes scheduled on '+esc(day)+'.</div></div>';
+    el('grid').querySelectorAll('[data-c]').forEach(function(b){b.addEventListener('click',function(){var id=b.getAttribute('data-c'),i=b.getAttribute('data-i');present[id]=present[id]||{};present[id][i]=!present[id][i];render();});});
+    el('grid').querySelectorAll('[data-s]').forEach(function(b){b.addEventListener('click',function(){logClass(b.getAttribute('data-s'));});});
+    el('log').innerHTML=LOG.slice(0,20).map(function(a){var rt=(+a.of?Math.round((+a.present||0)/(+a.of)*100):0);
+      return '<tr><td>'+esc(a.date)+'</td><td><b>'+esc(a.class)+'</b></td><td>'+esc(a.coach||'')+'</td><td>'+(+a.present||0)+' / '+(+a.of||0)+'</td><td class="pct">'+rt+'%</td><td style="color:var(--mut)">'+esc(a.notes||'')+'</td></tr>';}).join('')||'<tr><td colspan="6" class="none">No attendance logged yet.</td></tr>';
+  }
+  function logClass(id){ var c=CLASSES.find(function(x){return x.id===id;}); if(!c)return;
+    var pk=present[c.id]||{}, n=Object.keys(pk).filter(function(k){return pk[k];}).length;
+    var of=(+c.enrolled||0)||((c.roster||[]).length);
+    if(!n && (c.roster||[]).length){ if(!confirm('No one is checked in for '+c.name+'. Log 0 present?'))return; }
+    if(!(c.roster||[]).length){ var v=prompt('How many of '+of+' were present in '+c.name+'?', of); if(v===null)return; n=Math.max(0,Math.min(of,+v||0)); }
+    var today=new Date().toISOString().slice(0,10);
+    window.HUBDATA.save('attendance',{date:today,class:c.name,coach:c.coach||'',present:n,of:of,notes:''}).then(function(){ present[c.id]={}; toast('Logged '+n+' / '+of+' for '+c.name); load(); });
+  }
+  function toast(m){var t=el('toast');t.textContent=m;t.classList.add('on');setTimeout(function(){t.classList.remove('on');},2200);}
+  window.AssistantContext=function(){ return { view:'front desk check-in & attendance', center:BR.center, day:day,
+    todays:CLASSES.filter(function(c){return onDay(c,day);}).map(function(c){return {name:c.name,time:c.time,coach:c.coach,enrolled:c.enrolled};}),
+    recentLog:LOG.slice(0,10) }; };
+  load();
+})();
+</script>
+</body>
+</html>

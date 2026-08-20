@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Comply · Trust Center</title>
+<link rel="icon" href="/logo.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/config.js"></script>
+<script src="/skins.js"></script>
+<style>
+  *{box-sizing:border-box}html,body{margin:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#2a201a);background:var(--paper,#fbf7f2);min-height:100vh}
+  h1,h2,h3{font-family:Georgia,serif;font-weight:800;margin:0}
+  .wrap{max-width:1080px;margin:0 auto;padding:20px 20px 70px}
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+  .bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:8px 0 14px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 14px}
+  .stat .n{font-family:Georgia,serif;font-weight:800;font-size:20px;color:var(--accent)}
+  .stat .l{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+  .sp{flex:1}
+  .btn{background:linear-gradient(180deg,var(--accent),var(--accent2));color:var(--onAccent);border:none;border-radius:10px;padding:11px 17px;font-weight:700;font-family:Georgia,serif;font-size:14px;cursor:pointer}
+  .btn[disabled]{opacity:.55;cursor:wait}
+  h2.sec{font-size:18px;margin:18px 0 10px}
+  .note{background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:12px 15px;font-size:13px;color:var(--ink2);margin-bottom:14px}
+  .chk{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 16px;margin-bottom:10px;box-shadow:0 4px 14px rgba(80,50,20,.05);display:flex;gap:13px;align-items:flex-start}
+  .light{width:14px;height:14px;border-radius:99px;flex:none;margin-top:4px;background:#c9c2b6}
+  .light.PASS{background:#3f9e6b;box-shadow:0 0 0 4px rgba(63,158,107,.15)}
+  .light.WATCH{background:#d9932f;box-shadow:0 0 0 4px rgba(217,147,47,.15)}
+  .light.INTERVENE{background:#c24a4a;box-shadow:0 0 0 4px rgba(194,74,74,.15)}
+  .light.UNKNOWN{background:#8b93a0;box-shadow:0 0 0 4px rgba(139,147,160,.15)}
+  .chk .nm{font-family:Georgia,serif;font-weight:800;font-size:15.5px}
+  .chk .txt{font-size:12.5px;color:var(--ink2);margin-top:3px}
+  .chk .ev{font-size:11px;color:var(--mut);margin-top:5px;font-family:ui-monospace,Menlo,monospace;word-break:break-all}
+  .pill{margin-left:auto;flex:none;font-size:10px;font-weight:800;text-transform:uppercase;padding:3px 10px;border-radius:99px}
+  .pill.PASS{background:#eef6f0;color:#2f6a52}.pill.WATCH{background:#fbeee0;color:#a85f1f}
+  .pill.INTERVENE{background:#fdeaea;color:#b23b3b}.pill.UNKNOWN{background:#eef0f3;color:#5b6470}.pill.wait{background:var(--cream);color:var(--mut)}
+  .seal{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 16px;margin-bottom:9px;font-size:12.5px}
+  .seal .h{font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:var(--mut);word-break:break-all;margin-top:5px}
+  .seal b.st{color:var(--accent)}
+  .foot{font-size:12px;color:var(--mut);margin-top:12px}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:13.5px;opacity:0;transition:.25s;pointer-events:none;z-index:80}.toast.on{opacity:1}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--accent)!important;outline-offset:2px}
+</style>
+</head>
+<body>
+<script src="/hub-nav.js" defer></script>
+<script src="/data.js"></script>
+<script src="/assistant.js" defer></script>
+<div class="wrap">
+  <div class="eyebrow" id="eb"></div>
+  <h1>Comply · Trust Center</h1>
+  <div class="bar">
+    <div class="stat"><div class="n" id="kVerdict">—</div><div class="l">Overall</div></div>
+    <div class="stat"><div class="n" id="kPass">—</div><div class="l">Checks clear</div></div>
+    <div class="stat"><div class="n" id="kRuns">—</div><div class="l">Sealed runs</div></div>
+    <div class="sp"></div>
+    <button class="btn" id="runBtn" onclick="runAll()">▶ Run the checks &amp; seal the evidence</button>
+  </div>
+  <div class="note"><b>What this room is:</b> proof, on demand. The domain checks below run <b>live, right now, from this page</b> against <b>momentumsportsandplay.com</b> — real DNS answers, not stored screenshots. The operational checks read this hub's own records (waivers, certs, incidents, approvals). Every run is sealed into a SHA-256 hash chain: each seal contains the fingerprint of the one before it, so history can't be quietly rewritten. A check that can't be answered says <b>UNKNOWN</b> — this room never fakes a pass and never fakes a fail.</div>
+  <h2 class="sec">Domain &amp; email security — live checks</h2>
+  <div id="domainChecks"></div>
+  <h2 class="sec">Operational readiness — from this hub's own records</h2>
+  <div id="opsChecks"></div>
+  <h2 class="sec">The evidence chain</h2>
+  <div id="chain"></div>
+  <div class="foot">Checks are read-only and credential-free — nothing here touches, changes or signs into any Momentum system. Powered by Accelerated Experiences, LLC.</div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+(function(){
+  var el=function(id){return document.getElementById(id);};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var C=window.HUB_CONFIG||{}, BR=C.brand||{};
+  var DOMAIN='momentumsportsandplay.com';
+  var RESULTS=null, CHAIN=[];
+  el('eb').textContent=(BR.center||BR.name||'');
+
+  function doh(name,type){ return fetch('https://dns.google/resolve?name='+encodeURIComponent(name)+'&type='+type+'&do=1',{cache:'no-store'}).then(function(r){return r.json();}); }
+  function txtRecords(j){ return ((j&&j.Answer)||[]).filter(function(a){return a.type===16;}).map(function(a){return String(a.data||'').replace(/^"|"$/g,'').replace(/"\s+"/g,'');}); }
+
+  var DCHECKS=[
+    { id:'spf', nm:'SPF — who may send email as this domain',
+      run:function(){ return doh(DOMAIN,'TXT').then(function(j){ var spf=txtRecords(j).filter(function(t){return /^v=spf1/i.test(t);});
+        if(!j||typeof j.Status!=='number') return {v:'UNKNOWN',txt:'The DNS resolver did not answer — not scored.',ev:''};
+        if(spf.length===1) return {v:'PASS',txt:'One SPF policy published. Mail claiming to be from @'+DOMAIN+' can be checked against it.',ev:spf[0]};
+        if(spf.length>1) return {v:'WATCH',txt:'Multiple SPF records found — receivers may treat that as a permanent error. Merge into one.',ev:spf.join(' | ')};
+        return {v:'WATCH',txt:'No SPF record found. Anyone can claim to send email as @'+DOMAIN+' with nothing to check it against.',ev:'no v=spf1 TXT record in the answer'}; }); } },
+    { id:'dmarc', nm:'DMARC — what receivers do with fakes',
+      run:function(){ return doh('_dmarc.'+DOMAIN,'TXT').then(function(j){ var d=txtRecords(j).filter(function(t){return /^v=DMARC1/i.test(t);});
+        if(!j||typeof j.Status!=='number') return {v:'UNKNOWN',txt:'The DNS resolver did not answer — not scored.',ev:''};
+        if(!d.length) return {v:'WATCH',txt:'No DMARC policy. Even with SPF, receivers are never told to reject a spoofed message.',ev:'no _dmarc TXT record in the answer'};
+        var pol=/p=([a-z]+)/i.exec(d[0]); var p=pol?pol[1].toLowerCase():'none';
+        if(p==='reject'||p==='quarantine') return {v:'PASS',txt:'DMARC is published and enforcing (p='+p+'). Spoofed mail gets stopped, not delivered.',ev:d[0]};
+        return {v:'WATCH',txt:'DMARC is published but p=none — it observes spoofing without stopping it. Move to quarantine, then reject.',ev:d[0]}; }); } },
+    { id:'mx', nm:'MX — the domain can receive mail',
+      run:function(){ return doh(DOMAIN,'MX').then(function(j){ var mx=((j&&j.Answer)||[]).filter(function(a){return a.type===15;});
+        if(!j||typeof j.Status!=='number') return {v:'UNKNOWN',txt:'The DNS resolver did not answer — not scored.',ev:''};
+        if(mx.length) return {v:'PASS',txt:mx.length+' mail server'+(mx.length>1?'s':'')+' published — email to hello@'+DOMAIN+' has somewhere to land.',ev:mx.map(function(a){return a.data;}).join(' · ')};
+        return {v:'WATCH',txt:'No MX records — email sent to this domain has nowhere to go.',ev:'empty MX answer'}; }); } },
+    { id:'dnssec', nm:'DNSSEC — DNS answers are signed',
+      run:function(){ return doh(DOMAIN,'A').then(function(j){ if(!j||typeof j.AD==='undefined') return {v:'UNKNOWN',txt:'The resolver did not report a validation flag — not scored.',ev:''};
+        if(j.AD) return {v:'PASS',txt:'The resolver cryptographically validated this domain\'s DNS answers.',ev:'AD flag = true (validated)'};
+        return {v:'WATCH',txt:'DNS answers are not signed. Common (most small-business domains aren\'t) — worth enabling at the registrar when convenient.',ev:'AD flag = false'}; }); } },
+    { id:'caa', nm:'CAA — who may issue your HTTPS certificates',
+      run:function(){ return doh(DOMAIN,'CAA').then(function(j){ var caa=((j&&j.Answer)||[]).filter(function(a){return a.type===257;});
+        if(!j||typeof j.Status!=='number') return {v:'UNKNOWN',txt:'The DNS resolver did not answer — not scored.',ev:''};
+        if(caa.length) return {v:'PASS',txt:'A CAA policy limits which authorities may issue certificates for this domain.',ev:caa.map(function(a){return a.data;}).join(' · ')};
+        return {v:'WATCH',txt:'No CAA record — any certificate authority on earth may issue a cert for this domain. One DNS record fixes it.',ev:'empty CAA answer'}; }); } },
+    { id:'reach', nm:'Public site — reachable over HTTPS',
+      run:function(){ return fetch('https://'+DOMAIN+'/',{mode:'no-cors',cache:'no-store'}).then(function(){ return {v:'PASS',txt:'https://'+DOMAIN+' answered from this browser just now.',ev:'opaque HTTPS response received '+new Date().toISOString()}; })
+        .catch(function(){ return {v:'UNKNOWN',txt:'This browser could not confirm the site (network or cross-origin limits) — not scored as a failure.',ev:'no response to a no-cors probe'}; }); } }
+  ];
+
+  function opsChecks(data){
+    var out=[];
+    var wv=data.waivers||[], now=Date.now();
+    function wcls(w){ if(w.status==='Missing'||!w.expires)return w.status==='Missing'?2:0; var d=(new Date(w.expires+'T12:00:00').getTime()-now)/864e5; return d<0?2:(d<=30?1:0); }
+    var miss=wv.filter(function(w){return wcls(w)===2;}).length, expg=wv.filter(function(w){return wcls(w)===1;}).length;
+    out.push({nm:'Waivers — every kid on the floor is covered', v:miss?'INTERVENE':(expg?'WATCH':'PASS'),
+      txt:miss?(miss+' famil'+(miss===1?'y has':'ies have')+' no signed waiver on file. No signed waiver, no floor.'):(expg?(expg+' waiver'+(expg===1?'':'s')+' expire within 30 days — renewal notes are drafted in Waivers & Safety.'):'Every family has a current signed waiver.'),
+      ev:wv.length+' families on the docket · '+miss+' missing · '+expg+' expiring ≤30d'});
+    var hr=data.hrrecords||[]; var lapsed=0,soon=0;
+    hr.forEach(function(h){(h.certs||[]).forEach(function(c){ if(!c.exp)return; var d=(new Date(c.exp+'T12:00:00').getTime()-now)/864e5; if(d<0)lapsed++; else if(d<=60)soon++; });});
+    out.push({nm:'Staff certifications — CPR & background checks current', v:lapsed?'INTERVENE':(soon?'WATCH':'PASS'),
+      txt:lapsed?(lapsed+' certification'+(lapsed===1?' has':'s have')+' lapsed — the HR room shows exactly whose.'):(soon?(soon+' certification'+(soon===1?'':'s')+' due within 60 days.'):'Every tracked certification is current.'),
+      ev:hr.length+' staff · '+lapsed+' lapsed · '+soon+' due ≤60d'});
+    var inc=(data.incidents||[]).filter(function(i){return i.status!=='Closed';}).length;
+    out.push({nm:'Incident log — nothing open and unhandled', v:inc?'WATCH':'PASS',
+      txt:inc?(inc+' incident'+(inc===1?' is':'s are')+' still open in Waivers & Safety.'):'No open incidents. Every logged incident was closed out.',
+      ev:(data.incidents||[]).length+' on file · '+inc+' open'});
+    var ap=(data.approvals||[]).filter(function(a){return a.status==='Pending';}).length;
+    out.push({nm:'Approval desk — money decisions aren\'t stuck', v:ap>3?'WATCH':'PASS',
+      txt:ap?(ap+' request'+(ap===1?'':'s')+' waiting on an owner.'):'The desk is clear.',
+      ev:ap+' pending'});
+    var fam=data.families||[]; var noap=fam.filter(function(f){return !f.autopay;}).length;
+    out.push({nm:'Autopay — tuition collects itself', v:noap?'WATCH':'PASS',
+      txt:noap?(noap+' famil'+(noap===1?'y':'ies')+' not on autopay — each one is a manual chase on the 1st.'):'Every family is on autopay.',
+      ev:fam.length+' families · '+noap+' off autopay'});
+    return out;
+  }
+
+  function renderChecks(target,list,pending){
+    el(target).innerHTML=list.map(function(c){
+      var v=c.v||''; var pl=pending?'<span class="pill wait">Not run yet</span>':'<span class="pill '+v+'">'+v+'</span>';
+      return '<div class="chk"><span class="light '+(pending?'':v)+'"></span><div style="flex:1"><div style="display:flex;align-items:center;gap:9px"><span class="nm">'+esc(c.nm)+'</span>'+pl+'</div>'+
+        (c.txt?'<div class="txt">'+esc(c.txt)+'</div>':'<div class="txt" style="color:var(--mut)">Press "Run the checks" — this queries live, from your browser.</div>')+
+        (c.ev?'<div class="ev">'+esc(c.ev)+'</div>':'')+'</div></div>';
+    }).join('');
+  }
+  function verdict(all){ if(all.some(function(c){return c.v==='INTERVENE';}))return 'INTERVENE'; if(all.some(function(c){return c.v==='WATCH';}))return 'WATCH'; return 'CLEAR'; }
+
+  async function sha256(s){ var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)); return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0');}).join(''); }
+
+  async function runAll(){
+    var btn=el('runBtn'); btn.disabled=true; btn.textContent='Running live checks…';
+    try{
+      var dres=[]; for(var i=0;i<DCHECKS.length;i++){ var r; try{ r=await DCHECKS[i].run(); }catch(e){ r={v:'UNKNOWN',txt:'Check could not run from this browser — not scored.',ev:String(e&&e.message||e)}; } dres.push({nm:DCHECKS[i].nm,v:r.v,txt:r.txt,ev:r.ev}); renderChecks('domainChecks',dres.concat(DCHECKS.slice(i+1).map(function(c){return {nm:c.nm};})),false); }
+      var data={}; var cols=['waivers','hrrecords','incidents','approvals','families'];
+      for(var k=0;k<cols.length;k++){ data[cols[k]]=await window.HUBDATA.list(cols[k]); }
+      var ores=opsChecks(data);
+      renderChecks('domainChecks',dres,false); renderChecks('opsChecks',ores,false);
+      var all=dres.concat(ores), v=verdict(all);
+      RESULTS={at:new Date().toISOString(),domain:DOMAIN,verdict:v,checks:all.map(function(c){return {nm:c.nm,v:c.v,ev:c.ev};})};
+      el('kVerdict').textContent=v; el('kPass').textContent=all.filter(function(c){return c.v==='PASS';}).length+' / '+all.length;
+      var prev=CHAIN.length?CHAIN[0].hash:'genesis';
+      var hash=await sha256(prev+'|'+JSON.stringify(RESULTS));
+      await window.HUBDATA.save('evidence',{at:RESULTS.at,verdict:v,pass:all.filter(function(c){return c.v==='PASS';}).length,total:all.length,prev:prev,hash:hash});
+      toast('Run sealed — '+v+' · '+hash.slice(0,12)+'…');
+      loadChain();
+    } finally { btn.disabled=false; btn.textContent='▶ Run the checks & seal the evidence'; }
+  }
+  function loadChain(){ window.HUBDATA.list('evidence').then(function(r){ CHAIN=(r||[]).slice().sort(function(a,b){return String(b.at).localeCompare(String(a.at));});
+    el('kRuns').textContent=CHAIN.length;
+    el('chain').innerHTML=CHAIN.slice(0,8).map(function(s,i){
+      return '<div class="seal"><b class="st">'+esc(s.verdict)+'</b> · '+esc(s.pass)+' / '+esc(s.total)+' clear · '+esc(String(s.at).replace('T',' ').slice(0,16))+' UTC'+
+        '<div class="h">seal &nbsp;'+esc(s.hash||'')+'</div><div class="h">prev &nbsp;'+esc(s.prev||'')+'</div></div>';
+    }).join('')||'<div class="note">No sealed runs yet. Run the checks once and the chain starts here — every later seal locks in everything before it.</div>';
+  }); }
+  function toast(m){var t=el('toast');t.textContent=m;t.classList.add('on');setTimeout(function(){t.classList.remove('on');},2600);}
+  window.runAll=runAll;
+  renderChecks('domainChecks',DCHECKS.map(function(c){return {nm:c.nm};}),true);
+  renderChecks('opsChecks',[{nm:'Waivers — every kid on the floor is covered'},{nm:'Staff certifications — CPR & background checks current'},{nm:'Incident log — nothing open and unhandled'},{nm:'Approval desk — money decisions aren\'t stuck'},{nm:'Autopay — tuition collects itself'}],true);
+  loadChain();
+  window.AssistantContext=function(){ return { view:'Comply trust center', center:BR.center, domain:DOMAIN,
+    lastRun:RESULTS, sealedRuns:CHAIN.length }; };
+})();
+</script>
+</body>
+</html>

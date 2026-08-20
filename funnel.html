@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Growth Funnel</title>
+<link rel="icon" href="/logo.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/config.js"></script>
+<script src="/skins.js"></script>
+<style>
+  *{box-sizing:border-box}html,body{margin:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#2a201a);background:var(--paper,#fbf7f2);min-height:100vh}
+  h1,h2,h3{font-family:Georgia,serif;font-weight:800;margin:0}
+  .wrap{max-width:1280px;margin:0 auto;padding:20px 20px 70px}
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+  .bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:8px 0 14px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 14px}
+  .stat .n{font-family:Georgia,serif;font-weight:800;font-size:20px;color:var(--accent)}
+  .stat .l{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+  .sp{flex:1}
+  .btn{background:linear-gradient(180deg,var(--accent),var(--accent2));color:var(--onAccent);border:none;border-radius:10px;padding:11px 17px;font-weight:700;font-family:Georgia,serif;font-size:14px;cursor:pointer}
+  .board{display:grid;grid-template-columns:repeat(5,minmax(210px,1fr));gap:12px;overflow-x:auto}
+  @media(max-width:1100px){.board{grid-template-columns:repeat(5,240px)}}
+  .col{background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:11px 10px;min-height:220px}
+  .col h3{font-size:13.5px;display:flex;align-items:center;gap:7px;margin-bottom:9px;padding:0 3px}
+  .cnt{margin-left:auto;font-size:11px;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:2px 9px;color:var(--mut);font-weight:700}
+  .lead{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:10px 11px;margin-bottom:8px;box-shadow:0 3px 10px rgba(80,50,20,.05)}
+  .lead .nm{font-family:Georgia,serif;font-weight:800;font-size:14.5px}
+  .lead .meta{font-size:11.5px;color:var(--mut);margin:2px 0 6px}
+  .lead .note{font-size:11.5px;color:var(--ink2);margin-bottom:7px}
+  .lead .trial{font-size:11.5px;color:var(--accent);font-weight:700;margin-bottom:7px}
+  .acts{display:flex;gap:6px}
+  .mini{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:5px 9px;font:inherit;font-size:11px;font-weight:700;cursor:pointer;color:var(--ink2)}
+  .mini.fwd{border-color:#bfe0cb;color:#2f6a52;background:#eef6f0}
+  .src{display:inline-block;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;background:var(--cream);border:1px solid var(--line);color:var(--mut);padding:1px 7px;border-radius:99px}
+  .none{font-size:12px;color:var(--mut);padding:4px 3px}
+  .scrim{position:fixed;inset:0;background:rgba(30,20,10,.5);z-index:60;display:none;align-items:center;justify-content:center;padding:18px}.scrim.on{display:flex}
+  .modal{background:var(--card);border-radius:16px;max-width:480px;width:100%;padding:20px 22px;box-shadow:0 24px 60px rgba(0,0,0,.3)}
+  .modal h2{color:var(--accent);font-size:20px;margin-bottom:10px}
+  .fld{margin:8px 0}.fld label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--mut);font-weight:700;margin-bottom:4px}
+  .fld input{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 10px;font:inherit;font-size:13.5px;background:var(--paper);color:var(--ink)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .mrow{display:flex;gap:9px;margin-top:12px}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:13.5px;opacity:0;transition:.25s;pointer-events:none;z-index:80}.toast.on{opacity:1}
+  a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--accent)!important;outline-offset:2px}
+</style>
+</head>
+<body>
+<script src="/hub-nav.js" defer></script>
+<script src="/data.js"></script>
+<script src="/assistant.js" defer></script>
+<div class="wrap">
+  <div class="eyebrow" id="eb"></div>
+  <h1>Growth Funnel</h1>
+  <div class="bar">
+    <div class="stat"><div class="n" id="kLeads">—</div><div class="l">Active leads</div></div>
+    <div class="stat"><div class="n" id="kTrials">—</div><div class="l">Trials booked</div></div>
+    <div class="stat"><div class="n" id="kConv">—</div><div class="l">Lead → enrolled</div></div>
+    <div class="stat"><div class="n" id="kTop">—</div><div class="l">Top source</div></div>
+    <div class="sp"></div>
+    <button class="btn" onclick="openAdd()">＋ New lead</button>
+  </div>
+  <div class="board" id="board"></div>
+</div>
+
+<div class="scrim" id="scrim" onclick="if(event.target===this)closeM()"><div class="modal">
+  <h2>New lead</h2>
+  <div class="two"><div class="fld"><label>Child's name</label><input id="a_name"></div>
+    <div class="fld"><label>Age</label><input id="a_age" type="number"></div></div>
+  <div class="two"><div class="fld"><label>Program interest</label><input id="a_program" list="progList"><datalist id="progList"></datalist></div>
+    <div class="fld"><label>Source</label><input id="a_source" placeholder="Facebook · referral · walk-in"></div></div>
+  <div class="fld"><label>Note</label><input id="a_note"></div>
+  <div class="mrow"><button class="btn" style="flex:1" onclick="saveAdd()">Add lead →</button><button class="mini" onclick="closeM()">Cancel</button></div>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  var el=function(id){return document.getElementById(id);};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var C=window.HUB_CONFIG||{}, BR=C.brand||{}, PC=C.programColors||{};
+  var STAGES=['New','Contacted','Trial booked','Trial done','Enrolled'];
+  var ICONS={'New':'🌱','Contacted':'📞','Trial booked':'📅','Trial done':'⭐','Enrolled':'🎉'};
+  var LEADS=[];
+  el('eb').textContent=(BR.center||BR.name||'');
+  function load(){ window.HUBDATA.list('leads').then(function(r){ LEADS=r||[]; render(); }); }
+  function render(){
+    el('progList').innerHTML=Object.keys(PC).map(function(p){return '<option value="'+esc(p)+'">';}).join('');
+    var active=LEADS.filter(function(l){return l.stage!=='Enrolled';});
+    el('kLeads').textContent=active.length;
+    el('kTrials').textContent=LEADS.filter(function(l){return l.stage==='Trial booked';}).length;
+    var enr=LEADS.filter(function(l){return l.stage==='Enrolled';}).length;
+    el('kConv').textContent=LEADS.length?Math.round(enr/LEADS.length*100)+'%':'—';
+    var srcCount={}; LEADS.forEach(function(l){var s=String(l.source||'').split('—')[0].trim()||'Other'; srcCount[s]=(srcCount[s]||0)+1;});
+    var top=Object.keys(srcCount).sort(function(a,b){return srcCount[b]-srcCount[a];})[0]||'—';
+    el('kTop').textContent=top;
+    el('board').innerHTML=STAGES.map(function(st){
+      var cards=LEADS.filter(function(l){return l.stage===st;}).map(function(l){
+        var ni=STAGES.indexOf(st);
+        var fwd=ni<STAGES.length-1?'<button class="mini fwd" data-f="'+esc(l.id)+'">'+esc(STAGES[ni+1])+' →</button>':'';
+        var enrollHint=st==='Enrolled'?'<div class="note" style="color:#2f6a52">In the door — enroll them on the Classes page.</div>':'';
+        return '<div class="lead"><div class="nm">'+esc(l.name)+(l.age?' <small style="color:var(--mut);font-weight:400">· '+esc(l.age)+'</small>':'')+'</div>'+
+          '<div class="meta">'+esc(l.program||'')+' &nbsp;<span class="src">'+esc(l.source||'')+'</span></div>'+
+          (l.trial?'<div class="trial">📅 '+esc(l.trial)+'</div>':'')+
+          (l.note?'<div class="note">'+esc(l.note)+'</div>':'')+enrollHint+
+          '<div class="acts">'+fwd+(st!=='Enrolled'?'<button class="mini" data-x="'+esc(l.id)+'">Lost</button>':'')+'</div></div>';
+      }).join('');
+      return '<div class="col"><h3>'+ICONS[st]+' '+esc(st)+'<span class="cnt">'+LEADS.filter(function(l){return l.stage===st;}).length+'</span></h3>'+(cards||'<div class="none">Empty</div>')+'</div>';
+    }).join('');
+    el('board').querySelectorAll('[data-f]').forEach(function(b){b.addEventListener('click',function(){advance(b.getAttribute('data-f'));});});
+    el('board').querySelectorAll('[data-x]').forEach(function(b){b.addEventListener('click',function(){lost(b.getAttribute('data-x'));});});
+  }
+  function advance(id){ var l=LEADS.find(function(x){return x.id===id;}); if(!l)return;
+    var ni=STAGES.indexOf(l.stage)+1; if(ni>=STAGES.length)return;
+    l.stage=STAGES[ni];
+    if(l.stage==='Trial booked' && !l.trial){ var t=prompt('Trial date & time for '+l.name+'?','This week'); if(t)l.trial=t; }
+    window.HUBDATA.save('leads',l).then(function(){ toast(l.name+' → '+l.stage); load(); });
+  }
+  function lost(id){ var l=LEADS.find(function(x){return x.id===id;}); if(!l||!confirm('Mark '+l.name+' as lost and remove from the board?'))return;
+    window.HUBDATA.del('leads',id).then(function(){ toast('Removed '+l.name); load(); });
+  }
+  function openAdd(){ ['a_name','a_age','a_program','a_source','a_note'].forEach(function(k){el(k).value='';}); el('scrim').classList.add('on'); el('a_name').focus(); }
+  function saveAdd(){ var n=el('a_name').value.trim(); if(!n)return;
+    window.HUBDATA.save('leads',{name:n,age:+el('a_age').value||'',program:el('a_program').value.trim(),source:el('a_source').value.trim(),note:el('a_note').value.trim(),stage:'New',date:new Date().toISOString().slice(0,10)}).then(function(){ closeM(); toast('Added '+n); load(); });
+  }
+  function closeM(){ el('scrim').classList.remove('on'); }
+  function toast(m){var t=el('toast');t.textContent=m;t.classList.add('on');setTimeout(function(){t.classList.remove('on');},2200);}
+  window.openAdd=openAdd;window.saveAdd=saveAdd;window.closeM=closeM;
+  window.AssistantContext=function(){ return { view:'growth funnel', center:BR.center,
+    leads:LEADS.map(function(l){return {name:l.name,age:l.age,program:l.program,source:l.source,stage:l.stage,trial:l.trial,note:l.note};}) }; };
+  load();
+})();
+</script>
+</body>
+</html>

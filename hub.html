@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="/config.js"></script>
+<script src="/skins.js"></script>
 <style>
   *{box-sizing:border-box}html,body{margin:0}
   body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#26211a);background:var(--paper,#f7f4ee);min-height:100vh}
@@ -45,7 +46,7 @@
   document.getElementById('eb').textContent=BR.name||'';
   document.getElementById('credit').innerHTML=esc(BR.credit||'');
   function allowed(roles){ if(!roles||!roles.length)roles=['guest']; var set={}; roles.forEach(function(r){var v=ROLES[r]; if(v==='*')ALL.forEach(function(k){set[k]=1;}); else (v||[]).forEach(function(k){set[k]=1;});}); return ALL.filter(function(k){return set[k];}); }
-  var blurb={};  // optional per-section one-liners can be added to config; fall back to label
+  var blurb={}; SEC.forEach(function(s){ if(s.ds) blurb[s.k]=s.ds; });  // per-section one-liners from config; fall back to label
   (window.hubWho||Promise.resolve(null)).then(function(w){
     var roles=(w&&(w.roles||(w.role?[w.role]:[])))||['guest']; var name=(w&&w.name)||'';
     document.getElementById('hi').textContent=name?('Welcome, '+name):'Command Center';

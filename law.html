@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Waivers &amp; Safety</title>
+<link rel="icon" href="/logo.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/config.js"></script>
+<script src="/skins.js"></script>
+<style>
+  *{box-sizing:border-box}html,body{margin:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#2a201a);background:var(--paper,#fbf7f2);min-height:100vh}
+  h1,h2,h3{font-family:Georgia,serif;font-weight:800;margin:0}
+  .wrap{max-width:1200px;margin:0 auto;padding:20px 20px 70px}
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+  .bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:8px 0 14px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 14px}
+  .stat .n{font-family:Georgia,serif;font-weight:800;font-size:20px;color:var(--accent)}
+  .stat .l{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+  .sp{flex:1}
+  .btn{background:linear-gradient(180deg,var(--accent),var(--accent2));color:var(--onAccent);border:none;border-radius:10px;padding:11px 17px;font-weight:700;font-family:Georgia,serif;font-size:14px;cursor:pointer}
+  h2.sec{font-size:18px;margin:18px 0 10px}
+  .note{background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:12px 15px;font-size:13px;color:var(--ink2);margin-bottom:14px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:6px}
+  th{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--cream)}
+  td{font-size:13px;padding:10px 12px;border-bottom:1px solid var(--line2)}
+  tr:last-child td{border-bottom:none}
+  .pill{font-size:9.5px;font-weight:800;text-transform:uppercase;padding:2px 8px;border-radius:99px;white-space:nowrap}
+  .pill.ok{background:#eef6f0;color:#2f6a52}.pill.watch{background:#fbeee0;color:#a85f1f}.pill.due{background:#fdeaea;color:#b23b3b}
+  .mini{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:5px 10px;font:inherit;font-size:11.5px;font-weight:600;cursor:pointer;color:var(--ink2)}
+  .inc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 15px;margin-bottom:10px;box-shadow:0 4px 14px rgba(80,50,20,.05)}
+  .inc .hd{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--mut);margin-bottom:4px}
+  .inc .what{font-size:13.5px;color:var(--ink)}
+  .scrim{position:fixed;inset:0;background:rgba(30,20,10,.5);z-index:60;display:none;align-items:center;justify-content:center;padding:18px}.scrim.on{display:flex}
+  .modal{background:var(--card);border-radius:16px;max-width:480px;width:100%;padding:20px 22px;box-shadow:0 24px 60px rgba(0,0,0,.3)}
+  .modal h2{color:var(--accent);font-size:20px;margin-bottom:10px}
+  .fld{margin:8px 0}.fld label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--mut);font-weight:700;margin-bottom:4px}
+  .fld input,.fld textarea{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 10px;font:inherit;font-size:13.5px;background:var(--paper);color:var(--ink)}
+  .mrow{display:flex;gap:9px;margin-top:12px}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:13.5px;opacity:0;transition:.25s;pointer-events:none;z-index:80}.toast.on{opacity:1}
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--accent)!important;outline-offset:2px}
+</style>
+</head>
+<body>
+<script src="/hub-nav.js" defer></script>
+<script src="/data.js"></script>
+<script src="/assistant.js" defer></script>
+<div class="wrap">
+  <div class="eyebrow" id="eb"></div>
+  <h1>Waivers &amp; Safety</h1>
+  <div class="bar">
+    <div class="stat"><div class="n" id="kSigned">—</div><div class="l">Waivers current</div></div>
+    <div class="stat"><div class="n" id="kExpiring">—</div><div class="l">Expiring ≤30 days</div></div>
+    <div class="stat"><div class="n" id="kMissing">—</div><div class="l">Missing</div></div>
+    <div class="stat"><div class="n" id="kInc">—</div><div class="l">Open incidents</div></div>
+    <div class="sp"></div>
+    <button class="btn" onclick="openInc()">＋ Log an incident</button>
+  </div>
+  <div class="note"><b>Read this first:</b> the rule of this room is simple — <b>no signed waiver, no floor.</b> Every family gets one row on the docket. Green is current, amber expires within 30 days, red is missing or lapsed. Frankie drafts the renewal note; a kid never gets turned away at the door because the paperwork surprised everyone.</div>
+  <h2 class="sec">The docket</h2>
+  <table>
+    <thead><tr><th>Family</th><th>Kids covered</th><th>Status</th><th>Signed</th><th>Expires</th><th></th></tr></thead>
+    <tbody id="docket"></tbody>
+  </table>
+  <h2 class="sec">Incident log</h2>
+  <div id="incidents"></div>
+</div>
+
+<div class="scrim" id="scrim" onclick="if(event.target===this)closeM()"><div class="modal">
+  <h2>Log an incident</h2>
+  <div class="fld"><label>Where</label><input id="i_where" placeholder="Gym B · Ninja Zone · lobby"></div>
+  <div class="fld"><label>What happened + what was done</label><textarea id="i_what" rows="4" placeholder="What happened, first aid given, who was notified, when."></textarea></div>
+  <div class="mrow"><button class="btn" style="flex:1" onclick="saveInc()">Log it →</button><button class="mini" onclick="closeM()">Cancel</button></div>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  var el=function(id){return document.getElementById(id);};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var C=window.HUB_CONFIG||{}, BR=C.brand||{};
+  var WV=[], INC=[];
+  el('eb').textContent=(BR.center||BR.name||'');
+  function wstat(w){ if(w.status==='Missing'||!w.expires)return w.status==='Missing'?{cls:'due',label:'Missing'}:{cls:'ok',label:'Signed'};
+    var d=(new Date(w.expires+'T12:00:00').getTime()-Date.now())/864e5;
+    if(d<0)return {cls:'due',label:'Lapsed'}; if(d<=30)return {cls:'watch',label:Math.round(d)+'d left'}; return {cls:'ok',label:'Current'};
+  }
+  function load(){ Promise.all([window.HUBDATA.list('waivers'),window.HUBDATA.list('incidents')]).then(function(r){ WV=r[0]||[]; INC=(r[1]||[]).slice().sort(function(a,b){return String(b.date).localeCompare(String(a.date));}); render(); }); }
+  function render(){
+    var st=WV.map(wstat);
+    el('kSigned').textContent=st.filter(function(s){return s.cls==='ok';}).length+' / '+WV.length;
+    el('kExpiring').textContent=st.filter(function(s){return s.cls==='watch';}).length;
+    el('kMissing').textContent=st.filter(function(s){return s.cls==='due';}).length;
+    el('kInc').textContent=INC.filter(function(i){return i.status!=='Closed';}).length;
+    el('docket').innerHTML=WV.map(function(w){ var s=wstat(w);
+      var act=s.cls==='ok'?'':'<button class="mini" data-r="'+esc(w.id)+'">'+(s.cls==='due'?'Request signature':'Send renewal note')+'</button>';
+      return '<tr><td><b>'+esc(w.family)+'</b></td><td>'+esc(w.kids||'')+'</td><td><span class="pill '+s.cls+'">'+s.label+'</span></td><td>'+esc(w.signed||'—')+'</td><td>'+esc(w.expires||'—')+'</td><td>'+act+'</td></tr>';
+    }).join('');
+    el('docket').querySelectorAll('[data-r]').forEach(function(b){b.addEventListener('click',function(){remind(b.getAttribute('data-r'));});});
+    el('incidents').innerHTML=INC.map(function(i){
+      return '<div class="inc"><div class="hd"><b style="color:var(--ink)">'+esc(i.date)+'</b> · '+esc(i.where||'')+' <span class="pill '+(i.status==='Closed'?'ok':'watch')+'" style="margin-left:auto">'+esc(i.status||'Open')+'</span></div><div class="what">'+esc(i.what||'')+'</div></div>';
+    }).join('')||'<div class="note">No incidents on file. That\'s the goal — and when one happens, logging it the same day is what protects everyone.</div>';
+  }
+  function remind(id){ var w=WV.find(function(x){return x.id===id;}); if(!w)return;
+    var s=wstat(w);
+    toast((s.cls==='due'?'Signature request':'Renewal note')+' drafted for '+w.family+' — ask Frankie to polish and send.');
+  }
+  function openInc(){ el('i_where').value=''; el('i_what').value=''; el('scrim').classList.add('on'); el('i_where').focus(); }
+  function saveInc(){ var wh=el('i_where').value.trim(), wt=el('i_what').value.trim(); if(!wt)return;
+    window.HUBDATA.save('incidents',{date:new Date().toISOString().slice(0,10),where:wh,what:wt,status:'Open'}).then(function(){ closeM(); toast('Incident logged — same-day, like it should be.'); load(); });
+  }
+  function closeM(){ el('scrim').classList.remove('on'); }
+  function toast(m){var t=el('toast');t.textContent=m;t.classList.add('on');setTimeout(function(){t.classList.remove('on');},2600);}
+  window.openInc=openInc;window.saveInc=saveInc;window.closeM=closeM;
+  window.AssistantContext=function(){ return { view:'waivers & safety', center:BR.center,
+    docket:WV.map(function(w){var s=wstat(w);return {family:w.family,kids:w.kids,status:s.label,expires:w.expires};}),
+    incidents:INC.slice(0,6) }; };
+  load();
+})();
+</script>
+</body>
+</html>

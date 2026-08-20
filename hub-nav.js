@@ -20,11 +20,13 @@
   window.hubWho = window.hubWho || fetch("/api/auth?do=whoami&t=" + encodeURIComponent(TOKEN)).then(function (r) { return r.json(); }).catch(function () { return null; });
 
   function allowed(roles) {
-    if (!roles || !roles.length) return ROLES.guest || ["home"];
+    if (!roles || !roles.length) roles = ["guest"];
     var set = {};
     roles.forEach(function (r) { var v = ROLES[r]; if (v === "*") ALLKEYS.forEach(function (k) { set[k] = 1; }); else (v || []).forEach(function (k) { set[k] = 1; }); });
     var keys = ALLKEYS.filter(function (k) { return set[k]; });
-    return keys.length ? keys : (ROLES.guest || ["home"]);
+    if (keys.length) return keys;
+    var g = ROLES.guest; if (g === "*") return ALLKEYS.slice();
+    return (g && g.length ? g : ["home"]);
   }
   function curKey() { var here = (location.pathname || "/hub.html").replace(/\/index\.html$/, "/"); if (here === "/hub.html" || here === "/") return "home"; for (var i = 0; i < SECTIONS.length; i++) { var s = SECTIONS[i]; if (s.href !== "/hub.html" && here.indexOf(s.href) === 0) return s.k; } return "home"; }
   function curDept() { var k = curKey(); for (var d = 0; d < DEPTS.length; d++) { if ((DEPTS[d].keys || []).indexOf(k) >= 0) return DEPTS[d]; } return null; }

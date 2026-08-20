@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Enrollment &amp; Waitlists</title>
+<link rel="icon" href="/logo.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/config.js"></script>
+<script src="/skins.js"></script>
+<style>
+  *{box-sizing:border-box}html,body{margin:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#2a201a);background:var(--paper,#fbf7f2);min-height:100vh}
+  h1,h2,h3{font-family:Georgia,serif;font-weight:800;margin:0}
+  .wrap{max-width:1200px;margin:0 auto;padding:20px 20px 70px}
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+  .bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:8px 0 14px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 14px}
+  .stat .n{font-family:Georgia,serif;font-weight:800;font-size:20px;color:var(--accent)}
+  .stat .l{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+  .sp{flex:1}
+  .btn{background:linear-gradient(180deg,var(--accent),var(--accent2));color:var(--onAccent);border:none;border-radius:10px;padding:11px 17px;font-weight:700;font-family:Georgia,serif;font-size:14px;cursor:pointer}
+  h2.sec{font-size:18px;margin:18px 0 10px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:13px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 15px;box-shadow:0 4px 14px rgba(80,50,20,.05)}
+  .nm{font-family:Georgia,serif;font-weight:800;font-size:17px}
+  .meta{font-size:12px;color:var(--mut);margin:2px 0 8px}
+  .pill{font-size:10px;font-weight:800;text-transform:uppercase;padding:2px 8px;border-radius:99px}
+  .pill.full{background:#fbeee0;color:#a85f1f}.pill.open{background:#eef6f0;color:#2f6a52}
+  .qe{display:flex;align-items:center;gap:9px;font-size:13.5px;border-bottom:1px dotted var(--line);padding:7px 0}
+  .qe .pos{font-family:Georgia,serif;font-weight:800;color:var(--accent);width:20px;text-align:center}
+  .qe .fm{color:var(--mut);font-size:11.5px}
+  .qe .since{margin-left:auto;font-size:11px;color:var(--mut)}
+  .mini{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:6px 11px;font:inherit;font-size:12px;font-weight:600;cursor:pointer;color:var(--ink2)}
+  .mini.go{border-color:#bfe0cb;color:#2f6a52;background:#eef6f0}
+  .none{font-size:13px;color:var(--mut);padding:6px 0}
+  .scrim{position:fixed;inset:0;background:rgba(30,20,10,.5);z-index:60;display:none;align-items:center;justify-content:center;padding:18px}.scrim.on{display:flex}
+  .modal{background:var(--card);border-radius:16px;max-width:480px;width:100%;padding:20px 22px;box-shadow:0 24px 60px rgba(0,0,0,.3)}
+  .modal h2{color:var(--accent);font-size:20px;margin-bottom:10px}
+  .fld{margin:8px 0}.fld label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--mut);font-weight:700;margin-bottom:4px}
+  .fld input{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 10px;font:inherit;font-size:13.5px;background:var(--paper);color:var(--ink)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .mrow{display:flex;gap:9px;margin-top:12px}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:13.5px;opacity:0;transition:.25s;pointer-events:none;z-index:80}.toast.on{opacity:1}
+  a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--accent)!important;outline-offset:2px}
+</style>
+</head>
+<body>
+<script src="/hub-nav.js" defer></script>
+<script src="/data.js"></script>
+<script src="/assistant.js" defer></script>
+<div class="wrap">
+  <div class="eyebrow" id="eb"></div>
+  <h1>Enrollment &amp; Waitlists</h1>
+  <div class="bar">
+    <div class="stat"><div class="n" id="kWaiting">—</div><div class="l">Kids waiting</div></div>
+    <div class="stat"><div class="n" id="kFullCls">—</div><div class="l">Full classes</div></div>
+    <div class="stat"><div class="n" id="kLongest">—</div><div class="l">Longest wait</div></div>
+    <div class="stat"><div class="n" id="kOpen">—</div><div class="l">Open spots gym-wide</div></div>
+    <div class="sp"></div>
+    <button class="btn" onclick="openAdd()">＋ Add to a waitlist</button>
+  </div>
+  <h2 class="sec">Waitlist queues</h2>
+  <div class="grid" id="queues"></div>
+  <h2 class="sec">Classes with open spots</h2>
+  <div class="grid" id="openGrid"></div>
+</div>
+
+<div class="scrim" id="scrim" onclick="if(event.target===this)closeM()"><div class="modal">
+  <h2>Add to a waitlist</h2>
+  <div class="fld"><label>Class</label><input id="a_class" list="clsList" placeholder="Class name"><datalist id="clsList"></datalist></div>
+  <div class="two"><div class="fld"><label>Child</label><input id="a_child" placeholder="First + last"></div>
+    <div class="fld"><label>Family</label><input id="a_family" placeholder="Family"></div></div>
+  <div class="fld"><label>Phone</label><input id="a_phone" placeholder="(208) 555-0100"></div>
+  <div class="mrow"><button class="btn" style="flex:1" onclick="saveAdd()">Add →</button><button class="mini" onclick="closeM()">Cancel</button></div>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  var el=function(id){return document.getElementById(id);};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var C=window.HUB_CONFIG||{}, BR=C.brand||{};
+  var CLASSES=[], WL=[];
+  el('eb').textContent=(BR.center||BR.name||'');
+  function full(c){ return (+c.enrolled||0) >= (+c.cap||0); }
+  function daysAgo(d){ if(!d)return 0; return Math.max(0,Math.round((Date.now()-new Date(d+'T12:00:00').getTime())/864e5)); }
+  function load(){ Promise.all([window.HUBDATA.list('classes'),window.HUBDATA.list('waitlist')]).then(function(r){ CLASSES=r[0]||[]; WL=(r[1]||[]).filter(function(w){return w.status!=='Promoted';}); render(); }); }
+  function render(){
+    el('clsList').innerHTML=CLASSES.map(function(c){return '<option value="'+esc(c.name)+'">';}).join('');
+    var byClass={}; WL.forEach(function(w){ (byClass[w.class]=byClass[w.class]||[]).push(w); });
+    Object.keys(byClass).forEach(function(k){ byClass[k].sort(function(a,b){return String(a.since).localeCompare(String(b.since));}); });
+    el('kWaiting').textContent=WL.length;
+    el('kFullCls').textContent=CLASSES.filter(full).length;
+    var oldest=WL.reduce(function(m,w){return Math.max(m,daysAgo(w.since));},0);
+    el('kLongest').textContent=oldest?oldest+'d':'—';
+    el('kOpen').textContent=CLASSES.reduce(function(s,c){return s+Math.max(0,(+c.cap||0)-(+c.enrolled||0));},0);
+    el('queues').innerHTML=Object.keys(byClass).map(function(k){
+      var c=CLASSES.find(function(x){return x.name===k;})||{};
+      var isFull=c.id?full(c):true;
+      var q=byClass[k].map(function(w,i){
+        return '<div class="qe"><span class="pos">'+(i+1)+'</span><b>'+esc(w.child)+'</b><span class="fm">'+esc(w.family||'')+'</span><span class="since">'+daysAgo(w.since)+'d</span>'+
+          '<button class="mini go" data-p="'+esc(w.id)+'">Promote ↑</button></div>';
+      }).join('');
+      return '<div class="card"><div style="display:flex;align-items:center;gap:8px"><span class="nm">'+esc(k)+'</span><span class="pill '+(isFull?'full':'open')+'">'+(isFull?((+c.enrolled||0)+' / '+(+c.cap||0)+' · Full'):'Spot open!')+'</span></div>'+
+        '<div class="meta">'+esc(c.day||'')+' '+esc(c.time||'')+(c.coach?' · '+esc(c.coach):'')+'</div>'+q+'</div>';
+    }).join('')||'<div class="card"><div class="none">No one is waiting — every family got a spot. 🎉</div></div>';
+    el('queues').querySelectorAll('[data-p]').forEach(function(b){b.addEventListener('click',function(){promote(b.getAttribute('data-p'));});});
+    var open=CLASSES.filter(function(c){return !full(c) && c.status!=='Upcoming';}).sort(function(a,b){return ((+b.cap||0)-(+b.enrolled||0))-((+a.cap||0)-(+a.enrolled||0));}).slice(0,8);
+    el('openGrid').innerHTML=open.map(function(c){var left=(+c.cap||0)-(+c.enrolled||0);
+      return '<div class="card"><div style="display:flex;align-items:center;gap:8px"><span class="nm">'+esc(c.name)+'</span><span class="pill open">'+left+' open</span></div>'+
+        '<div class="meta">'+esc(c.program||'')+' · '+esc(c.ages||'')+' · '+esc(c.day||'')+' '+esc(c.time||'')+'</div>'+
+        '<div class="none">Fill these first — Frankie can draft the "spots open" note for the newsletter.</div></div>';}).join('')||'<div class="card"><div class="none">Every class is full.</div></div>';
+  }
+  function promote(id){ var w=WL.find(function(x){return x.id===id;}); if(!w)return;
+    var c=CLASSES.find(function(x){return x.name===w.class;});
+    if(c && full(c) && !confirm(c.name+' is still full ('+c.enrolled+'/'+c.cap+'). Promote '+w.child+' anyway (over cap)?')) return;
+    var chain=[];
+    if(c){ c.roster=(c.roster||[]).concat([{child:w.child,family:w.family||''}]); c.enrolled=(+c.enrolled||0)+1; chain.push(window.HUBDATA.save('classes',c)); }
+    w.status='Promoted'; w.promoted=new Date().toISOString().slice(0,10); chain.push(window.HUBDATA.save('waitlist',w));
+    Promise.all(chain).then(function(){ toast('Promoted '+w.child+' into '+w.class+' 🎉'); load(); });
+  }
+  function openAdd(){ ['a_class','a_child','a_family','a_phone'].forEach(function(k){el(k).value='';}); el('scrim').classList.add('on'); el('a_class').focus(); }
+  function saveAdd(){ var cls=el('a_class').value.trim(), ch=el('a_child').value.trim(); if(!cls||!ch)return;
+    window.HUBDATA.save('waitlist',{class:cls,child:ch,family:el('a_family').value.trim(),phone:el('a_phone').value.trim(),since:new Date().toISOString().slice(0,10),status:'Waiting'}).then(function(){ closeM(); toast('Added '+ch+' to the '+cls+' waitlist'); load(); });
+  }
+  function closeM(){ el('scrim').classList.remove('on'); }
+  function toast(m){var t=el('toast');t.textContent=m;t.classList.add('on');setTimeout(function(){t.classList.remove('on');},2200);}
+  window.openAdd=openAdd;window.saveAdd=saveAdd;window.closeM=closeM;
+  window.AssistantContext=function(){ return { view:'enrollment & waitlists', center:BR.center,
+    waiting:WL.map(function(w){return {child:w.child,class:w.class,family:w.family,since:w.since};}),
+    fullClasses:CLASSES.filter(full).map(function(c){return c.name;}),
+    openSpots:CLASSES.filter(function(c){return !full(c);}).map(function(c){return {name:c.name,open:(+c.cap||0)-(+c.enrolled||0)};}) }; };
+  load();
+})();
+</script>
+</body>
+</html>

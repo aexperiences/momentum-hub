@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Approval Desk</title>
+<link rel="icon" href="/logo.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/config.js"></script>
+<script src="/skins.js"></script>
+<style>
+  *{box-sizing:border-box}html,body{margin:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#2a201a);background:var(--paper,#fbf7f2);min-height:100vh}
+  h1,h2,h3{font-family:Georgia,serif;font-weight:800;margin:0}
+  .wrap{max-width:1000px;margin:0 auto;padding:20px 20px 70px}
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+  .bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:8px 0 14px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 14px}
+  .stat .n{font-family:Georgia,serif;font-weight:800;font-size:20px;color:var(--accent)}
+  .stat .l{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+  .sp{flex:1}
+  .btn{background:linear-gradient(180deg,var(--accent),var(--accent2));color:var(--onAccent);border:none;border-radius:10px;padding:11px 17px;font-weight:700;font-family:Georgia,serif;font-size:14px;cursor:pointer}
+  h2.sec{font-size:18px;margin:18px 0 10px}
+  .note{background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:12px 15px;font-size:13px;color:var(--ink2);margin-bottom:14px}
+  .req{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:11px;box-shadow:0 4px 14px rgba(80,50,20,.05)}
+  .req .hd{display:flex;align-items:center;gap:9px;margin-bottom:6px}
+  .type{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#fff;padding:3px 10px;border-radius:99px;background:var(--accent)}
+  .type.Refund{background:#b23b3b}.type.Discount{background:#a85f1f}.type.Schedule{background:#0e7490}.type.Closure{background:#134e4a}.type.Purchase{background:#0a6f6f}
+  .from{font-size:11.5px;color:var(--mut)}
+  .item{font-size:14.5px;color:var(--ink);margin-bottom:10px}
+  .acts{display:flex;gap:8px}
+  .ok{background:#eef6f0;border:1px solid #bfe0cb;color:#2f6a52;border-radius:9px;padding:8px 16px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+  .no{background:var(--paper);border:1px solid var(--line);color:#b23b3b;border-radius:9px;padding:8px 16px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+  .done{font-size:12px;color:var(--mut)}
+  .done b{color:#2f6a52}.done b.den{color:#b23b3b}
+  .scrim{position:fixed;inset:0;background:rgba(30,20,10,.5);z-index:60;display:none;align-items:center;justify-content:center;padding:18px}.scrim.on{display:flex}
+  .modal{background:var(--card);border-radius:16px;max-width:480px;width:100%;padding:20px 22px;box-shadow:0 24px 60px rgba(0,0,0,.3)}
+  .modal h2{color:var(--accent);font-size:20px;margin-bottom:10px}
+  .fld{margin:8px 0}.fld label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--mut);font-weight:700;margin-bottom:4px}
+  .fld input,.fld select{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 10px;font:inherit;font-size:13.5px;background:var(--paper);color:var(--ink)}
+  .mrow{display:flex;gap:9px;margin-top:12px}
+  .mini{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:8px 13px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;color:var(--ink2)}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:13.5px;opacity:0;transition:.25s;pointer-events:none;z-index:80}.toast.on{opacity:1}
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent)!important;outline-offset:2px}
+</style>
+</head>
+<body>
+<script src="/hub-nav.js" defer></script>
+<script src="/data.js"></script>
+<script src="/assistant.js" defer></script>
+<div class="wrap">
+  <div class="eyebrow" id="eb"></div>
+  <h1>Approval Desk</h1>
+  <div class="bar">
+    <div class="stat"><div class="n" id="kPend">—</div><div class="l">Waiting on you</div></div>
+    <div class="stat"><div class="n" id="kWeek">—</div><div class="l">Decided this month</div></div>
+    <div class="stat"><div class="n" id="kOldest">—</div><div class="l">Oldest pending</div></div>
+    <div class="sp"></div>
+    <button class="btn" onclick="openAdd()">＋ New request</button>
+  </div>
+  <div class="note"><b>What lands on this desk:</b> anything that gives money back, changes a price, moves the schedule, closes the gym, or spends it. Staff can queue a request from any room — nothing goes out the door until Josh or Katie taps <b>Approve</b>. One desk, a clean paper trail, zero "wait, who said yes to that?"</div>
+  <h2 class="sec">Waiting on you</h2>
+  <div id="pending"></div>
+  <h2 class="sec">Decided</h2>
+  <div id="history"></div>
+</div>
+
+<div class="scrim" id="scrim" onclick="if(event.target===this)closeM()"><div class="modal">
+  <h2>New request</h2>
+  <div class="fld"><label>Type</label><select id="a_type"><option>Refund</option><option>Discount</option><option>Schedule</option><option>Closure</option><option>Purchase</option></select></div>
+  <div class="fld"><label>The ask — amount, who, why</label><input id="a_item" placeholder="e.g. Refund $87 August tuition — Whitfield Family (moved)"></div>
+  <div class="fld"><label>Requested by</label><input id="a_from" placeholder="Front Desk · Coach Emma…"></div>
+  <div class="mrow"><button class="btn" style="flex:1" onclick="saveAdd()">Queue it →</button><button class="mini" onclick="closeM()">Cancel</button></div>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  var el=function(id){return document.getElementById(id);};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var C=window.HUB_CONFIG||{}, BR=C.brand||{};
+  var AP=[];
+  el('eb').textContent=(BR.center||BR.name||'');
+  function daysAgo(d){ if(!d)return 0; return Math.max(0,Math.round((Date.now()-new Date(String(d).slice(0,10)+'T12:00:00').getTime())/864e5)); }
+  function load(){ window.HUBDATA.list('approvals').then(function(r){ AP=(r||[]).slice().sort(function(a,b){return String(b.ts).localeCompare(String(a.ts));}); render(); }); }
+  function render(){
+    var pend=AP.filter(function(a){return a.status==='Pending';});
+    var done=AP.filter(function(a){return a.status!=='Pending';});
+    el('kPend').textContent=pend.length;
+    var mo=new Date().toISOString().slice(0,7);
+    el('kWeek').textContent=done.filter(function(a){return String(a.decidedTs||a.ts||'').slice(0,7)===mo;}).length;
+    var oldest=pend.reduce(function(m,a){return Math.max(m,daysAgo(a.ts));},0);
+    el('kOldest').textContent=pend.length?oldest+'d':'—';
+    el('pending').innerHTML=pend.map(function(a){
+      return '<div class="req"><div class="hd"><span class="type '+esc(a.type)+'">'+esc(a.type)+'</span><span class="from">from '+esc(a.from||'—')+' · '+esc(String(a.ts||'').slice(0,10))+'</span></div>'+
+        '<div class="item">'+esc(a.item)+'</div>'+
+        '<div class="acts"><button class="ok" data-y="'+esc(a.id)+'">✓ Approve</button><button class="no" data-n="'+esc(a.id)+'">✕ Deny</button></div></div>';
+    }).join('')||'<div class="note">The desk is clear. ✨</div>';
+    el('history').innerHTML=done.slice(0,12).map(function(a){
+      var den=a.status==='Denied';
+      return '<div class="req"><div class="hd"><span class="type '+esc(a.type)+'">'+esc(a.type)+'</span><span class="from">from '+esc(a.from||'—')+'</span></div>'+
+        '<div class="item">'+esc(a.item)+'</div>'+
+        '<div class="done"><b class="'+(den?'den':'')+'">'+esc(a.status)+'</b> by '+esc(a.by||'owner')+' · '+esc(String(a.decidedTs||a.ts||'').slice(0,10))+'</div></div>';
+    }).join('')||'<div class="note">No decisions yet.</div>';
+    el('pending').querySelectorAll('[data-y]').forEach(function(b){b.addEventListener('click',function(){decide(b.getAttribute('data-y'),'Approved');});});
+    el('pending').querySelectorAll('[data-n]').forEach(function(b){b.addEventListener('click',function(){decide(b.getAttribute('data-n'),'Denied');});});
+  }
+  function decide(id,st){ var a=AP.find(function(x){return x.id===id;}); if(!a)return;
+    a.status=st; a.by='Owner'; a.decidedTs=new Date().toISOString().slice(0,10);
+    window.HUBDATA.save('approvals',a).then(function(){ toast(st+': '+a.type.toLowerCase()+' request'); load(); });
+  }
+  function openAdd(){ el('a_item').value=''; el('a_from').value=''; el('scrim').classList.add('on'); el('a_item').focus(); }
+  function saveAdd(){ var it=el('a_item').value.trim(); if(!it)return;
+    window.HUBDATA.save('approvals',{type:el('a_type').value,item:it,from:el('a_from').value.trim()||'Front Desk',status:'Pending',ts:new Date().toISOString().slice(0,10)}).then(function(){ closeM(); toast('Queued for an owner'); load(); });
+  }
+  function closeM(){ el('scrim').classList.remove('on'); }
+  function toast(m){var t=el('toast');t.textContent=m;t.classList.add('on');setTimeout(function(){t.classList.remove('on');},2200);}
+  window.openAdd=openAdd;window.saveAdd=saveAdd;window.closeM=closeM;
+  window.AssistantContext=function(){ return { view:'approval desk', center:BR.center,
+    pending:AP.filter(function(a){return a.status==='Pending';}).map(function(a){return {type:a.type,item:a.item,from:a.from,since:a.ts};}) }; };
+  load();
+})();
+</script>
+</body>
+</html>
