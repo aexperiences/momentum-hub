@@ -26,6 +26,26 @@
   .tile .ds{font-size:12.5px;color:var(--mut)}
   .credit{color:var(--mut);font-size:12px;text-align:center;margin-top:34px}
   .credit b{color:var(--ink2)}
+  /* Command Center cockpit — colored graphs off the live seed */
+  .cockpit{margin:0 0 22px;display:flex;flex-direction:column;gap:14px}
+  .cc-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+  .cc-stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px;box-shadow:0 6px 18px rgba(60,45,20,.06)}
+  .cc-n{font-family:Georgia,serif;font-weight:800;font-size:26px;color:var(--accent);line-height:1}
+  .cc-l{font-size:11.5px;color:var(--mut);margin-top:5px;text-transform:uppercase;letter-spacing:.08em}
+  .cc-cols{display:grid;grid-template-columns:1.6fr 1fr;gap:14px}
+  @media(max-width:720px){.cc-cols{grid-template-columns:1fr}}
+  .cc-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 17px;box-shadow:0 6px 18px rgba(60,45,20,.06)}
+  .cc-h{font-family:Georgia,serif;font-weight:700;font-size:15px;margin-bottom:12px}
+  .cc-row{display:flex;align-items:center;gap:10px;margin:7px 0;font-size:12.5px}
+  .cc-pl{width:96px;flex:none;color:var(--ink2)}
+  .cc-track{flex:1;height:12px;background:var(--line);border-radius:99px;overflow:hidden}
+  .cc-track i{display:block;height:100%;border-radius:99px;transition:width .6s ease}
+  .cc-pv{width:52px;flex:none;text-align:right;color:var(--mut);font-variant-numeric:tabular-nums}
+  .cc-dcard{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  .cc-donut{width:132px;height:132px;border-radius:50%;display:grid;place-items:center;margin:4px 0 10px}
+  .cc-donut span{width:96px;height:96px;background:var(--card);border-radius:50%;display:grid;place-items:center;flex-direction:column;font-family:Georgia,serif;font-weight:800;font-size:26px;color:var(--accent)}
+  .cc-donut small{display:block;font-size:10.5px;color:var(--mut);font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+  .cc-sub{font-size:12px;color:var(--mut)}
 </style>
 </head>
 <body>
@@ -35,6 +55,7 @@
   <div class="eyebrow" id="eb"></div>
   <h1 class="hi" id="hi">Command Center</h1>
   <div class="sub" id="sub">Everything you run, in one place.</div>
+  <div class="cockpit" id="cockpit" hidden></div>
   <div class="grid" id="grid"></div>
   <div class="credit" id="credit"></div>
 </div>
@@ -55,6 +76,40 @@
     var tiles=keys.map(function(k){var s=SEC.filter(function(x){return x.k===k;})[0]; if(!s)return ''; var S=(new URLSearchParams(location.search).get('sess'))?('?sess='+encodeURIComponent(new URLSearchParams(location.search).get('sess'))):'';
       return '<a class="tile" href="'+s.href+S+'"><div class="ic">'+(s.ic||'•')+'</div><div class="tl">'+esc(s.label)+'</div><div class="ds">'+esc(blurb[k]||('Open '+s.label.toLowerCase()))+'</div></a>';}).join('');
     document.getElementById('grid').innerHTML=tiles||'<div class="ds" style="color:var(--mut)">Nothing to show yet — sign in to see your sections.</div>';
+  });
+})();
+</script>
+<script>
+/* Command Center cockpit — colored graphs computed live from HUB_CONFIG.seed. Role-aware; never fabricated. */
+(function(){
+  var C=window.HUB_CONFIG||{}, SD=C.seed||{}, PC=C.programColors||{}, ROLES=C.roles||{}, ALL=(C.sections||[]).map(function(s){return s.k;});
+  var classes=SD.classes||[], fams=SD.families||[];
+  function money(n){return '$'+Math.round(n).toLocaleString();}
+  var enrolled=0,cap=0,monthly=0,wait=0,byP={};
+  classes.forEach(function(c){var e=+c.enrolled||0,cp=+c.cap||0,t=+c.tuition||0;enrolled+=e;cap+=cp;monthly+=e*t;
+    if(e>=cp||/waitlist/i.test(c.notes||''))wait++;
+    var p=c.program||'Other'; byP[p]=byP[p]||{e:0,c:0}; byP[p].e+=e; byP[p].c+=cp;});
+  var fill=cap?Math.round(enrolled/cap*100):0;
+  function render(keys){
+    var el=document.getElementById('cockpit'); if(!el)return;
+    var canEnroll=keys.indexOf('enroll')>=0||keys.indexOf('tuition')>=0, canMoney=keys.indexOf('books')>=0;
+    if(!canEnroll){el.hidden=true;return;}
+    var cards=[['Kids enrolled',enrolled],['Classes running',classes.length],['Families',fams.length]];
+    cards.push(canMoney?['Monthly tuition',money(monthly)]:['Full · waitlist',wait]);
+    var cardsH=cards.map(function(c){return '<div class="cc-stat"><div class="cc-n">'+c[1]+'</div><div class="cc-l">'+c[0]+'</div></div>';}).join('');
+    var bars=Object.keys(byP).map(function(p){var d=byP[p],pct=d.c?Math.round(d.e/d.c*100):0,col=PC[p]||'var(--accent)';
+      return '<div class="cc-row"><span class="cc-pl">'+p+'</span><span class="cc-track"><i style="width:'+pct+'%;background:'+col+'"></i></span><span class="cc-pv">'+d.e+'/'+d.c+'</span></div>';}).join('');
+    var don='<div class="cc-donut" style="background:conic-gradient(var(--accent) '+(fill*3.6)+'deg,var(--line) 0)"><span>'+fill+'%<small>full</small></span></div>';
+    el.innerHTML='<div class="cc-stats">'+cardsH+'</div>'+
+      '<div class="cc-cols"><div class="cc-card"><div class="cc-h">Enrollment by program</div>'+bars+'</div>'+
+      '<div class="cc-card cc-dcard"><div class="cc-h">Gym fill rate</div>'+don+'<div class="cc-sub">'+enrolled+' of '+cap+' seats filled'+(canMoney?' · '+wait+' full/waitlist':'')+'</div></div></div>';
+    el.hidden=false;
+  }
+  (window.hubWho||Promise.resolve(null)).then(function(w){
+    var roles=(w&&(w.roles||(w.role?[w.role]:[])))||['guest'], set={};
+    roles.forEach(function(r){var v=ROLES[r]; if(v==='*')ALL.forEach(function(k){set[k]=1;}); else (v||[]).forEach(function(k){set[k]=1;});});
+    var keys=ALL.filter(function(k){return set[k];}); if(!keys.length)keys=(ROLES.guest==='*'?ALL.slice():[]);
+    render(keys);
   });
 })();
 </script>
