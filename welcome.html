@@ -105,6 +105,52 @@
   .foot img{width:22px;height:22px}
   .foot .t{font-size:11px;color:var(--mut)}
   .foot .r{margin-left:auto;font-size:11px;color:var(--mut)}
+
+  /* ---- two doors ---- */
+  .doors{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
+  .door{display:block;text-decoration:none;border:1px solid var(--line);border-radius:16px;padding:22px 22px 20px;background:#fff;box-shadow:0 8px 24px rgba(15,60,60,.06);transition:transform .15s,box-shadow .15s}
+  .door:hover{transform:translateY(-3px);box-shadow:0 16px 36px rgba(15,60,60,.13)}
+  .door .dk{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:800;color:var(--coral2)}
+  .door .dn{font-family:Fraunces,serif;font-weight:800;font-size:22px;color:var(--ink);margin:6px 0 6px}
+  .door .dd{font-size:13.5px;color:var(--ink2)}
+  .door .du{margin-top:12px;font-size:12.5px;color:var(--sage2);font-weight:700;word-break:break-all}
+  .door .go{margin-top:12px;display:inline-block;background:linear-gradient(160deg,var(--sage),var(--coral2));color:#fff;font-weight:800;font-size:13.5px;padding:11px 18px;border-radius:999px}
+  /* ---- CV: iframe on desktop, button on phones (iOS will not render inline PDFs) ---- */
+  .cvbox{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff}
+  .cvbox object,.cvbox iframe{display:block;width:100%;height:800px;border:0}
+  .cvphone{display:none}
+  /* ---- PHONES ---- */
+  @media(max-width:760px){
+    .wrap{padding:0 16px}
+    .sec{padding:32px 0}
+    .hero{padding:44px 16px 38px}
+    .hero h1{font-size:31px;line-height:1.12}
+    .hero .lead{font-size:15px}
+    .hero .tag{font-size:15px}
+    .wm .m{font-size:26px;letter-spacing:.28em}
+    .wm .s{font-size:9px;letter-spacing:.3em}
+    .band .wrap{display:block;font-size:12px;line-height:1.5}
+    .band .r{display:block;margin:6px 0 0 0}
+    .note h2,.box h2,.deal h2{font-size:23px;line-height:1.18}
+    .gift h2,.close h2{font-size:21px}
+    p,.note p{font-size:14.5px}
+    .doors{grid-template-columns:1fr}
+    .tiers{grid-template-columns:1fr !important}
+    .grid{grid-template-columns:1fr !important}
+    .freebanner{display:block;padding:18px}
+    .freebanner .big{font-size:26px;margin-bottom:8px}
+    .freebanner .t{min-width:0;font-size:13.5px}
+    .replbar{display:block}
+    .replbar .x{min-width:0;margin-bottom:10px}
+    .cvbox object,.cvbox iframe{display:none}
+    .cvphone{display:block;padding:26px 20px;text-align:center}
+    .steps li{padding-left:38px;font-size:14px}
+    video{max-height:none !important}
+    .tier .pr{font-size:27px}
+    .door .du{display:none}
+    .door{padding:20px 18px 18px}
+    .door .dn{font-size:20px}
+  }
 </style>
 </head>
 <body>
@@ -203,6 +249,36 @@
   </div>
 </div></section>
 
+<section class="sec" style="background:#fff;border-top:1px solid var(--line)"><div class="wrap">
+  <div class="eyebrow">Go see it</div>
+  <h2 style="font-size:30px;margin:6px 0 6px">Two doors. Both are already live.</h2>
+  <p style="max-width:760px">One is what the public sees. The other is what your staff sign into. Same system behind both.</p>
+  <div class="doors">
+    <a class="door" href="https://momentum-site-accelerated-experiences.vercel.app" target="_blank" rel="noopener">
+      <div class="dk">Door 1 · The public</div>
+      <div class="dn">Your marketing website</div>
+      <div class="dd">Programs, tuition, how to book a free trial, your address and phone. What a Coeur d'Alene family finds when they look you up.</div>
+      <div class="du">momentum-site-accelerated-experiences.vercel.app</div>
+      <span class="go">Open the site →</span>
+    </a>
+    <a class="door" href="https://momentum-hub-accelerated-experiences.vercel.app/signin.html" target="_blank" rel="noopener">
+      <div class="dk">Door 2 · Your staff</div>
+      <div class="dn">Momentum OS — the sign-in</div>
+      <div class="dd">The gear in the top-right corner of your site leads here. Seven seats — Owner, Front Desk, Coach, Coach-in-Training, Teacher, Parent, Admin — each one lands in exactly its own rooms.</div>
+      <div class="du">momentum-hub-accelerated-experiences.vercel.app/signin.html</div>
+      <span class="go">Step inside the OS →</span>
+    </a>
+  </div>
+  <div style="margin-top:18px;background:#eef7f6;border:1px solid #cfe8e6;border-radius:14px;padding:18px 20px;display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">
+    <div style="width:52px;height:52px;flex:none;border-radius:13px;border:1px solid #cfe8e6;background:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;color:#0c8686">&#9881;</div>
+    <div style="flex:1;min-width:240px">
+      <div style="font-family:Fraunces,Georgia,serif;font-weight:800;font-size:18px;color:#0f1417;margin-bottom:5px">Nobody has to remember a web address.</div>
+      <div style="font-size:14px;color:#37514f">In real life your staff never type Door 2. They go to <b>your own website</b>, and in the <b>top-right corner</b> there's a small <b>gear</b>. One tap on it and they're at the sign-in. Your families never notice it's there — your people use it every shift. That's the normal way in for everybody: front desk, coaches, teachers, and you.</div>
+    </div>
+  </div>
+  <div class="tuition" style="margin-top:14px">Pick <b>Owner</b> at the sign-in to see everything the way Josh or Katie would. Nothing you click can break anything — it's your own private preview.</div>
+</div></section>
+
 <section class="sec"><div class="wrap">
   <div class="eyebrow">Going live</div>
   <h2>Four simple steps — you're always in control.</h2>
@@ -219,7 +295,7 @@
   <h2>The build is the gift.</h2>
   <div class="freebanner"><div class="big">Already paid for</div><div class="t"><b>Building it, white-labeling it as Momentum's own, and customizing it for your gym — that is the gift.</b> That work is done and it is yours — no build fee, no licence fee, no invoice coming, and there never will be. What's left to decide is only what it costs to keep it running.</div></div>
   <div style="margin:26px 0 12px;font-family:Georgia,serif;font-size:21px">Three ways to go. Pick whichever suits you.</div>
-  <div class="tiers" style="grid-template-columns:1fr 1fr 1fr">
+  <div class="tiers">
     <div class="tier c"><div class="h"><div class="n">Year one free</div><div class="badge">My honest preference</div></div>
       <div class="b2"><div class="pr">$0<small> / mo</small></div><div class="cap">Free the first year, then $300 a month.</div><ul><li>Everything in Full Service, for a full year, at no charge</li><li>In trade: our kids get the year free at Momentum</li><li>After the first year it moves to $300 a month</li><li>One gym family to another</li></ul></div></div>
     <div class="tier b"><div class="h"><div class="n">Full service</div><div class="badge">Everything included</div></div>
@@ -239,12 +315,15 @@
   <div class="eyebrow">For the record</div>
   <h2>My CV — because you know me, not my company yet.</h2>
   <div class="rmeta" style="margin-bottom:14px">Anthony Esposito · Founder, Accelerated Experiences, LLC &nbsp;·&nbsp; anthonye@aexperiences.studio · aexperiences.com · Post Falls, Idaho</div>
-  <div style="border:1px solid #e6ddcb;border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 10px 30px rgba(60,45,30,.08)">
-    <object data="/cv.pdf#view=FitH" type="application/pdf" style="display:block;width:100%;height:820px;border:0">
-      <div style="padding:28px;text-align:center;font-size:15px">Your browser can't show the PDF inline — <a href="/cv.pdf" target="_blank" rel="noopener">open my CV here →</a></div>
-    </object>
+  <div class="cvbox">
+    <object data="/cv.pdf#view=FitH" type="application/pdf"><iframe src="/cv.pdf"></iframe></object>
+    <div class="cvphone">
+      <div style="font-family:Fraunces,serif;font-weight:800;font-size:18px;margin-bottom:6px">Anthony Esposito — Curriculum Vitae</div>
+      <div style="font-size:13.5px;color:var(--ink2);margin-bottom:14px">Twenty years of marketing, audience research and product — and what I've shipped since.</div>
+      <a class="go" style="display:inline-block;background:linear-gradient(160deg,var(--sage),var(--coral2));color:#fff;font-weight:800;font-size:14px;padding:12px 22px;border-radius:999px;text-decoration:none" href="/cv.pdf" target="_blank" rel="noopener">Open my CV →</a>
+    </div>
   </div>
-  <div style="margin-top:12px;font-size:14px"><a href="/cv.pdf" target="_blank" rel="noopener">Open the CV in its own tab →</a></div>
+  <div style="margin-top:12px;font-size:14px"><a href="/cv.pdf" target="_blank" rel="noopener" style="color:var(--sage2);font-weight:700">Open the CV in its own tab →</a></div>
 </div></section>
 
 <section class="close"><div class="wrap">
