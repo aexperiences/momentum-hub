@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Anthony Esposito — Curriculum Vitae</title>
+<style>
+:root{
+  --ink:#12161a; --ink-soft:#3c454d; --ink-faint:#6b757e;
+  --forest:#2d5c33; --forest-lt:#3f7a4f;
+  --gold:#b8860f; --gold-lt:#e0a83a;
+  --paper:#faf8f4; --rule:#ddd6c8; --wash:#f2eee4;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:#e8e4dc;color:var(--ink);
+  font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  font-size:15px;line-height:1.52;-webkit-font-smoothing:antialiased;}
+.sheet{max-width:8.5in;margin:32px auto;background:var(--paper);
+  padding:.7in .78in .6in;box-shadow:0 18px 60px rgba(0,0,0,.22),0 2px 6px rgba(0,0,0,.08);position:relative;}
+.sheet::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;
+  background:linear-gradient(90deg,var(--forest) 0%,var(--forest-lt) 38%,var(--gold-lt) 72%,var(--gold) 100%);}
+
+/* header */
+header{padding-bottom:16px;border-bottom:2px solid var(--forest);}
+.eyebrow{margin:0 0 6px;font-family:ui-sans-serif,Arial,sans-serif;font-size:9.5px;font-weight:700;
+  letter-spacing:.32em;text-transform:uppercase;color:var(--gold);}
+h1{margin:0;font-size:40px;line-height:1;letter-spacing:-.018em;font-weight:600;}
+.track{margin:10px 0 0;font-family:ui-sans-serif,"Helvetica Neue",Arial,sans-serif;font-size:11px;
+  font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--forest);}
+.contact{margin:12px 0 0;font-family:ui-sans-serif,"Helvetica Neue",Arial,sans-serif;
+  font-size:11.5px;letter-spacing:.035em;color:var(--ink-soft);}
+.contact b{font-weight:600;color:var(--ink);}
+.dot{color:var(--gold);padding:0 8px;font-size:9px;vertical-align:2px;}
+a{color:var(--forest);text-decoration:none;border-bottom:1px solid rgba(45,92,51,.28);}
+
+.lede{margin:18px 0 0;font-size:15.5px;line-height:1.56;}
+.lede strong{font-weight:600;}
+
+/* sections */
+section{margin-top:27px;}
+h2{margin:0 0 13px;display:flex;align-items:center;gap:12px;
+  font-family:ui-sans-serif,"Helvetica Neue",Arial,sans-serif;font-size:10.5px;font-weight:700;
+  letter-spacing:.21em;text-transform:uppercase;color:var(--forest);}
+h2 .num{color:var(--gold);font-variant-numeric:tabular-nums;}
+h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--gold-lt),var(--rule) 55%,transparent);}
+h3.grp{margin:16px 0 8px;font-family:ui-sans-serif,Arial,sans-serif;font-size:9.5px;font-weight:700;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint);}
+
+/* entries */
+.entry{margin-bottom:17px;break-inside:avoid;}
+.entry:last-child{margin-bottom:0;}
+.eh{display:flex;justify-content:space-between;align-items:baseline;gap:14px;}
+.eh h4{margin:0;font-size:15.5px;font-weight:600;}
+.org{font-weight:400;color:var(--ink-soft);}
+.when{font-family:ui-sans-serif,Arial,sans-serif;font-size:10.5px;font-weight:600;letter-spacing:.09em;
+  color:var(--ink-faint);white-space:nowrap;font-variant-numeric:tabular-nums;}
+.entry ul{margin:6px 0 0;padding-left:16px;}
+.entry li{margin:0 0 4px;font-size:13.4px;line-height:1.47;color:var(--ink-soft);}
+.entry li::marker{color:var(--gold-lt);}
+.entry li b{color:var(--ink);font-weight:600;}
+.sub{margin:6px 0 0;font-size:13.4px;line-height:1.47;color:var(--ink-soft);}
+.sub b{color:var(--ink);font-weight:600;}
+code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:11.6px;
+  background:#efeade;padding:.5px 4px;border-radius:2px;color:var(--forest);}
+
+/* system cards */
+.sysgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px 22px;}
+.sys{break-inside:avoid;}
+.sys h4{margin:0 0 3px;font-size:13.8px;font-weight:600;}
+.sys h4 span{font-family:ui-sans-serif,Arial,sans-serif;font-size:8.8px;font-weight:700;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--gold);margin-left:7px;vertical-align:1.5px;}
+.sys p{margin:0;font-size:12.7px;line-height:1.45;color:var(--ink-soft);}
+
+/* product table */
+table{width:100%;border-collapse:collapse;font-size:12.7px;}
+th{font-family:ui-sans-serif,Arial,sans-serif;font-size:8.8px;font-weight:700;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-faint);text-align:left;padding:0 10px 5px 0;
+  border-bottom:1px solid var(--rule);}
+td{padding:4.5px 10px 4.5px 0;border-bottom:1px solid #ece7db;color:var(--ink-soft);vertical-align:top;}
+td.n{color:var(--ink);font-weight:600;white-space:nowrap;}
+tr:last-child td{border-bottom:none;}
+
+/* stack */
+.stack{display:grid;grid-template-columns:128px 1fr;gap:6px 18px;font-size:12.9px;}
+.stack dt{font-family:ui-sans-serif,Arial,sans-serif;font-size:9.5px;font-weight:700;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--forest);padding-top:2.5px;}
+.stack dd{margin:0;color:var(--ink-soft);line-height:1.46;}
+
+.wash{background:var(--wash);padding:14px 17px;border-left:3px solid var(--gold);}
+.wash p{margin:0 0 7px;font-size:13.3px;line-height:1.5;color:var(--ink-soft);}
+.wash p:last-child{margin-bottom:0;}
+.wash b{color:var(--ink);font-weight:600;}
+
+.rowlist .row{display:flex;justify-content:space-between;gap:14px;font-size:13.2px;
+  color:var(--ink-soft);padding:4.5px 0;border-bottom:1px solid #ece7db;}
+.rowlist .row:last-child{border-bottom:none;}
+.rowlist .row b{color:var(--ink);font-weight:600;}
+
+footer{margin-top:26px;padding-top:12px;border-top:1px solid var(--rule);
+  font-family:ui-sans-serif,Arial,sans-serif;font-size:9.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-faint);display:flex;justify-content:space-between;gap:12px;}
+
+@media print{body{background:#fff;}.sheet{margin:0;max-width:none;box-shadow:none;padding:.45in .55in;}
+  @page{size:letter;margin:.3in;} .entry,.sys,section{break-inside:avoid;} h2{break-after:avoid;}}
+@media (max-width:720px){.sheet{padding:.5in .45in;margin:0;}
+  .sysgrid{grid-template-columns:1fr;} .stack{grid-template-columns:1fr;gap:2px 0;}
+  .stack dt{padding-top:9px;} h1{font-size:31px;} .eh{flex-direction:column;gap:1px;}
+  table,thead,tbody,tr,td,th{display:block;} th{display:none;}
+  td{border:none;padding:1px 0;} td.n{padding-top:8px;}
+  tr{border-bottom:1px solid #ece7db;padding-bottom:6px;margin-bottom:6px;}}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header>
+    <p class="eyebrow">Curriculum Vitae · August 2026</p>
+    <h1>Anthony Esposito</h1>
+    <p class="track">Software Architect · Applied AI &amp; Agent Systems · Marketing Analytics</p>
+    <p class="contact">
+      Post Falls, Idaho <span class="dot">◆</span> Pacific Time <span class="dot">◆</span>
+      <b>208-618-1989</b> <span class="dot">◆</span>
+      <b>ae@aexperiences.studio</b> <span class="dot">◆</span>
+      <a href="https://aexperiences.com">aexperiences.com</a>
+    </p>
+  </header>
+
+  <p class="lede">
+    Two careers, one method. For twenty-one years I turned household-level data into targeted,
+    profitable marketing and ran operations in a regulated industry. <strong>On May 1, 2026 I wrote my first
+    real software</strong> — a guitar tutor, because I wanted to learn to play — and I built it with AI, on
+    purpose, from the first day. In the hundred days since, I have designed and built, as a sole engineer, <strong>fourteen multi-tenant vertical SaaS operating systems,
+    thirty-one consumer applications, and the agent runtime that operates them</strong> — including a
+    typed message bus, a validation layer that makes bluffed confidence arithmetically impossible,
+    and a multi-agent organizational pattern documented in a working thesis. Everything listed here
+    is live and enterable in a browser.
+  </p>
+
+  <!-- 01 -->
+  <section>
+    <h2><span class="num">01</span> Architecture &amp; Systems Designed</h2>
+    <div class="sysgrid">
+
+      <div class="sys">
+        <h4>Layer 0 — Typed Message Bus <span>Python</span></h4>
+        <p>Synchronous dispatch over a registry of named node handlers. Every message is typed on
+        three axes — kind, direction and hop budget. Loop prevention is a TTL rather than a
+        heuristic: the effective ceiling is <code>min(bus.max_hops, msg.max_hops)</code>, so a node may
+        tighten its own budget but can never grant itself more runway. Hardened by adversarial
+        review that found and closed three real defects, including a silent-loss path disguised as
+        successful delivery.</p>
+      </div>
+
+      <div class="sys">
+        <h4>Direction Invariants <span>Org chart as types</span></h4>
+        <p>Only a packaged conclusion or a flagged terminal notice may travel upward through the
+        tree; a question moving up is rejected by the transport itself. Escalation policy is
+        compiled into the message type system instead of being requested in a prompt. Every failure
+        mode — hops exceeded, direction violation, contract violation, unregistered target — emits
+        a distinct terminal notice back to origin with its own counter.</p>
+      </div>
+
+      <div class="sys">
+        <h4>The Output Contract <span>Honesty as a schema</span></h4>
+        <p>A frozen structure of stance, integer confidence 0–100, and two to three reasons, each
+        tagged <code>data</code> or <code>assumption</code>. Conviction is derived, never claimed: if no reason
+        is data-backed, the conclusion is forced to low-conviction regardless of the stated number.
+        Oversize payloads are rejected rather than truncated, and a null payload raises
+        <em>"silence is not allowed."</em></p>
+      </div>
+
+      <div class="sys">
+        <h4>The Triad Pattern <span>Anti-groupthink</span></h4>
+        <p>Two specialist lenses — one quantitative, one interpretive — deliberately non-overlapping
+        and structurally sealed from one another so they cannot converge socially. A single
+        pacemaker reconciles them, maps their agreement to a confidence figure, applies a release
+        gate, and is the only voice out. Any lens reading unfavorable holds a veto, and a
+        domain-specific honesty cap prevents a confident recommendation on modeled data.</p>
+      </div>
+
+      <div class="sys">
+        <h4>Multi-Tenant White-Label Factory <span>14 verticals live</span></h4>
+        <p>A tenant-agnostic engine in which one configuration file is the only swap point — brand,
+        skin, vocabulary, rooms, roles and AI persona. Each tenant deploys as its own project with
+        its own environment, so isolation happens at the platform boundary rather than through
+        row-level filtering. Every API is environment-gated with graceful degradation, so a cold
+        clone renders and demonstrates with zero credentials configured.</p>
+      </div>
+
+      <div class="sys">
+        <h4>Programmatic Provisioning <span>Text to business</span></h4>
+        <p>A build pipeline that creates a repository, creates a hosting project and starts a fresh
+        branded product end to end against the GitHub and Vercel APIs, driven from a visual front
+        end where a vertical is chosen, branded and generated. SaaS tenant provisioning, operated by
+        one person.</p>
+      </div>
+
+      <div class="sys">
+        <h4>The Spine &amp; Rooms Model <span>Domain modeling</span></h4>
+        <p>Each vertical is modeled around a single core domain object — a project, a listing, a
+        show, a membership, a person — and every module page is a projection over that one record
+        rather than a separate silo. Cross-room consistency becomes structural instead of
+        synchronized, and adding a room stays additive and cheap.</p>
+      </div>
+
+      <div class="sys">
+        <h4>Safety Enforced by Absence <span>Learner products</span></h4>
+        <p>Guarantees implemented as missing capability rather than instruction. There is no timer
+        code, so a child cannot be raced; no error-red token, so failure cannot be rendered; no
+        schema field where agent-authored prose could ride, plus an n-gram fence rejecting content
+        words the child did not write. A rule expressible as configuration is one write from repeal;
+        a rule that is structurally unrepresentable is not.</p>
+      </div>
+
+      <div class="sys">
+        <h4>Runtime Truth Enforcement <span>Agent receipts</span></h4>
+        <p>A server-side guard that forces a real tool call and emits a receipt, so an agent cannot
+        narrate work it did not perform. Paired with a resumable worker that recovers tasks stranded
+        by function timeouts, and a cron heartbeat that lets seats pull from and push results to a
+        shared task board.</p>
+      </div>
+
+      <div class="sys">
+        <h4>Skins Engine <span>Accessibility guard</span></h4>
+        <p>Per-user themes selected at sign-in and applied without flash on page transition, with a
+        runtime contrast auto-fixer that computes contrast ratios and forces readable text on any
+        light-on-light control — touching only broken pairs and never intentional color.</p>
+      </div>
+
+      <div class="sys">
+        <h4>Native Realtime Communication <span>Own WebRTC</span></h4>
+        <p>Video conferencing built on own signaling rather than a third-party SDK — one-to-one and
+        group video, persistent channels, translated messaging, asynchronous video, and guest links
+        joinable from a plain browser with no account and no per-seat license.</p>
+      </div>
+
+      <div class="sys">
+        <h4>Self-Hosted Mail &amp; Groupware <span>Linux · $0/month</span></h4>
+        <p>Provisioned an Ubuntu server on free-tier cloud infrastructure and stood up a complete
+        mail system: Postfix receiving on 25, Dovecot IMAP over TLS on 993, authenticated submission
+        on 587, and Radicale CalDAV/CardDAV on 5232, fronted by a Let's Encrypt certificate with
+        automatic renewal. <b>SPF, DKIM at 2048 bits, and DMARC all published and passing.</b> Cut
+        the MX record over from Google Workspace, retiring the subscription — five mailboxes plus
+        catch-all forwarding across two domains, with legacy addresses preserved indefinitely.
+        Worked around the provider's blanket outbound port-25 block with an authenticated SMTP
+        relay, and added two gigabytes of swap to keep the services stable on a 954 MB instance.
+        The console provisioning form proved unusable, so the whole box was built through the
+        cloud CLI. Delivery confirmed in the mail log rather than assumed.</p>
+      </div>
+
+      <div class="sys">
+        <h4>Engineering Governance <span>16 articles</span></h4>
+        <p>A written constitution covering approval gates, credential fences, honesty rules
+        (<em>"blank beats confident-wrong"</em>; every figure tagged live-data, estimate or assumption),
+        a live-verification mandate that treats reporting a stale claim as fabrication, and a
+        session-package rule requiring architecture, code, brief and handoff for every unit of work.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section>
+    <h2><span class="num">02</span> Design, Brand &amp; Naming</h2>
+    <div class="wash">
+      <p><b>Design is not a layer applied at the end here; it is the third step and it sets the scheme.</b> On every product the sequence is name, mark, icon — and only then code. The icon decides the palette, the weight, the personality and the vocabulary the software inherits, so making it early is a design decision about the whole system rather than a cosmetic one made late.</p>
+
+      <p><b>Naming the line.</b> I named all fourteen vertical products — Abode, Buttress, Truss, Musical, 8mm, Amphitheater, LilNinja, 4barrel, Targeted, Stay@Home, Smiley, Sleeves, Toolbelt and Moments — along with the consumer families and their individual apps. When an earlier generation of names stopped fitting, I retired every one of them at once rather than letting two vocabularies coexist. <b>The retirement is enforced rather than remembered</b>: the canonical names live in a single source file, the rule that retired names never reappear is written into the engineering constitution, and a surviving instance of an old name is treated as a defect to fix, not a variant to tolerate. That is what keeps a brand consistent across fourteen pricing pages, fourteen showrooms and a storefront.</p>
+
+      <p><b>The identity.</b> A single warm system — espresso to forest on a 120° gradient, gold for emphasis, cream for light surfaces, with a faint gold grid — replacing an earlier blue identity that was retired wholesale and archived rather than left to drift. One mark kit is the source for every surface; the correct variant for each background is specified rather than chosen by eye each time.</p>
+
+      <p><b>Icons as a build artifact.</b> Each product's mark is authored as a master SVG by hand — no drawing tool — and compiled by a Python pipeline into a complete store kit: <b>thirteen iOS sizes, Android adaptive foreground and background at every density with the 66% safe zone respected, the Play 512</b>, and rendered QA proofs so the output is inspected rather than assumed. Roughly fifty files per product, reproducible from one source. The house style for app marks is deliberately flat and repeatable — dark tile, light inner panel, one bold stroke symbol, one accent dot, no gradients or shadows — so a new product looks like a member of the family on the day it ships. The kit is treated as mandatory, not optional: <b>a missing apple-touch-icon causes iOS to screenshot the page and use that as the icon</b>, which is a brand failure produced by an omission rather than a decision.</p>
+
+      <p><b>Design system and theming.</b> Brand tokens rather than hardcoded values, documented components, and a portable theming engine that lets an entire hub be reskinned per tenant without forking the interface — the same mechanism that makes a white-label product viable. Every surface is judged phone-first at 402 pixels before anything else, because that is where these are actually used.</p>
+
+      <p><b>Motion built on physics.</b> No linear easing anywhere; spring and ease-out curves, velocity-based fling on swipe, a haptic tick on commitment, correct overscroll behaviour, and <code>prefers-reduced-motion</code> honoured throughout. Motion is specified as a standard rather than improvised per screen, so interactions feel like one instrument rather than fourteen.</p>
+
+      <p><b>Accessibility, measured rather than claimed.</b> The palette is audited against WCAG 2.1 AA contrast ratios rather than eyeballed, with results precomputed for the current brand colours. <b>The audit currently records a known failure</b> — one muted foreground token against the forest background — which is carried as an open finding instead of being quietly rounded up to compliant. Same rule as everywhere else in this record: the measurement is only useful if it is allowed to say no.</p>
+
+      <p><b>Illustration and character work.</b> Mascots, characters and app illustration drawn as clean SVG, including work rebuilt from reference into production art. The working method is render-then-look — output the drawing, examine it, and correct it — because a character that reads as the wrong animal or lands in the uncanny middle cannot be diagnosed from the code alone.</p>
+
+      <p><b>Design decisions with commercial consequences.</b> Replacing the sales deck with the product itself — every vertical opens as a live showroom running the real software on realistic data in the prospect's own browser — was a design call before it was a sales one. So was the choice to state limits inside the interface rather than in a footnote, and to build products that decline to display a value they cannot stand behind.</p>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section>
+    <h2><span class="num">03</span> Products Shipped — Business Platform</h2>
+    <p class="sub" style="margin-bottom:11px;">Fourteen multi-tenant white-label operating systems, each live and enterable as a gated showroom running the real software on seeded data. Monthly list prices $99–$650.</p>
+    <table>
+      <thead><tr><th style="width:118px;">Product</th><th style="width:150px;">Vertical</th><th>Domain modeled</th></tr></thead>
+      <tbody>
+        <tr><td class="n">Abode OS</td><td>Real estate</td><td>Listings, deal spine, transaction coordination</td></tr>
+        <tr><td class="n">Buttress OS</td><td>Architecture</td><td>Drawings, phases, submittals, the books that compute off the same record</td></tr>
+        <tr><td class="n">Truss OS</td><td>Engineering</td><td>Pursuits and go/no-go, WBS, field RFIs, calcs and standards, PE-seal gate, permits and AHJ, multipliers — with a discipline module switch for civil, mechanical and software</td></tr>
+        <tr><td class="n">Smiley OS</td><td>Dental practices</td><td>Chair time, treatment plans, the practice money engine</td></tr>
+        <tr><td class="n">Stay@Home OS</td><td>Home care agencies</td><td>Caregiver scheduling, visit records, care plans</td></tr>
+        <tr><td class="n">Toolbelt OS</td><td>HVAC, plumbing, electrical</td><td>Dispatch switchboard, web booking, trucks and jobs</td></tr>
+        <tr><td class="n">4barrel OS</td><td>Used-car dealers</td><td>Inventory, reconditioning, desking</td></tr>
+        <tr><td class="n">Musical OS</td><td>Live theater</td><td>Box office, seat authority, production spine, program</td></tr>
+        <tr><td class="n">8mm OS</td><td>Film &amp; production</td><td>Slate, crew, schedule, settlement</td></tr>
+        <tr><td class="n">Amphitheater OS</td><td>Concerts &amp; venues</td><td>Holds and confirms, settlement, day-of-show</td></tr>
+        <tr><td class="n">Moments OS</td><td>Photo &amp; video</td><td>Sessions, galleries, delivery, a solo-class price floor</td></tr>
+        <tr><td class="n">Sleeves OS</td><td>Tattoo studios</td><td>Artists, deposits, booking, consent</td></tr>
+        <tr><td class="n">Targeted OS</td><td>Marketing agencies</td><td>Campaigns, audiences, creative rounds, reporting</td></tr>
+        <tr><td class="n">LilNinja OS</td><td>Kids gyms &amp; programs</td><td>Memberships, sessions, waivers, family accounts</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 04 -->
+  <section>
+    <h2><span class="num">04</span> Products Shipped — Consumer</h2>
+    <p class="sub" style="margin-bottom:11px;">Thirty-one applications across nine shelves, most free to try, all live.</p>
+    <table>
+      <tbody>
+        <tr><td class="n" style="width:150px;">Music &amp; making</td><td><b>ESPO Music</b> — five instrument coaches (guitar, piano, harmonica, ukulele, bass) from one shared engine with Karplus–Strong synthesis. <b>ESPO Fret, the guitar coach, was the first software I ever wrote</b> — May 2026, because I wanted to learn to play; now a shipping product with subscription billing · ESPOfunkmaster, a browser studio with drums, keys, looper, mic, mixer and record cutting · ESPO Cutlabs, a video editor · AE Cre8, eight machines that make things</td></tr>
+        <tr><td class="n">Learning</td><td>ESPO Learning (handwriting, reading, math, composition — no fail states, COPPA-clean) · ESPOhystory · ESPOvocab · ESPOwords · ESPOdraw</td></tr>
+        <tr><td class="n">Mind &amp; mood</td><td>Neuro Divulge regulation tools · The Thread · ESPOtendency · ESPOregulator · ESPOfocus</td></tr>
+        <tr><td class="n">Money &amp; fine print</td><td>ESPO Genius (plain-English paperwork) · The Narcs — The Narc and MarketNarc, a fundamentals-and-technicals analysis triad · ESPOsign</td></tr>
+        <tr><td class="n">Journals</td><td>ESPOvineyard · ESPOstogie · ESPOwhiskey · ESPObarista — on-device, no ads, no marketplace</td></tr>
+        <tr><td class="n">Travel &amp; sport</td><td>ESPOtrek · ESPOnatlparks (offline passport, 63 parks) · ESPOracket</td></tr>
+        <tr><td class="n">Family &amp; other</td><td>ESPOnest · ESPO Drama · Revolver OS · Sparkle Salon</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 05 -->
+  <section>
+    <h2><span class="num">05</span> Client Engagements</h2>
+
+    <div class="entry">
+      <div class="eh"><h4>Functional-medicine telehealth practice <span class="org">— premium build</span></h4><span class="when">2026</span></div>
+      <p class="sub">Installable progressive web app with a native tab bar; native WebRTC video visits; translated patient messaging; asynchronous video check-ins between appointments; AI-assisted clinical note drafting; a talking in-app assistant with voice out and speech in; separate staff and patient themes; and a written access model covering data ownership, least-privilege roles, logged administrative entry, an accounting fence, and a revocation path that cuts the vendor's access without touching anything the client owns.</p>
+    </div>
+
+    <div class="entry">
+      <div class="eh"><h4>Regional nonprofit theater <span class="org">— full operating system, pro bono</span></h4><span class="when">2026</span></div>
+      <p class="sub">In-house ticketing with server-authoritative seat holds replacing a third-party dependency; box office and point of sale; CRM with cross-domain person joins uniting roles, crews and classes on one record; patron lifetime-value history; nonprofit books to 990 standard with an audit-safe void path; role-aware navigation across eleven staff and volunteer roles; records management; a show library and scene shop; a program builder; marketing and newsletter tooling; and an in-hub AI creative director. A companion advisory triad monitors box-office health on a clear / watch / intervene scale.</p>
+    </div>
+
+    <div class="entry">
+      <div class="eh"><h4>Engineering firm · youth sports organization <span class="org">— vertical builds</span></h4><span class="when">2026</span></div>
+      <p class="sub">Phase-native project spines from pursuit through invoice, field logs, permitting workflow, books with utilization multipliers, and departmental agent routing.</p>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section>
+    <h2><span class="num">06</span> AEpsychograph — Household Segmentation Engine</h2>
+    <div class="wash">
+      <p><b>The premise.</b> Rebuild PRIZM-class household segmentation on free public government data, minus the license layer. Commercial comparables list between $1,645 per year and $1,500 per month.</p>
+      <p><b>The model.</b> Forty-eight segments across four urbanization tiers, four affluence tiers and three lifestages; fourteen activities; eight psychographic types; indices computed as a segment's rate over the national average, times one hundred, clamped to a 20–320 band.</p>
+      <p><b>The sources.</b> US Census American Community Survey five-year tables for income, households with own children, and 65-and-over; Bureau of Economic Analysis state personal consumption; Bureau of Labor Statistics Consumer Expenditure series, cached and refreshed on a thirty-day cycle.</p>
+      <p><b>The honesty constraint, enforced in code.</b> Who a household is comes from real Census data; what they are likely to do is modeled — and the two are never allowed to blur. Without live Census data the pacemaker is hard-capped below the targeting threshold, making a confident targeting recommendation on modeled data <b>arithmetically impossible rather than merely discouraged</b>. Classifiers are required to return "unclassified" and "unassessable" rather than force a label.</p>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section>
+    <h2><span class="num">07</span> AE Comply &amp; IT System Health — Compliance Readiness and Infrastructure Monitoring</h2>
+    <div class="wash">
+      <p><b>What it is.</b> A monitoring platform that answers two questions for the same owner: <em>is my infrastructure working?</em> and <em>can I prove it was?</em> It runs credential-free checks against a business's public infrastructure on a schedule, rolls them up to a plain-language state, hands back the exact remediation, and seals every run into tamper-evident, dated evidence. Research, architecture, engine, front end, deployment and live verification of the first working version were completed in a single day; it was extended over the following day into the shipped product described here.</p>
+
+      <p><b>The engine — nine controls, zero credentials, zero dependencies.</b> A Node serverless function evaluates, per domain: <b>SPF</b> (only authorized servers can send as the domain), <b>DMARC</b> (spoofed mail is reported and can be rejected), <b>MX</b> (mail routing resolves), <b>MTA-STS</b> (mail transport encryption is enforced, verified by fetching the policy file — the DNS record alone does nothing), <b>TLS-RPT</b> (transport failures are reported), <b>TLS</b> (certificate valid, protocol current, expiry counted in days), <b>DNSSEC</b> (the delegation is signed), <b>CAA</b> (only named authorities may issue certificates), and <b>browser security headers</b> (CSP, HSTS, nosniff, frame-options, referrer-policy). Every check is free and public. No customer credential is ever requested, held, or required.</p>
+
+      <p><b>Authoritative resolution, and why it exists.</b> The engine does not trust a recursive resolver. For every domain it looks up the registered domain's own nameservers and queries those directly, labeling each result with its <code>dns_source</code>. This exists because the first build used a recursive resolver, received an empty TXT answer, and produced a <b>false "no SPF record" finding</b> against a domain that did have SPF. A recursive answer is hearsay; evidence comes from the authority. The bug was caught by checking output against a second source, the resolver was rewritten, and <b>the incorrect evidence pack was formally marked void rather than quietly edited</b>.</p>
+
+      <p><b>Three further classes of false failure, each found and eliminated.</b> A compliance tool that reports a failure that isn't real is worse than no tool at all, so the applicability model became the product's central design problem rather than an edge case.
+      <br>— <b>Category errors.</b> Application hosts such as <code>*.vercel.app</code> have no mail service and cannot send or receive; scoring them "no SPF, no DMARC, no MX" produced three red failures per client property for controls that do not exist there. Host-type detection now returns <b>N/A</b>, and the score reads passed-over-applicable rather than passed-over-total.
+      <br>— <b>Unanswerable queries.</b> Node has no <code>resolveDs</code>, and <code>DNSKEY</code> is not a supported record type, so the first DNSSEC and CAA implementation reported "not signed" and "no CAA" for <b>every domain tested, including Cloudflare's own</b> — which is demonstrably signed and does publish CAA. Caught by testing against a known-good third party rather than only against my own estate. Both checks were moved to DNS-over-HTTPS against two independent resolvers, and an unanswerable query now returns <b>UNKNOWN, never FAIL</b>. Scoring "we could not check it" as a red X is fabrication by omission.
+      <br>— <b>Healthy things that look broken.</b> An authenticated endpoint answering <code>401</code> is a working endpoint. Only a dead socket, a timeout or a 5xx is an outage. Scoring an auth gate as down would page a human on every single run.</p>
+
+      <p><b>The evidence vault — server-side by necessity.</b> Each result is serialized deterministically and hashed with SHA-256 together with the previous entry's hash, forming an append-only chain in which any retroactive alteration invalidates every hash after it. Provable ordering and tamper-evidence without a paid notary or timestamping service. <b>The chain is computed on the server, never in the browser</b> — evidence a client calculates for itself is not evidence, because anything a client computes it can also fabricate. Storage degrades honestly: when the store is unreachable the response reports <code>stored:false</code> with a reason rather than presenting an unsaved run as sealed.</p>
+
+      <p><b>Framework packs, with the limits attached to the findings.</b> Results can be read against HIPAA, home-care and insurance-audit mappings. Every pack carries a mandatory <code>covers</code> <em>and</em> <code>doesNotCover</code> statement that travels in the same payload as the findings, so the limits are structurally inseparable from the results. The HIPAA pack states in its own output that it does not address §164.308 administrative or §164.310 physical safeguards and <b>is not a HIPAA risk assessment</b>. A limitation in a footer can be screenshotted away; one inside the payload cannot.</p>
+
+      <p><b>Tenant isolation, and an honest account of its ceiling.</b> Each customer holds a random twenty-four-character workspace key that scopes their evidence chain, history and watchlist — no account, no password, no personal data collected. Isolation was <b>verified live rather than assumed</b>: a second workspace was created and confirmed to see an empty genesis chain while the first held its own tip and history. The limit is stated plainly in the product's own privacy page: the object store on this account <b>rejects private access outright</b>, so stored objects are technically readable by anyone holding the URL. What protects a customer is that the URL contains their unguessable key — <b>a capability, which is real protection, but is not an access-control list</b>, and no page is permitted to describe it as one. Records hold domain names and check results only; real ACLs are a precondition of ever holding anything more sensitive.</p>
+
+      <p><b>Scheduled monitoring that actually monitors.</b> The daily job walks every registered workspace watchlist, re-runs that customer's domains against their chosen framework, and seals the results into <em>their</em> chain. This is called out because the first version of the schedule checked only three hardcoded internal domains while the interface said "around-the-clock monitoring" — a promise the product did not keep. <b>The gap was found by auditing my own marketing copy against my own cron job</b>, and the interface was additionally corrected to say plainly that email alerting is not switched on yet, rather than implying a notification path that does not exist.</p>
+
+      <p><b>Observe-only, permanently — a business decision expressed as an architecture.</b> The companion IT · System Health capability monitors service reachability, certificate expiry thresholded in days rather than booleans, and integration key status as booleans only, with key <em>values</em> never read or returned. It rolls up to <b>CLEAR / WATCH / INTERVENE</b> and produces a fix list where every entry carries what it means, what to do, and — where a literal value exists — the exact string to paste. It does not, and will not, remediate anything itself. Errors-and-omissions and cyber liability coverage was priced at roughly $245 per month and <b>declined</b>; the resulting rule is that Accelerated Experiences LLC does not take the keys to machines it does not already run. That boundary is written into the specification as a permanent product definition rather than a limitation to be engineered around later.</p>
+
+      <p><b>Validated against its own maker before being offered to anyone.</b> Run across the full ten-domain company estate. It found real defects; every one was remediated and re-verified at the authoritative nameservers, taking DMARC coverage from three of ten domains to ten of ten and closing the estate with zero open findings. <b>Two findings were deliberately left unremediated and documented as such</b> — a monitor-only DMARC policy that should not be tightened before report data has been read, and a Content-Security-Policy whose incorrect deployment breaks a working storefront and requires a report-only observation period first. That policy was instead shipped in report-only mode with a collector endpoint written to read the raw request stream, because the platform does not body-parse the <code>application/csp-report</code> content type and the first version silently logged empty reports while appearing healthy. <b>Knowing which findings not to fix immediately, and detecting a monitor that is quietly recording nothing, is the difference between a compliance tool and a liability.</b></p>
+
+      <p><b>Governance tooling built alongside it.</b> The engineering constitution that governs this and every other system was given a self-verifying stamp and an automated consistency gate: a checker recomputes the document's hash, verifies article sequence, and compares the two independent copies. It caught a one-character divergence between them that every structural check had passed. The gate deliberately treats an <em>unstamped</em> document as a failure rather than a pass — an unverifiable constitution cannot be trusted, and the first version of my own gate had that backwards.</p>
+
+      <p><b>Two products killed on purpose.</b> Compliance monitoring and IT health were built independently, in parallel, and found to overlap by roughly seventy percent while selling to the same captive audience. Rather than ship both, they were merged into one engine and one interface. The merged capability was then briefly specified as a paid fourth pricing tier across fourteen products — and that tier was <b>cancelled before it shipped</b> in favor of including it with each product's existing top plan, removing a pricing change across fourteen pages and eliminating an outlier where the flat uplift would have raised one product's price by ninety-one percent. The commercial argument became <em>free tells you, paid proves it</em>: operational health is visible to everyone because it costs nothing to run, and the sealed evidence is what the top tier contains.</p>
+
+      <p><b>Cost of goods: $0 recurring.</b> DNS, TLS handshakes, HTTP response headers, DNS-over-HTTPS, and public control catalogs. Paid feeds were <b>excluded rather than faked</b>, and the interface declines to display any control it cannot honestly evaluate. The deployment ships with the exact security headers the product tells clients to add, so it passes its own audit.</p>
+
+      <p><b>Stated limits.</b> External, credential-free checks only; authenticated posture integrations are specified and not built. Email alerting is not switched on. It is a readiness and evidence tool, <b>not a certification body</b> — it cannot issue an attestation, and neither can any competitor, since that requires a licensed CPA firm, but the distinction is stated in the product's own interface rather than buried. Incumbents in the adjacent category (Vanta, Drata, Secureframe, Sprinto) run $6,000–$28,000 per year and sell to venture-backed startups pursuing SOC 2; this sells to businesses facing county inspectors, insurance audits and HIPAA — dental, home care, telehealth, trades, engineering — where those incumbents do not compete and the deliverable is an organized binder rather than an auditor portal. It has <b>no paying customers as of this writing</b>: live, functional, validated and included in the product line, but not yet sold.</p>
+
+      <p><b>The defect found after launch, and why it matters.</b> The room is served both at its own domain and, through a rewrite, under a path on the company store. The front end used absolute <code>/api/</code> paths, which at the mounted location resolve to the <em>store</em> root — where only one of its three endpoints was mapped. The evidence vault returned 404, <b>no tenant workspace was ever created, and every run came back unsealed while the interface reported "sealed in the vault."</b> All nine checks rendered correctly the entire time, which is precisely why it survived a full day of testing: every prior verification had used the direct domain, where absolute paths resolve correctly. <b>The sealed evidence is the entire commercial reason the top tier exists; at the public address, that half had never happened once.</b> Fixed by resolving API calls against the page's own directory — required in any case for the product to run mounted inside a host application. <b>My own first fix was wrong and was reverted rather than reconciled</b>: it populated the displayed key from a second source that disagreed with the one the evidence sealed under, replacing an empty field with a confidently incorrect value. Of the two, showing the wrong answer is the worse failure, and it is the same error the engine's applicability model exists to prevent.</p>
+
+      <p><b>The record-keeping standard written off the back of it.</b> Codified as a constitutional article: every project is logged in the company's own operating system at the start; scheduling is deliberately <em>not</em> required, because work here completes within a day across several parallel AI instances and dates would be noise — the requirement is the log, not the calendar. The log must state what was done and <b>who did it</b>, name every document produced, and close with a written brief covering what was built, what was decided and by whom, what broke, what remains open and what it cost. <b>If a defect is found after the brief is filed, an addendum is filed against it rather than the original being quietly corrected</b> — the same instinct as the hash chain: a record is only worth something if it cannot be rewritten to look better. The constitution itself carries a self-verifying checksum, and an automated gate confirms its three independent copies match.</p>
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section>
+    <h2><span class="num">08</span> AE Fraud Division — Sanctions Screening, Transaction Triage &amp; Case Files for Community Banks</h2>
+    <div class="wash">
+      <p><b>What it is.</b> A fraud-protection suite for community banks and credit unions, built August 2026 and launching the same month. Three rooms with one job: <b>SCREEN</b> checks names against the live U.S. Treasury OFAC SDN and Consolidated lists; <b>WATCH</b> triages a transaction file against the classic fraud and laundering typologies; <b>FILE</b> promotes any alert into a case with its evidence chain and a SAR-style draft narrative, exported as a packet for the institution's own review. The incumbents (NICE Actimize, Verafin, Unit21, Featurespace) sell custom-quoted suites at $2,000&ndash;$15,000 per month behind 60&ndash;90-day core-system integrations; this takes the no-integration path — the bank drags a file into a browser — at a published flat price, never per-seat.</p>
+
+      <p><b>Every alert shows its work.</b> SCREEN hits carry a match score, the matching route (name or listed alias), the exact list entry, and a link to verify that entry on the Treasury's own sanctions search. WATCH alerts cite the exact rows that triggered them — structuring kept under the $10,000 currency-reporting threshold inside a 7-day window, velocity spikes measured against the party's own median active day, round-dollar repeats, exact-amount duplicates within 3 days, dormant relationships waking up with a large movement, and new payees arriving straight into the file's 95th-percentile amounts. The release gate is written into the product: <b>no citation, no alert.</b></p>
+
+      <p><b>The privacy architecture is the pitch.</b> WATCH runs entirely in the bank's own browser — the transaction file is parsed (CSV or NACHA/ACH entry-detail records) and scored client-side and never transmitted or stored. The only data that leaves the machine is a name the user explicitly sends to the sanctions screen. For a two-person compliance shop, the security review answers itself.</p>
+
+      <p><b>Stated limits, in the product's own interface.</b> A CLEAR is a screening result at a stated threshold, not a background check or legal determination; a HIT is a lead for a human, not an accusation. Case narratives are drafts — the institution's BSA officer reviews, decides and files. The typology engine catches the classic patterns and says so plainly rather than claiming behavioral learning it does not yet perform. When a sanctions list cannot be loaded, the product says which list and screens against the rest — it does not pretend. <b>No paying customers as of this writing</b>: built, launching, and priced — not yet sold.</p>
+    </div>
+  </section>
+
+  <!-- 09 -->
+  <section>
+    <h2><span class="num">09</span> Employment History</h2>
+
+    <div class="entry">
+      <div class="eh"><h4>Founder &amp; Principal Engineer <span class="org">— Accelerated Experiences LLC · Post Falls, ID</span></h4><span class="when">MAY 2026 — PRESENT</span></div>
+      <p class="sub" style="margin-bottom:5px;">First line of code written May 1, 2026. LLC formed at the end of that month. Everything in sections 01 through 05 was built in the hundred days that followed.</p>
+      <ul>
+        <li>Sole architect, engineer, designer and operator of everything catalogued in sections 01 through 05.</li>
+        <li>Owned the commercial side end to end: pricing architecture across the fleet, a single authoritative price record with per-product locks, packaging and tiering, and a deliberate no-per-seat-pricing promise enforced as a product constraint.</li>
+        <li><b>Recruited and equipped two commission sales representatives</b> across six states with territory playbooks, objection handling and a 372-record qualified lead database.</li>
+        <li>Built the media production stack that markets the work: procedural video render pipelines, a voice engine, and a browser video editor — used to produce product films for every vertical.</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="eh"><h4>Homeschool Educator <span class="org">— North Idaho</span></h4><span class="when">2024 — 2026</span></div>
+      <p class="sub">Homeschooled four children, grades K–6, designing curriculum and building the educational tools that became the ESPO Learning product line — and the direct source of the no-fail-states-by-architecture safety rule.</p>
+    </div>
+
+    <h3 class="grp">Marketing &amp; Operations Leadership — The Continuum of Senior Care · 2010–2024</h3>
+    <div class="entry rowlist">
+      <div class="row"><span><b>General Manager</b> — Harvard Park Retirement Center (Holiday Retirement)</span><span class="when">2016 — 2019</span></div>
+      <div class="row"><span><b>Marketing Director &amp; Community Education</b> — senior care providers, Inland Northwest</span><span class="when">2010 — 2016</span></div>
+    </div>
+    <p class="sub">Fourteen years of P&amp;L ownership, census and referral-network growth, community education programming, and compliance-bounded operations across the continuum of senior care.</p>
+
+    <div class="entry" style="margin-top:16px;">
+      <div class="eh"><h4>Marketing Analyst <span class="org">— Bay Area News Group, I-80 Network · Vallejo, CA</span></h4><span class="when">2008 — 2010</span></div>
+      <p class="sub">Launched an analytics department spanning three daily newspapers — the Vallejo <em>Times-Herald</em>, the Woodland <em>Daily Democrat</em> and the <em>Vacaville Reporter</em> — including requirements, data model, custom system build and rollout across all three properties.</p>
+    </div>
+
+    <div class="entry">
+      <div class="eh"><h4>Market Researcher &amp; Database Marketer <span class="org">— Sales Farm · Petaluma, CA</span></h4><span class="when">2007 — 2008</span></div>
+      <p class="sub">Market research and PRIZM segmentation analysis for a startup agency's client roster.</p>
+    </div>
+
+    <div class="entry">
+      <div class="eh"><h4>Marketing Analyst <span class="org">— The Press Democrat, New York Times Media Group · Santa Rosa, CA</span></h4><span class="when">2003 — 2007</span></div>
+      <ul>
+        <li>Promoted from temp staffer to Marketing Analyst in two years; <b>built the company's direct-mail system</b> from the data model up.</li>
+        <li>Led analytics across the daily and its sister publications — <em>Savor</em>, <em>Wine Country</em>, the Petaluma and Santa Rosa magazines, and the associated web properties.</li>
+        <li>Applied <b>household-level PRIZM / Claritas segmentation</b> to editorial, circulation and advertiser targeting; supported major retail accounts including Macy's, Gottschalks and Lowe's.</li>
+        <li><b>Ran print production on a physical board</b> — a card for every job moving through designer, printer, mailhouse, list procurement, drop date and in-home date — and built an early estimating, production and accounting system so the gross margin set at the estimate was the figure the books were held to. <b>That is the spine model described in section 01, arrived at two decades before I could express it in software.</b></li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="eh"><h4>Administrative Assistant to the HR Director <span class="org">— City of Santa Rosa, CA · summer position during college</span></h4><span class="when">SUMMER</span></div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section>
+    <h2><span class="num">10</span> Writing</h2>
+    <div class="entry">
+      <div class="eh"><h4>The Founder Triad: How One Human and Two Instances of the Same AI Built a Production System</h4><span class="when">JUN 2026</span></div>
+      <p class="sub">A thesis on the working method behind the platform. Argues that a single operator holding the pacemaker seat between a design instance and a build instance can stand up a product family with production discipline, provided shared knowledge lives in documents rather than memory, safety promises are enforced by architecture rather than instruction, and one seat is never delegated. States precisely which seat that is and why: the errors that mattered were errors <em>inside the canon</em> — the one place referees and tests cannot look. Closes with a section titled <b>Honest Limits</b> enumerating everything the system had not yet earned the right to claim.</p>
+    </div>
+    <div class="entry">
+      <div class="eh"><h4>The AETriad Training Playbook v1.0</h4><span class="when">JUN 2026</span></div>
+      <p class="sub">The reusable method for building and tuning an agent triad, framed around five levers — Role, Knowledge, Tools, Output Contract, Feedback Loop — with the claim that only the fifth constitutes real learning, and a fully worked expert-review → diagnose → patch → route-evidence → verify episode as the reference case.</p>
+    </div>
+    <div class="entry">
+      <div class="eh"><h4>The AE Constitution</h4><span class="when">2026, LIVING</span></div>
+      <p class="sub">Sixteen articles of engineering governance: authority and approval gates, credential fences, truth and honesty rules with a formal output contract, live-verification mandates, a quality bar, brand law, delivery and session-package requirements, shipping cadence, memory and continuity, and learner safety.</p>
+    </div>
+  </section>
+
+  <!-- 11 -->
+  <section>
+    <h2><span class="num">11</span> Technical Competencies</h2>
+    <dl class="stack">
+      <dt>Languages</dt><dd>Python 3 · Node.js (ESM) · JavaScript · HTML · CSS · SVG</dd>
+      <dt>AI &amp; agents</dt><dd>Anthropic Claude · DeepSeek · ElevenLabs · prompt and role architecture · evaluation harnesses and golden-data referees · adversarial red-team corpora · confidence gating and derived-conviction models · tool-use and output-contract design · multi-agent orchestration and routing · retrieval over canonical documents</dd>
+      <dt>Platform</dt><dd>Vercel serverless functions, multi-project tenant isolation, cron scheduling, redirects · GitHub · key-value and blob storage · environment-gated graceful degradation · single sign-on and role-based access control</dd>
+      <dt>Infrastructure</dt><dd>Ubuntu 24.04 on Oracle Cloud · CLI-based instance provisioning · Postfix · Dovecot · Radicale · Let's Encrypt and TLS certificate automation · SPF, DKIM and DMARC · DNS, MX and zone administration · SSH key management · swap and resource tuning on constrained hosts</dd>
+      <dt>Realtime</dt><dd>WebRTC with own signaling · Web Speech API · progressive web apps and service workers · offline-first storage</dd>
+      <dt>Data</dt><dd>US Census ACS · BLS Consumer Expenditure · BEA SAPCE · FRED · segmentation and index modeling · PRIZM / Claritas methodology · FileMaker</dd>
+      <dt>Media</dt><dd>Python with PIL and NumPy for procedural rendering · FFmpeg and FFprobe · CairoSVG · ReportLab · WeasyPrint · voice cloning and audio-video muxing · on-device OCR · Karplus–Strong synthesis</dd>
+      <dt>Commerce</dt><dd>Stripe · Google Play publishing · Google Search Console, sitemaps and technical SEO · pricing and packaging architecture</dd>
+      <dt>Verification</dt><dd>Python conformance suites · property-based tests · browser suites · syntax gates on every deployed module · live-URL verification as a release requirement</dd>
+    </dl>
+  </section>
+
+  <!-- 12 -->
+  <section>
+    <h2><span class="num">12</span> Education, Honors &amp; Speaking</h2>
+    <div class="rowlist">
+      <div class="row"><span><b>University of Idaho</b> — B.S. Media Communications, Advertising &amp; Public Relations</span><span class="when">1999 — 2003</span></div>
+      <div class="row"><span><b>Chairman's Award</b> — The Press Democrat, New York Times Media Group</span><span class="when">—</span></div>
+      <div class="row"><span><b>Presenter</b>, Claritas national conference — San Diego, CA</span><span class="when">—</span></div>
+      <div class="row"><span>Mentored by <b>Bill Truett</b> in household segmentation methodology</span><span class="when">—</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Anthony Esposito · Curriculum Vitae · August 2026</span>
+    <span>Every system referenced is live at aexperiences.com</span>
+  </footer>
+
+</div>
+</body>
+</html>
