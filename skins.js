@@ -22,7 +22,7 @@
   /* ---- the wardrobe: each skin carries a small core; shades are derived ----
      core = { paper, card, cream, ink, ink2, mut, line, accent, teal, deptAccents[4] } */
   var SKINS = [
-    { id:"momentum-teal", name:"Momentum Teal", note:"The look you saw first — sage-teal on cool cream, straight from the Momentum brand.",
+    { id:"momentum-teal", name:"Momentum Teal", note:"Sage-teal on cool cream, straight from the Momentum brand — the light one.",
       core:{ paper:"#f5f8f8", card:"#ffffff", cream:"#e8f3f2", ink:"#0f1417", ink2:"#3b4448", mut:"#6b7780", line:"#e2e8e8",
              accent:"#0f9d9d", teal:"#14b8a6", da:["#14b8a6","#0f9d9d","#0e7490","#0891b2"] } },
     { id:"coral-pop", name:"Coral Pop", note:"Warm coral and sunshine on soft cream — playful, energetic, very Momentum.",
@@ -37,13 +37,18 @@
     { id:"sunset-tumble", name:"Sunset Tumble", note:"Clay, amber and dusk — warm and grounded, great in the evening.",
       core:{ paper:"#faf5ef", card:"#fffdf9", cream:"#f4e8da", ink:"#241a12", ink2:"#4f4234", mut:"#8a7a66", line:"#eadfcd",
              accent:"#a35c22", teal:"#c78f2e", da:["#a35c22","#8f4e1c","#a3782a","#7a5a3c"] } },
-    { id:"midnight-gym", name:"Midnight Gym", note:"Dark mode — matte charcoal, glowing teal. Easy on the eyes after close.",
+    { id:"midnight-gym", name:"Midnight Gym", note:"The house look — matte charcoal and glowing teal. Easy on the eyes on the floor and after close.",
       dark:true,
       core:{ paper:"#15191c", card:"#1f2529", cream:"#232b30", ink:"#eef4f4", ink2:"#c4d0d2", mut:"#8da0a4", line:"#313b41", line2:"#2a3338",
              accent:"#2fc4b2", teal:"#2fc4b2", da:["#2fc4b2","#27a396","#3aa0c9","#6f8fd9"] } }
   ];
 
-  function resolve(id){ for(var i=0;i<SKINS.length;i++) if(SKINS[i].id===id) return SKINS[i]; return SKINS[0]; }
+  /* The house default, crowned by Anthony Aug 22 2026. The wardrobe order below is the
+     order they appear in the picker; the default is named, not positional. */
+  var DEFAULT_ID = "midnight-gym";
+  function byId(id){ for(var i=0;i<SKINS.length;i++) if(SKINS[i].id===id) return SKINS[i]; return null; }
+  function fallback(){ return byId(DEFAULT_ID) || SKINS[0]; }
+  function resolve(id){ return byId(id) || fallback(); }
   function toHubSkin(s){
     var c=s.core, dark=!!s.dark;
     return {
@@ -54,7 +59,7 @@
     };
   }
   var KEY="momentum:skin";
-  function currentId(){ try{ return localStorage.getItem(KEY)||SKINS[0].id; }catch(e){ return SKINS[0].id; } }
+  function currentId(){ try{ return localStorage.getItem(KEY)||fallback().id; }catch(e){ return fallback().id; } }
   function setCurrent(id){ try{ localStorage.setItem(KEY,id); }catch(e){} }
 
   /* ---- apply the chosen skin into HUB_CONFIG before hub-nav.js reads it ---- */
