@@ -7,7 +7,7 @@
    ============================================================================ */
 window.HUB_CONFIG = {
   tenant: "momentum",
-  seedVersion: "2026-08-20-momentum-v6-gabby",
+  seedVersion: "2026-08-22-momentum-v7-realcheer",
 
   brand: {
     name:    "Momentum Sports and Play",
@@ -81,12 +81,26 @@ window.HUB_CONFIG = {
   },
   rolePretty: { admin:"Admin (AE · IT)", manager:"Owner", frontdesk:"Front Desk", coach:"Coach", trainee:"Coach-in-Training", teacher:"Teacher", parent:"Parent", guest:"Demo" },
 
+  // ---- CHILD PRIVACY -------------------------------------------------
+  // A parent must never be handed a list of other people's children. Momentum's
+  // existing system does not do it, and there are real reasons for that:
+  // custody arrangements, safety plans, and families who simply did not consent
+  // to being in a directory. Any role listed here sees counts, never names, and
+  // never another family's contact details. Staff roles are unaffected.
+  privacy: {
+    hideChildNamesFrom: ["parent"],
+    hideContactsFrom:   ["parent"],
+    readOnlyFor:        ["parent"],
+    note: "Names are hidden here on purpose. Coaches and the front desk see the full roster."
+  },
+
   collections: ["classes","families","coaches","teams","teamevents","teammsgs","expenses","attendance","waitlist","leads","hrrecords","waivers","incidents","approvals","systems","evidence"],
 
   programColors: { Gymnastics:"#12968f", Ninja:"#b8461f", Cheer:"#dda12e", Tumbling:"#9b4fd0", STEAM:"#1f6fa8", Preschool:"#d4608c", Homeschool:"#6f9a30", Camps:"#2f8fbf" },
 
   // Momentum's real billing policy (from their sign-up sheet).
   billing: { regFee:50, regMax:125, sibling:10, multiClass:25, weeks:47, trial:10,
+    rates: { "45 min":70, "55 min":87, "85 min":123 },
     note:"Continuous enrollment · auto-pay the 1st at 8 AM · flat rate over 47 weeks/yr · no makeups (your spot is guaranteed). $50 registration ($125 family max) · 10% sibling · 25% multi-class · referral = free registration." },
 
   assistant: {
@@ -141,18 +155,23 @@ window.HUB_CONFIG = {
     // Named competitive teams (Flare = Ava's team) + Exhibition + Rec. Add/edit teams in-app.
     // Away competitions carry TRAVEL details (venue, hotel, depart/call). Linked by team NAME.
     teams: [
-      { id:"tm1", name:"Flare",   level:"Competitive", age:"Ages 8–12 · Level 2", coach:"Coach Jordan", color:"#0f9d9d",
-        roster:[ {athlete:"Gabby Esposito",parent:"Anthony Esposito",phone:"(208) 555-0110"}, {athlete:"Chloe Bennett",parent:"Marcus Bennett",phone:"(208) 555-0114"}, {athlete:"Maya Okonkwo",parent:"Ada Okonkwo",phone:"(208) 555-0112"}, {athlete:"Ruby Tran",parent:"Kim Tran",phone:"(208) 555-0141"}, {athlete:"Leah Grant",parent:"Sam Grant",phone:"(208) 555-0142"}, {athlete:"Faith Owens",parent:"Deb Owens",phone:"(208) 555-0143"}, {athlete:"Gia Ross",parent:"Nina Ross",phone:"(208) 555-0144"}, {athlete:"Kate Bauer",parent:"Lou Bauer",phone:"(208) 555-0145"}, {athlete:"Ana Ford",parent:"Mel Ford",phone:"(208) 555-0146"}, {athlete:"Reese Cole",parent:"Jo Cole",phone:"(208) 555-0147"} ] },
-      { id:"tm2", name:"Fusion",  level:"Competitive", age:"Ages 5–8 · Level 1", coach:"Coach Jordan", color:"#0e7490",
-        roster:[ {athlete:"Ruby Bennett",parent:"Marcus Bennett",phone:"(208) 555-0114"}, {athlete:"Harper Vance",parent:"Dana Vance",phone:"(208) 555-0121"}, {athlete:"Nora Diaz",parent:"Elena Diaz",phone:"(208) 555-0122"}, {athlete:"Willa Kraft",parent:"Beth Kraft",phone:"(208) 555-0123"}, {athlete:"Sadie Lund",parent:"Kim Lund",phone:"(208) 555-0124"}, {athlete:"Piper Reyes",parent:"Ana Reyes",phone:"(208) 555-0125"}, {athlete:"June Alcott",parent:"Tom Alcott",phone:"(208) 555-0126"} ] },
-      { id:"tm3", name:"Blaze",   level:"Competitive", age:"Ages 11–16 · Level 3", coach:"Coach Jordan", color:"#0a6f6f",
-        roster:[ {athlete:"Ellie Harmon",parent:"Rachel Harmon",phone:"(208) 555-0111"}, {athlete:"Sofia Marsh",parent:"Gwen Marsh",phone:"(208) 555-0131"}, {athlete:"Ivy Chen",parent:"Lin Chen",phone:"(208) 555-0132"}, {athlete:"Mila Novak",parent:"Petra Novak",phone:"(208) 555-0133"}, {athlete:"Aria Boone",parent:"Cara Boone",phone:"(208) 555-0134"}, {athlete:"Layla Frost",parent:"Mona Frost",phone:"(208) 555-0135"}, {athlete:"Zoe Park",parent:"Han Park",phone:"(208) 555-0136"}, {athlete:"Brooke Sims",parent:"Val Sims",phone:"(208) 555-0137"}, {athlete:"Hazel Ward",parent:"Rae Ward",phone:"(208) 555-0138"} ] },
-      { id:"tm4", name:"Radiance (Prep)", level:"Competitive", age:"Ages 6–10 · Prep", coach:"Coach Jordan", color:"#0891b2",
-        roster:[ {athlete:"Lucy Hale",parent:"Pam Hale",phone:"(208) 555-0151"}, {athlete:"Isla Mora",parent:"Rio Mora",phone:"(208) 555-0152"}, {athlete:"Ada Vinson",parent:"Kris Vinson",phone:"(208) 555-0153"}, {athlete:"Nova Beck",parent:"Tia Beck",phone:"(208) 555-0154"}, {athlete:"Elle Pratt",parent:"Sky Pratt",phone:"(208) 555-0155"}, {athlete:"Wren Dodd",parent:"Fay Dodd",phone:"(208) 555-0156"}, {athlete:"Cora Judd",parent:"Bree Judd",phone:"(208) 555-0157"}, {athlete:"Millie Fox",parent:"Dot Fox",phone:"(208) 555-0158"} ] },
-      { id:"tm5", name:"Exhibition · Sparks", level:"Exhibition", age:"Ages 5–7 · Non-comp", coach:"Coach Jordan", color:"#14b8a6",
-        roster:[ {athlete:"Lila Beck",parent:"Tia Beck",phone:"(208) 555-0154"}, {athlete:"Nina Rowe",parent:"Cara Rowe",phone:"(208) 555-0171"}, {athlete:"Quinn Ives",parent:"Jo Ives",phone:"(208) 555-0172"}, {athlete:"Remi Hall",parent:"Bea Hall",phone:"(208) 555-0173"}, {athlete:"Sloane Ott",parent:"Dot Ott",phone:"(208) 555-0174"}, {athlete:"Talia Fein",parent:"Mel Fein",phone:"(208) 555-0175"}, {athlete:"Wynn Cole",parent:"Sky Cole",phone:"(208) 555-0176"} ] },
-      { id:"tm6", name:"Rec Cheer · Comets", level:"Rec", age:"Ages 6–12 · Non-comp", coach:"Coach Jordan", color:"#134e4a",
-        roster:[ {athlete:"Owen Whitfield",parent:"Grant Whitfield",phone:"(208) 555-0117"}, {athlete:"Tessa Vaughn",parent:"Rob Vaughn",phone:"(208) 555-0161"}, {athlete:"Poppy Rhodes",parent:"Deb Rhodes",phone:"(208) 555-0162"}, {athlete:"Remy Blair",parent:"Cal Blair",phone:"(208) 555-0163"}, {athlete:"Lola Sena",parent:"Ivy Sena",phone:"(208) 555-0164"}, {athlete:"Josie Kerr",parent:"Amy Kerr",phone:"(208) 555-0165"}, {athlete:"Sage Amir",parent:"Nadia Amir",phone:"(208) 555-0166"}, {athlete:"Bella Cruz",parent:"Ray Cruz",phone:"(208) 555-0167"} ] }
+      // Real squad names and practice times, read off Momentum's own Fall 2026
+      // schedule. Level and age division are blank on purpose - their published
+      // material does not say which pathway each squad sits in. Ask Josh, then fill.
+      { id:"tm1", name:"Flare", level:"", age:"", practice:"Mon 4:00–5:30 PM · Wed 4:00–5:30 PM · Thu 6:00–7:15 PM", coach:"", color:"#0f9d9d",
+        roster:[{athlete:"Gabby Esposito",parent:"Anthony Esposito",phone:"(208) 555-0110"}, {athlete:"Chloe Bennett",parent:"Marcus Bennett",phone:"(208) 555-0114"}, {athlete:"Maya Okonkwo",parent:"Ada Okonkwo",phone:"(208) 555-0112"}, {athlete:"Ruby Tran",parent:"Kim Tran",phone:"(208) 555-0141"}, {athlete:"Leah Grant",parent:"Sam Grant",phone:"(208) 555-0142"}, {athlete:"Faith Owens",parent:"Deb Owens",phone:"(208) 555-0143"}, {athlete:"Gia Ross",parent:"Nina Ross",phone:"(208) 555-0144"}, {athlete:"Kate Bauer",parent:"Lou Bauer",phone:"(208) 555-0145"}, {athlete:"Ana Ford",parent:"Mel Ford",phone:"(208) 555-0146"}, {athlete:"Reese Cole",parent:"Jo Cole",phone:"(208) 555-0147"}] },
+      { id:"tm2", name:"Ignite", level:"", age:"", practice:"Mon 5:30–7:00 PM · Wed 5:30–7:00 PM", coach:"", color:"#c2492a",
+        roster:[{athlete:"Ruby Bennett",parent:"Marcus Bennett",phone:"(208) 555-0114"}, {athlete:"Harper Vance",parent:"Dana Vance",phone:"(208) 555-0121"}, {athlete:"Nora Diaz",parent:"Elena Diaz",phone:"(208) 555-0122"}, {athlete:"Willa Kraft",parent:"Beth Kraft",phone:"(208) 555-0123"}, {athlete:"Sadie Lund",parent:"Kim Lund",phone:"(208) 555-0124"}, {athlete:"Piper Reyes",parent:"Ana Reyes",phone:"(208) 555-0125"}, {athlete:"June Alcott",parent:"Tom Alcott",phone:"(208) 555-0126"}] },
+      { id:"tm3", name:"Novas", level:"", age:"", practice:"Tue 4:00–6:00 PM · Thu 4:00–6:00 PM", coach:"", color:"#0e7490",
+        roster:[{athlete:"Ellie Harmon",parent:"Rachel Harmon",phone:"(208) 555-0111"}, {athlete:"Sofia Marsh",parent:"Gwen Marsh",phone:"(208) 555-0131"}, {athlete:"Ivy Chen",parent:"Lin Chen",phone:"(208) 555-0132"}, {athlete:"Mila Novak",parent:"Petra Novak",phone:"(208) 555-0133"}, {athlete:"Aria Boone",parent:"Cara Boone",phone:"(208) 555-0134"}, {athlete:"Layla Frost",parent:"Mona Frost",phone:"(208) 555-0135"}, {athlete:"Zoe Park",parent:"Han Park",phone:"(208) 555-0136"}, {athlete:"Brooke Sims",parent:"Val Sims",phone:"(208) 555-0137"}, {athlete:"Hazel Ward",parent:"Rae Ward",phone:"(208) 555-0138"}] },
+      { id:"tm4", name:"Flash", level:"", age:"", practice:"Tue 6:00–7:15 PM · Thu 6:00–7:15 PM", coach:"", color:"#dda12e",
+        roster:[{athlete:"Lucy Hale",parent:"Pam Hale",phone:"(208) 555-0151"}, {athlete:"Isla Mora",parent:"Rio Mora",phone:"(208) 555-0152"}, {athlete:"Ada Vinson",parent:"Kris Vinson",phone:"(208) 555-0153"}, {athlete:"Nova Beck",parent:"Tia Beck",phone:"(208) 555-0154"}, {athlete:"Elle Pratt",parent:"Sky Pratt",phone:"(208) 555-0155"}, {athlete:"Wren Dodd",parent:"Fay Dodd",phone:"(208) 555-0156"}, {athlete:"Cora Judd",parent:"Bree Judd",phone:"(208) 555-0157"}, {athlete:"Millie Fox",parent:"Dot Fox",phone:"(208) 555-0158"}] },
+      { id:"tm5", name:"Embers", level:"", age:"", practice:"Mon 6:00 PM", coach:"", color:"#b8461f",
+        roster:[{athlete:"Lila Beck",parent:"Tia Beck",phone:"(208) 555-0154"}, {athlete:"Nina Rowe",parent:"Cara Rowe",phone:"(208) 555-0171"}, {athlete:"Quinn Ives",parent:"Jo Ives",phone:"(208) 555-0172"}, {athlete:"Remi Hall",parent:"Bea Hall",phone:"(208) 555-0173"}, {athlete:"Sloane Ott",parent:"Dot Ott",phone:"(208) 555-0174"}, {athlete:"Talia Fein",parent:"Mel Fein",phone:"(208) 555-0175"}, {athlete:"Wynn Cole",parent:"Sky Cole",phone:"(208) 555-0176"}] },
+      { id:"tm6", name:"Sparkles", level:"", age:"", practice:"Thu 5:05 PM", coach:"", color:"#d4608c",
+        roster:[{athlete:"Owen Whitfield",parent:"Grant Whitfield",phone:"(208) 555-0117"}, {athlete:"Tessa Vaughn",parent:"Rob Vaughn",phone:"(208) 555-0161"}, {athlete:"Poppy Rhodes",parent:"Deb Rhodes",phone:"(208) 555-0162"}, {athlete:"Remy Blair",parent:"Cal Blair",phone:"(208) 555-0163"}, {athlete:"Lola Sena",parent:"Ivy Sena",phone:"(208) 555-0164"}, {athlete:"Josie Kerr",parent:"Amy Kerr",phone:"(208) 555-0165"}, {athlete:"Sage Amir",parent:"Nadia Amir",phone:"(208) 555-0166"}, {athlete:"Bella Cruz",parent:"Ray Cruz",phone:"(208) 555-0167"}] },
+      { id:"tm7", name:"Starlights", level:"", age:"", practice:"Fri 3:00 PM", coach:"", color:"#9b4fd0",
+        roster:[{athlete:"Gabby Esposito",parent:"Anthony Esposito",phone:"(208) 555-0110"}, {athlete:"Chloe Bennett",parent:"Marcus Bennett",phone:"(208) 555-0114"}, {athlete:"Maya Okonkwo",parent:"Ada Okonkwo",phone:"(208) 555-0112"}, {athlete:"Ruby Tran",parent:"Kim Tran",phone:"(208) 555-0141"}, {athlete:"Leah Grant",parent:"Sam Grant",phone:"(208) 555-0142"}, {athlete:"Faith Owens",parent:"Deb Owens",phone:"(208) 555-0143"}, {athlete:"Gia Ross",parent:"Nina Ross",phone:"(208) 555-0144"}, {athlete:"Kate Bauer",parent:"Lou Bauer",phone:"(208) 555-0145"}, {athlete:"Ana Ford",parent:"Mel Ford",phone:"(208) 555-0146"}, {athlete:"Reese Cole",parent:"Jo Cole",phone:"(208) 555-0147"}] }
     ],
     teamevents: [
       // Flare (Ava's team) — includes TRAVEL competitions

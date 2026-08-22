@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
 <title>Command Center</title>
 <link rel="icon" href="/icons/momentum-mark.svg">
@@ -67,6 +67,14 @@
   .cc-dleg em{font-style:normal;color:var(--mut);font-variant-numeric:tabular-nums}
   .cc-sub{font-size:11.5px;color:var(--mut);margin-top:13px;padding-top:11px;border-top:1px solid var(--line)}
 </style>
+<meta name="theme-color" content="#0f9d9d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Momentum">
+<meta name="format-detection" content="telephone=yes">
+<link rel="apple-touch-icon" href="/momentum-logo.png">
+<link rel="manifest" href="/manifest.webmanifest">
 </head>
 <body>
 <script src="/hub-nav.js" defer></script>
@@ -91,7 +99,11 @@
   (window.hubWho||Promise.resolve(null)).then(function(w){
     var roles=(w&&(w.roles||(w.role?[w.role]:[])))||['guest']; var name=(w&&w.name)||'';
     document.getElementById('hi').textContent=name?('Welcome, '+name):'Command Center';
-    document.getElementById('sub').textContent='Here’s everything you can open in '+(BR.name||'the hub')+'.';
+    var PRIV0=(window.HUB_CONFIG||{}).privacy||{};
+    var restricted=(PRIV0.readOnlyFor||[]).some(function(r){return roles.indexOf(r)>=0;});
+    document.getElementById('sub').textContent = restricted
+      ? 'Your team, your schedule and your travel — all in one place.'
+      : 'Here’s everything you can open in '+(BR.name||'the hub')+'.';
     var keys=allowed(roles).filter(function(k){return k!=='home';});
     var tiles=keys.map(function(k){var s=SEC.filter(function(x){return x.k===k;})[0]; if(!s)return ''; var S=(new URLSearchParams(location.search).get('sess'))?('?sess='+encodeURIComponent(new URLSearchParams(location.search).get('sess'))):'';
       return '<a class="tile" href="'+s.href+S+'"><img class="ic" alt="" src="'+(s.ic||'')+'"><div class="tl">'+esc(s.label)+'</div><div class="ds">'+esc(blurb[k]||('Open '+s.label.toLowerCase()))+'</div></a>';}).join('');
@@ -117,6 +129,12 @@
     var isDark=!!((window.HUB_CONFIG||{}).activeSkin||{}).dark;
     el.style.setProperty('--cc-warn', isDark?'#b8862a':'#dda12e');
     el.style.setProperty('--cc-full', isDark?'#e2607a':'#c2492a');
+    // PRIVACY GATE - the cockpit is the OWNER's board: headcounts, fill rates and
+    // revenue. A parent seat has no business seeing what the gym earns, so it is
+    // shut off by role directly rather than inferred from which rooms they hold.
+    var PRIV=(window.HUB_CONFIG||{}).privacy||{}, RO=PRIV.readOnlyFor||[];
+    var isRestricted=(window.__HUB_ROLES__||[]).some(function(r){return RO.indexOf(r)>=0;});
+    if(isRestricted){el.hidden=true;return;}
     var canEnroll=keys.indexOf('enroll')>=0||keys.indexOf('tuition')>=0, canMoney=keys.indexOf('books')>=0;
     if(!canEnroll){el.hidden=true;return;}
     var progN=Object.keys(byP).length;
@@ -167,6 +185,7 @@
   }
   (window.hubWho||Promise.resolve(null)).then(function(w){
     var roles=(w&&(w.roles||(w.role?[w.role]:[])))||['guest'], set={};
+    window.__HUB_ROLES__=roles;
     roles.forEach(function(r){var v=ROLES[r]; if(v==='*')ALL.forEach(function(k){set[k]=1;}); else (v||[]).forEach(function(k){set[k]=1;});});
     var keys=ALL.filter(function(k){return set[k];}); if(!keys.length)keys=(ROLES.guest==='*'?ALL.slice():[]);
     render(keys);

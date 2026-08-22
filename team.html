@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
 <title>Team App</title>
 <link rel="icon" href="/icons/momentum-mark.svg">
@@ -66,6 +66,10 @@
   .trip .tx{font-size:11.5px;color:var(--mut);margin-top:2px;line-height:1.5}
   .trip .tx b{color:var(--ink2)}
   .roster{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .rosterhide{text-align:center;padding:22px 16px}
+  .rosterhide .rc{font-family:Georgia,serif;font-weight:700;font-size:40px;line-height:1;color:var(--accent)}
+  .rosterhide .rt{font-size:13.5px;color:var(--ink2);margin-top:5px;font-weight:600}
+  .rosterhide .rn{font-size:12px;color:var(--mut);margin-top:12px;max-width:420px;margin-left:auto;margin-right:auto;line-height:1.5}
   @media(max-width:560px){.roster{grid-template-columns:1fr}}
   .ath{display:flex;align-items:center;gap:9px;border:1px solid var(--line2);border-radius:10px;padding:8px 11px}
   .ath .av{width:30px;height:30px;border-radius:8px;background:var(--accent);color:var(--onAccent);display:grid;place-items:center;font-weight:800;font-size:12px;flex:none}
@@ -93,6 +97,14 @@
   .del{background:none;border:none;color:#b23b3b;font:inherit;font-size:12px;font-weight:700;cursor:pointer;margin-right:auto}
   a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent)!important;outline-offset:2px}
 </style>
+<meta name="theme-color" content="#0f9d9d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Momentum">
+<meta name="format-detection" content="telephone=yes">
+<link rel="apple-touch-icon" href="/momentum-logo.png">
+<link rel="manifest" href="/manifest.webmanifest">
 </head>
 <body>
 <script src="/hub-nav.js" defer></script>
@@ -150,9 +162,17 @@
   var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
   var C=window.HUB_CONFIG||{}, BR=C.brand||{};
   var TEAMS=[], EVENTS=[], MSGS=[], curId=null, myResp={}, editEvId=null, editTmId=null, pickColor="#0f9d9d";
+  // Who is looking decides what this page may show. Until whoami answers we
+  // assume the most restricted view, so a slow network can never flash another
+  // family's child on screen.
+  var PRIV=C.privacy||{}, MY_ROLES=["parent"], WHO_KNOWN=false;
+  function inList(list){ list=list||[]; for(var i=0;i<MY_ROLES.length;i++){ if(list.indexOf(MY_ROLES[i])>=0) return true; } return false; }
+  function hideNames(){ return inList(PRIV.hideChildNamesFrom||[]); }
+  function readOnly(){ return inList(PRIV.readOnlyFor||[]); }
   var SWATCH=["#0f9d9d","#0e7490","#0a6f6f","#14b8a6","#0891b2","#134e4a","#0f1417"];
   try{myResp=JSON.parse(localStorage.getItem('mom_rsvp')||'{}');}catch(e){myResp={};}
   el('eb').textContent=(BR.center||BR.name||'')+' · Parents & coaches';
+  var bits=function(arr){return arr.filter(function(x){return x&&String(x).trim();}).map(esc).join(' \u00b7 ');};
   var lvClass=function(l){l=String(l||'').toLowerCase();return l.indexOf('comp')>=0?'comp':(l.indexOf('exh')>=0?'exh':'rec');};
   var initials=function(n){var p=String(n||'').trim().split(' ');return ((p[0]||' ')[0]+((p[1]||'')[0]||'')).toUpperCase();};
   var evsOf=function(t){return EVENTS.filter(function(e){return e.team===t;}).sort(function(a,b){return (a.date||'').localeCompare(b.date||'');});};
@@ -160,10 +180,15 @@
   var isTrip=function(e){return !!(e.hotel||e.depart);};
   var MOS=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 
+  var ROLE_READY=(window.hubWho||Promise.resolve(null)).then(function(w){
+    var r=(w&&(w.roles||(w.role?[w.role]:[])))||[];
+    MY_ROLES=r.length?r:["parent"]; WHO_KNOWN=true;
+  }).catch(function(){ MY_ROLES=["parent"]; WHO_KNOWN=true; });
+
   function load(){ Promise.all([window.HUBDATA.list('teams'),window.HUBDATA.list('teamevents'),window.HUBDATA.list('teammsgs')]).then(function(r){
     TEAMS=r[0]||[]; EVENTS=r[1]||[]; MSGS=r[2]||[];
     if((!curId||!TEAMS.find(function(x){return x.id===curId;}))&&TEAMS.length)curId=TEAMS[0].id;
-    renderKpis(); renderRail(); renderMain(); }); }
+    ROLE_READY.then(function(){ renderKpis(); renderRail(); renderMain(); }); }); }
   function renderKpis(){
     el('kTeams').textContent=TEAMS.length;
     el('kAth').textContent=TEAMS.reduce(function(s,t){return s+((t.roster||[]).length);},0);
@@ -172,7 +197,7 @@
   }
   function renderRail(){
     el('rail').innerHTML=TEAMS.map(function(t){
-      return '<div class="team'+(t.id===curId?' on':'')+'" data-id="'+esc(t.id)+'" style="border-left-color:'+(t.color||'var(--accent)')+'"><div class="tn">'+esc(t.name)+'</div><div class="tm">'+esc(t.age||'')+' · '+((t.roster||[]).length)+' athletes</div><span class="lv '+lvClass(t.level)+'">'+esc(t.level||'')+'</span></div>';
+      return '<div class="team'+(t.id===curId?' on':'')+'" data-id="'+esc(t.id)+'" style="border-left-color:'+(t.color||'var(--accent)')+'"><div class="tn">'+esc(t.name)+'</div><div class="tm">'+bits([t.age,t.practice,((t.roster||[]).length)+' athletes'])+'</div>'+(t.level?'<span class="lv '+lvClass(t.level)+'">'+esc(t.level)+'</span>':'')+'</div>';
     }).join('')||'<div class="mut" style="font-size:12.5px">No teams yet — tap ＋ Team.</div>';
     el('rail').querySelectorAll('[data-id]').forEach(function(x){x.addEventListener('click',function(){curId=x.getAttribute('data-id');renderRail();renderMain();});});
   }
@@ -180,13 +205,30 @@
     var t=TEAMS.find(function(x){return x.id===curId;}); if(!t){el('main').innerHTML='<div class="panel mut">Add a team to get started.</div>';return;}
     var trips=evsOf(t.name).filter(function(e){return future(e)&&isTrip(e);});
     el('main').innerHTML=
-      '<div class="panel"><div class="thead"><div><div class="tt">'+esc(t.name)+'</div><div class="meta">'+esc(t.level||'')+' · '+esc(t.age||'')+' · '+esc(t.coach||'')+' · '+((t.roster||[]).length)+' athletes</div></div><div class="sp"></div><button class="lnk" onclick="editTeam()">Edit</button> <button class="btn" onclick="openEv()">＋ Event</button></div></div>'+
+      '<div class="panel"><div class="thead"><div><div class="tt">'+esc(t.name)+'</div><div class="meta">'+bits([t.level,t.age,t.coach,t.practice,((t.roster||[]).length)+' athletes'])+'</div></div><div class="sp"></div>'+(readOnly()?'':'<button class="lnk" onclick="editTeam()">Edit</button> <button class="btn" onclick="openEv()">＋ Event</button>')+'</div></div>'+
       (trips.length?'<div class="panel"><div class="sec-t">Upcoming travel</div><div id="trips"></div></div>':'')+
       '<div class="panel"><div class="sec-t">Schedule &amp; RSVP</div><div id="sched"></div></div>'+
-      '<div class="panel"><div class="sec-t">Roster</div><div class="roster">'+((t.roster||[]).map(function(a){return '<div class="ath"><div class="av">'+esc(initials(a.athlete))+'</div><div><div class="an">'+esc(a.athlete)+'</div><div class="ap">'+esc(a.parent||'')+(a.phone?' · '+esc(a.phone):'')+'</div></div></div>';}).join('')||'<div class="mut">No athletes yet.</div>')+'</div></div>'+
-      '<div class="panel"><div class="sec-t">Announcements</div><div id="msgs"></div><div class="post"><input id="postText" placeholder="Post to the team…"><button class="btn" onclick="postMsg()">Post</button></div></div>';
+      rosterPanel(t)+
+      '<div class="panel"><div class="sec-t">Announcements</div><div id="msgs"></div>'+(readOnly()?'':'<div class="post"><input id="postText" placeholder="Post to the team…"><button class="btn" onclick="postMsg()">Post</button></div>')+'</div>';
     if(trips.length)renderTrips(trips); renderSched(t); renderMsgs(t.name);
   }
+  // Parents get the size of the team, never the names in it. Do not "improve"
+  // this by putting first names or initials back -- that is still a roster of
+  // other people's children.
+  function rosterPanel(t){
+    var n=(t.roster||[]).length;
+    if(hideNames()){
+      return '<div class="panel"><div class="sec-t">Roster</div>' +
+        '<div class="rosterhide"><div class="rc">'+n+'</div><div class="rt">'+(n===1?'athlete on this team':'athletes on this team')+
+        '</div><div class="rn">'+esc(PRIV.note||'Names are hidden here on purpose.')+'</div></div></div>';
+    }
+    return '<div class="panel"><div class="sec-t">Roster</div><div class="roster">'+
+      ((t.roster||[]).map(function(a){
+        return '<div class="ath"><div class="av">'+esc(initials(a.athlete))+'</div><div><div class="an">'+esc(a.athlete)+'</div>'+
+          '<div class="ap">'+esc(a.parent||'')+(a.phone?' · '+esc(a.phone):'')+'</div></div></div>';
+      }).join('')||'<div class="mut">No athletes yet.</div>')+'</div></div>';
+  }
+
   function renderTrips(trips){
     el('trips').innerHTML=trips.map(function(e){
       var d=e.date?e.date.split('-'):['','',''];var mo=d[1]?MOS[(+d[1])-1]:'';var dy=d[2]||'';
@@ -258,6 +300,7 @@
     }); };
   window.delTeam=function(){ if(!editTmId)return; window.HUBDATA.del('teams',editTmId).then(function(){ curId=null; window.HUBDATA.list('teams').then(function(a){TEAMS=a||[];closeTeam();if(TEAMS.length)curId=TEAMS[0].id;renderKpis();renderRail();renderMain();}); }); };
 
+  // AssistantContext sends counts only -- never add roster entries here.
   window.AssistantContext=function(){ var t=TEAMS.find(function(x){return x.id===curId;}); return { view:'team app', teams:TEAMS.map(function(x){return {name:x.name,level:x.level,age:x.age,coach:x.coach,athletes:(x.roster||[]).length};}),
     upcomingTrips:EVENTS.filter(function(e){return future(e)&&isTrip(e);}).map(function(e){return {team:e.team,title:e.title,date:e.date,venue:e.location,hotel:e.hotel};}),
     currentTeam:t?t.name:null }; };

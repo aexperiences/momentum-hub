@@ -62,8 +62,8 @@
     ".hn-site:hover{background:var(--accent);border-color:var(--accent);color:var(--onAccent)}" +
     ".hn-site svg{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:1.7}" +
     ".hn-site .t{flex:1;min-width:0}" +
-    ".hn-site .l{font-size:13px;font-weight:700;line-height:1.2}" +
-    ".hn-site .n{font-size:11px;opacity:.72;margin-top:2px}" +
+    ".hn-site .l{display:block;font-size:13px;font-weight:700;line-height:1.2}" +
+    ".hn-site .n{display:block;font-size:11px;opacity:.72;margin-top:2px}" +
     ".hn-site .x{font-size:13px;opacity:.6}" +
     ".hn-foot{margin-top:auto;padding-top:14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:9px}" +
     ".hn-who{font-size:12px;color:var(--mut);line-height:1.5}.hn-who b{color:var(--accent)}" +
@@ -75,7 +75,9 @@
     ".hn-hic{width:40px;height:40px;border-radius:10px;flex:none;display:block;box-shadow:0 3px 9px rgba(0,0,0,.22)}" +
     ".hn-htitle{font-family:Georgia,serif;font-weight:700;font-size:19px;line-height:1.1}.hn-hsub{font-size:11px;opacity:.85;margin-top:2px}.hn-hsp{flex:1}" +
     ".hn-hrole{font-size:11px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);padding:5px 10px;border-radius:99px}.hn-hrole:empty{display:none}" +
-    "@media(max-width:900px){.hn-hb{padding-left:60px}}";
+    "@media(max-width:900px){.hn-hb{padding-left:60px}}" +
+    ".hn-tabs{display:none;position:fixed;left:0;right:0;bottom:0;z-index:1202;background:color-mix(in srgb, var(--cream) 88%, transparent);-webkit-backdrop-filter:saturate(180%) blur(14px);backdrop-filter:saturate(180%) blur(14px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}" +".hn-tabs .row{display:flex;align-items:stretch}" +".hn-tab{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 4px 7px;text-decoration:none;color:var(--mut);background:none;border:0;font:inherit;cursor:pointer;min-height:56px;-webkit-tap-highlight-color:transparent}" +".hn-tab img,.hn-tab .gl{width:26px;height:26px;border-radius:7px;display:block;opacity:.62;transition:opacity .15s,transform .15s}" +".hn-tab .gl{display:flex;align-items:center;justify-content:center;font-size:19px;line-height:1;color:var(--ink2)}" +".hn-tab .lb{font-size:10.5px;font-weight:600;letter-spacing:.01em;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}" +".hn-tab.on{color:var(--accent)}" +".hn-tab.on img,.hn-tab.on .gl{opacity:1;transform:translateY(-1px)}" +".hn-tab.on .lb{font-weight:800}" +".hn-tab .bar{position:absolute;top:0;height:3px;border-radius:0 0 3px 3px;background:var(--accent)}" +"@media(max-width:900px){"+  ".hn-tabs{display:block}"+  "body{padding-bottom:calc(64px + env(safe-area-inset-bottom))}"+  ".hn-openbtn{display:none !important}"+  ".hn-hb{padding-left:16px}"+  ".hn{width:min(300px,86vw)}"+"}" +
+    ".hn-scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1199;opacity:0;pointer-events:none;transition:opacity .26s ease;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}" +"@media(max-width:900px){body.hn-open .hn-scrim{opacity:1;pointer-events:auto}}" +".hn-close{display:none;position:absolute;top:12px;right:12px;width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:18px;line-height:1;cursor:pointer;align-items:center;justify-content:center}" +"@media(max-width:900px){.hn-close{display:flex}}" +".hn{padding-top:calc(18px + env(safe-area-inset-top));padding-bottom:calc(18px + env(safe-area-inset-bottom));padding-left:calc(14px + env(safe-area-inset-left))}" +".hn-openbtn{top:calc(13px + env(safe-area-inset-top));left:calc(13px + env(safe-area-inset-left))}" +".hn-hdr{padding-top:calc(12px + env(safe-area-inset-top))}" +"html,body{max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}" +"img,svg,video,canvas{max-width:100%;height:auto}" +"*{-webkit-tap-highlight-color:rgba(0,0,0,.06)}" +"@media(max-width:900px){"+  ".hn-link{min-height:46px;font-size:15px}"+  ".hn-acts a{padding:12px 10px;font-size:13px}"+  ".hn-site{padding:13px 12px}"+  "input,select,textarea{font-size:16px}"+  "button,.btn,.lnk,a.btn{min-height:44px}"+  "table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}"+  ".hn-hb{padding-left:60px}"+"}" +"body.hn-lock{overflow:hidden;position:relative}";
   css += "html{scrollbar-gutter:stable}*{scrollbar-width:auto;scrollbar-color:rgba(136,136,136,.62) rgba(136,136,136,.14)}::-webkit-scrollbar{width:15px;height:15px}::-webkit-scrollbar-track{background:rgba(136,136,136,.14);border-radius:10px}::-webkit-scrollbar-thumb{background:rgba(136,136,136,.62);border-radius:10px;border:3px solid transparent;background-clip:padding-box}::-webkit-scrollbar-thumb:hover{background:rgba(136,136,136,.82);border:3px solid transparent;background-clip:padding-box}::-webkit-scrollbar-thumb:active{background:rgba(136,136,136,.95);border:3px solid transparent;background-clip:padding-box}::-webkit-scrollbar-corner{background:transparent}";
   var st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
 
@@ -99,12 +101,61 @@
   var openBtn = document.createElement("button");
   openBtn.className = "hn-openbtn"; openBtn.setAttribute("aria-label", "Open menu"); openBtn.innerHTML = "&#9776;"; openBtn.onclick = function () { window.hubToggle(); };
 
-  function mount() { document.body.appendChild(aside); document.body.appendChild(openBtn); }
+  var scrim = document.createElement("div");
+  scrim.className = "hn-scrim"; scrim.onclick = function () { window.hubToggle(false); };
+  var closeBtn = document.createElement("button");
+  closeBtn.className = "hn-close"; closeBtn.setAttribute("aria-label", "Close menu");
+  closeBtn.innerHTML = "&#10005;"; closeBtn.onclick = function () { window.hubToggle(false); };
+  aside.appendChild(closeBtn);
+
+  function mount() { document.body.appendChild(scrim); document.body.appendChild(aside); document.body.appendChild(openBtn); document.body.appendChild(tabsEl); }
   if (document.body) mount(); else document.addEventListener("DOMContentLoaded", mount);
 
-  window.hubToggle = function () { document.body.classList.toggle("hn-open"); };
+  // On a phone the drawer covers the page, so it needs a way out: the scrim,
+  // the X, Escape, or picking a link. Before this, opening it on a phone left
+  // you stuck -- the hamburger hides itself while the drawer is open.
+  document.addEventListener("click", function (e) {
+    var a = e.target && e.target.closest && e.target.closest(".hn-link");
+    if (a && window.innerWidth <= 900) window.hubToggle(false);
+  });
+
+  window.hubToggle = function (want) {
+    var open = (typeof want === "boolean") ? want : !document.body.classList.contains("hn-open");
+    document.body.classList.toggle("hn-open", open);
+    var phone = window.innerWidth <= 900;
+    document.body.classList.toggle("hn-lock", open && phone);
+  };
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && document.body.classList.contains("hn-open") && window.innerWidth <= 900) window.hubToggle(false);
+  });
+  window.addEventListener("resize", function () {
+    if (window.innerWidth > 900) document.body.classList.remove("hn-lock");
+  });
   // open by default on wide screens
   if (window.innerWidth > 900) document.body.classList.add("hn-open");
+
+  var tabsEl = document.createElement("nav");
+  tabsEl.className = "hn-tabs"; tabsEl.setAttribute("aria-label", "Sections");
+
+  function renderTabs(keys) {
+    var here = curKey();
+    var items = keys.map(function (k) { return SECTIONS.filter(function (x) { return x.k === k; })[0]; }).filter(Boolean);
+    if (!items.length) { tabsEl.innerHTML = ""; return; }
+    var MAXTABS = 5;
+    var show = items.length > MAXTABS ? items.slice(0, MAXTABS - 1) : items;
+    var more = items.length > MAXTABS;
+    var html = show.map(function (sec) {
+      var ic = sec.ic ? '<img alt="" src="' + esc(sec.ic) + '">' : '<span class="gl">&#9679;</span>';
+      return '<a class="hn-tab' + (sec.k === here ? " on" : "") + '" href="' + sec.href + S + '">' + ic +
+             '<span class="lb">' + esc(sec.label) + "</span></a>";
+    }).join("");
+    if (more) {
+      var hereHidden = items.slice(MAXTABS - 1).some(function (x) { return x.k === here; });
+      html += '<button type="button" class="hn-tab' + (hereHidden ? " on" : "") + '" onclick="hubToggle(true)">' +
+              '<span class="gl">&#9776;</span><span class="lb">More</span></button>';
+    }
+    tabsEl.innerHTML = '<div class="row">' + html + "</div>";
+  }
 
   function renderLinks(keys) {
     var here = curKey(), html = "", first = true;
@@ -116,6 +167,7 @@
       first = false;
     });
     document.getElementById("hnLinks").innerHTML = html;
+    renderTabs(keys);
   }
 
   window.hubWho.then(function (w) {
