@@ -80,7 +80,7 @@ window.HUB_CONFIG = {
 
   collections: ["classes","families","coaches","teams","teamevents","teammsgs","expenses","attendance","waitlist","leads","hrrecords","waivers","incidents","approvals","systems","evidence"],
 
-  programColors: { Gymnastics:"#14b8a6", Ninja:"#0f1417", Cheer:"#0f9d9d", Tumbling:"#0e7490", STEAM:"#0891b2", Preschool:"#134e4a", Homeschool:"#0a6f6f", Camps:"#0c8686" },
+  programColors: { Gymnastics:"#12968f", Ninja:"#b8461f", Cheer:"#dda12e", Tumbling:"#9b4fd0", STEAM:"#1f6fa8", Preschool:"#d4608c", Homeschool:"#6f9a30", Camps:"#2f8fbf" },
 
   // Momentum's real billing policy (from their sign-up sheet).
   billing: { regFee:50, regMax:125, sibling:10, multiClass:25, weeks:47, trial:10,

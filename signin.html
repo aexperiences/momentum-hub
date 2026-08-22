@@ -11,53 +11,119 @@
 <script src="/skins.js"></script>
 <style>
   *{box-sizing:border-box}html,body{margin:0}
-  body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#26211a);background:var(--paper,#f7f4ee);min-height:100vh;display:grid;place-items:center;padding:20px}
-  .card{background:var(--card,#fff);border:1px solid var(--line,#e6ddcb);border-radius:18px;max-width:400px;width:100%;padding:26px 24px;box-shadow:0 16px 44px rgba(60,45,20,.1)}
-  .mk{width:46px;height:46px;border-radius:11px;background:var(--accent,#2f6f8f);color:var(--onAccent,#fff);display:grid;place-items:center;font-family:Georgia,serif;font-weight:800;font-size:22px}
-  h1{font-family:Georgia,serif;margin:14px 0 3px;font-size:24px}
-  .sub{color:var(--mut,#847a68);font-size:13.5px;margin-bottom:18px}
-  label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--mut);font-weight:700;margin:12px 0 5px}
-  input,select{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font:inherit;font-size:14px;background:var(--paper);color:var(--ink)}
-  .go{width:100%;margin-top:18px;border:none;border-radius:11px;padding:13px;cursor:pointer;font-weight:700;font-family:Georgia,serif;font-size:16px;background:linear-gradient(180deg,var(--accent),var(--accent2));color:var(--onAccent)}
-  .err{color:#b23b3b;font-size:13px;margin-top:10px;min-height:16px}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#26211a);background:var(--paper,#f7f4ee);
+       min-height:100vh;display:grid;place-items:center;padding:26px 20px}
+  .card{background:var(--card,#fff);border:1px solid var(--line,#e6ddcb);border-radius:20px;max-width:520px;width:100%;
+        padding:28px 26px 22px;box-shadow:0 18px 50px rgba(0,0,0,.18)}
+  .top{text-align:center;margin-bottom:20px}
+  .mk{width:54px;height:54px;border-radius:14px;margin:0 auto 12px;display:block}
+  h1{font-family:Georgia,serif;margin:0 0 4px;font-size:25px;letter-spacing:-.01em}
+  .sub{color:var(--mut,#847a68);font-size:13.5px;line-height:1.45}
+  .sub b{color:var(--ink2,#3b4448)}
+  .nm{margin:0 0 16px}
+  .nm label{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--mut);font-weight:700;margin-bottom:6px}
+  .nm input{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px 13px;font:inherit;font-size:14px;
+            background:var(--paper);color:var(--ink)}
+  .seats{display:flex;flex-direction:column;gap:8px}
+  .seat{display:flex;align-items:center;gap:13px;width:100%;text-align:left;cursor:pointer;
+        background:var(--paper);border:1px solid var(--line);border-radius:13px;padding:12px 14px;
+        font:inherit;color:var(--ink);transition:.13s}
+  .seat:hover{border-color:var(--accent);transform:translateY(-1px)}
+  .seat .in{width:38px;height:38px;border-radius:10px;flex:none;display:grid;place-items:center;
+            font-family:Georgia,serif;font-weight:800;font-size:15px;background:var(--accent);color:var(--onAccent)}
+  .seat .t{flex:1;min-width:0}
+  .seat .t b{display:block;font-size:14.5px;font-weight:700}
+  .seat .t span{display:block;font-size:12px;color:var(--mut);margin-top:2px;line-height:1.35}
+  .seat .ar{color:var(--mut);flex:none;font-size:15px}
+  .seat.ours{opacity:.72}
+  .seat.ours .in{background:var(--line);color:var(--mut)}
+  .note{margin-top:16px;background:var(--cream);border:1px solid var(--line);border-radius:13px;padding:12px 14px;
+        font-size:12.5px;color:var(--ink2);line-height:1.5}
+  .note b{color:var(--ink)}
+  .pass{display:none;margin-top:12px}
+  .pass label{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--mut);font-weight:700;margin-bottom:6px}
+  .pass input{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px 13px;font:inherit;background:var(--paper);color:var(--ink)}
+  .err{color:#e0704f;font-size:13px;margin-top:10px;min-height:16px;text-align:center}
   .credit{color:var(--mut);font-size:11.5px;text-align:center;margin-top:16px}
+  .back{display:block;text-align:center;margin-top:12px;font-size:12.5px;color:var(--mut);text-decoration:none}
+  .back:hover{color:var(--accent)}
 </style>
 </head>
 <body>
 <div class="card">
-  <div class="mk" id="mk">H</div>
-  <h1 id="ttl">Sign in</h1>
-  <div class="sub" id="sub"></div>
-  <label>You are…</label>
-  <select id="role"></select>
-  <label>Your name</label>
-  <input id="name" placeholder="e.g. Jordan Rivera" onkeydown="if(event.key==='Enter')go()">
-  <div id="passWrap" style="display:none"><label>Administrator passcode</label><input id="pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')go()"></div>
-  <button class="go" onclick="go()" id="goBtn">Enter →</button>
+  <div class="top">
+    <img class="mk" id="mk" src="/icons/momentum-mark.svg" alt="">
+    <h1 id="ttl">Your gym</h1>
+    <div class="sub" id="sub"></div>
+  </div>
+  <div class="nm">
+    <label for="name">Your name <span style="text-transform:none;letter-spacing:0;font-weight:500">— optional, so the hub can say hello</span></label>
+    <input id="name" placeholder="e.g. Katie" autocomplete="name">
+  </div>
+  <div class="seats" id="seats"></div>
+  <div class="pass" id="passWrap">
+    <label for="pass">Administrator passcode</label>
+    <input id="pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')window.__goAdmin()">
+  </div>
   <div class="err" id="err"></div>
+  <div class="note" id="note"></div>
+  <a class="back" id="back" href="/welcome.html">← Back to the welcome page</a>
   <div class="credit" id="credit"></div>
 </div>
 <script>
 (function(){
-  var C=window.HUB_CONFIG||{}, BR=C.brand||{}, R=C.roles||{}, P=C.rolePretty||{};
-  document.getElementById('mk').textContent=(BR.short||'H')[0];
-  document.getElementById('ttl').textContent='Sign in to '+(BR.name||'the hub');
-  document.getElementById('sub').textContent=BR.tagline||'';
-  document.getElementById('credit').innerHTML=BR.credit||'';
+  var C=window.HUB_CONFIG||{}, BR=C.brand||{}, R=C.roles||{}, P=C.rolePretty||{}, SEC=C.sections||[];
+  var ALL=SEC.length;
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function labelOf(k){ for(var i=0;i<SEC.length;i++) if(SEC[i].k===k) return SEC[i].label; return null; }
+  /* What each seat actually sees — read straight off the roles map, never hand-written,
+     so it can never drift from what the hub really does. */
+  function blurb(r){
+    var v=R[r];
+    if(v==='*') return 'Every room — all '+ALL+' of them';
+    var names=(v||[]).map(labelOf).filter(Boolean);
+    if(!names.length) return 'No rooms yet';
+    var head=names.slice(0,3).join(' · ');
+    return head + (names.length>3 ? ' · +'+(names.length-3)+' more' : '');
+  }
+  function initials(r){ var t=P[r]||r; return t.replace(/[^A-Za-z ]/g,'').trim().split(/\s+/).slice(0,2).map(function(w){return w[0];}).join('').toUpperCase(); }
+
+  document.getElementById('ttl').textContent = BR.short ? ('Your gym · '+BR.short) : 'Your gym';
+  document.getElementById('sub').innerHTML = 'Pick your seat — <b>one click, no password</b>.<br>Everybody walks into their own view of '+esc(BR.name||'the gym')+'.';
+  document.getElementById('credit').innerHTML = BR.credit||'';
   document.title='Sign in · '+(BR.name||'Hub');
-  var roles=Object.keys(R);
-  document.getElementById('role').innerHTML=roles.map(function(r){return '<option value="'+r+'">'+(P[r]||r)+'</option>';}).join('');
-  document.getElementById('role').addEventListener('change',function(){document.getElementById('passWrap').style.display=this.value==='admin'?'block':'none';});
-  window.go=function(){
-    var role=document.getElementById('role').value, name=document.getElementById('name').value.trim();
+  document.getElementById('note').innerHTML =
+    '<b>This is the private preview.</b> Every seat sees only its own rooms — try one, then use the name in the top corner to switch. '+
+    'There are no passwords yet, on purpose. When you are ready to lock it down so only your people can get in, tell Anthony and he flips that switch.';
+
+  /* Owner first, our own admin seat last and quieter — this page belongs to the gym. */
+  var ORDER=['manager','frontdesk','coach','trainee','teacher','parent','admin'];
+  var roles=ORDER.filter(function(r){return R[r];}).concat(Object.keys(R).filter(function(r){return ORDER.indexOf(r)<0 && r!=='guest';}));
+
+  document.getElementById('seats').innerHTML = roles.map(function(r){
+    return '<button class="seat'+(r==='admin'?' ours':'')+'" data-r="'+esc(r)+'">'+
+      '<span class="in">'+esc(initials(r))+'</span>'+
+      '<span class="t"><b>'+esc(P[r]||r)+'</b><span>'+esc(blurb(r))+'</span></span>'+
+      '<span class="ar">→</span></button>';
+  }).join('');
+
+  function enter(role){
+    var name=document.getElementById('name').value.trim();
     var pass=(document.getElementById('pass')||{}).value||'';
-    var b=document.getElementById('goBtn'); b.textContent='…'; document.getElementById('err').textContent='';
-    fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'signin',role:role,name:name,pass:pass})}).then(function(r){return r.json();}).then(function(j){
-      b.textContent='Enter →';
-      if(j&&j.ok){ try{localStorage.setItem('hub_sess',j.token);}catch(e){} location.href='/hub.html?sess='+encodeURIComponent(j.token); }
-      else document.getElementById('err').textContent=(j&&j.message)||'Could not sign in.';
-    }).catch(function(){b.textContent='Enter →';document.getElementById('err').textContent='Network hiccup — try again.';});
-  };
+    document.getElementById('err').textContent='';
+    fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'signin',role:role,name:name,pass:pass})})
+      .then(function(r){return r.json();}).then(function(j){
+        if(j&&j.ok){ try{localStorage.setItem('hub_sess',j.token);}catch(e){} location.href='/hub.html?sess='+encodeURIComponent(j.token); }
+        else if(j&&j.error==='PASS'){ document.getElementById('passWrap').style.display='block';
+          document.getElementById('err').textContent='Administrator passcode needed.'; document.getElementById('pass').focus(); }
+        else document.getElementById('err').textContent=(j&&j.message)||'Could not sign in.';
+      }).catch(function(){ document.getElementById('err').textContent='Network hiccup — try again.'; });
+  }
+  window.__goAdmin=function(){ enter('admin'); };
+  document.getElementById('seats').addEventListener('click',function(e){
+    var b=e.target.closest('.seat'); if(b) enter(b.getAttribute('data-r'));
+  });
 })();
 </script>
 </body>
