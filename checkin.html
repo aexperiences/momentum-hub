@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Check-in &amp; Attendance</title>
-<link rel="icon" href="/logo.svg">
+<link rel="icon" href="/icons/momentum-mark.svg">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="/config.js"></script>
 <script src="/skins.js"></script>
@@ -95,7 +95,7 @@
       var kids=r.length?r.map(function(e,i){return '<div class="kid"><b>'+esc(e.child)+'</b><span class="fm">'+esc(e.family||'')+'</span><button class="chk'+(pk[i]?' on':'')+'" data-c="'+esc(c.id)+'" data-i="'+i+'">'+(pk[i]?'✓ In':'Check in')+'</button></div>';}).join(''):'<div class="none">No named roster — '+(+c.enrolled||0)+' enrolled. Log the class count below.</div>';
       var more=(+c.enrolled||0)-r.length;
       return '<div class="card"><span class="tag" style="background:'+pcolor(c.program)+'">'+esc(c.program)+'</span>'+
-        '<div class="nm">'+esc(c.name||'')+'</div><div class="meta">🕐 '+esc(c.time||'')+' · '+esc(c.room||'')+' · 🏅 '+esc(c.coach||'')+'</div>'+
+        '<div class="nm">'+esc(c.name||'')+'</div><div class="meta">'+esc(c.time||'')+' · '+esc(c.room||'')+' · '+esc(c.coach||'')+'</div>'+
         '<div class="kids">'+kids+(more>0?'<div class="none">＋ '+more+' more enrolled (not on the named roster)</div>':'')+'</div>'+
         '<button class="save" data-s="'+esc(c.id)+'">Log attendance →</button></div>';
     }).join('')||'<div class="card"><div class="none">No classes scheduled on '+esc(day)+'.</div></div>';

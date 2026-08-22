@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Coaches &amp; Staff</title>
-<link rel="icon" href="/logo.svg">
+<link rel="icon" href="/icons/momentum-mark.svg">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="/config.js"></script>
 <script src="/skins.js"></script>
@@ -88,7 +88,7 @@
     el('pCovered').textContent=CLASSES.filter(function(c){return STAFF.some(function(s){return s.name===c.coach;});}).length;
     el('grid').innerHTML=STAFF.map(function(s){ var cl=classesOf(s.name);
       return '<div class="card" data-id="'+esc(s.id)+'"><div class="ch"><div class="av">'+esc(initials(s.name))+'</div><div><div class="nm">'+esc(s.name||'')+'</div><div class="role">'+esc(s.role||'')+'</div></div></div>'+
-        (s.programs?'<div class="progs">🏅 '+esc(s.programs)+'</div>':'')+
+        (s.programs?'<div class="progs">'+esc(s.programs)+'</div>':'')+
         '<div class="certs">'+String(s.certs||'').split('·').map(function(x){x=x.trim();return x?'<span class="cert">'+esc(x)+'</span>':'';}).join('')+'</div>'+
         '<div class="cls"><b>'+cl.length+'</b> class'+(cl.length===1?'':'es')+(cl.length?': '+cl.slice(0,3).map(function(c){return esc(c.name);}).join(', ')+(cl.length>3?'…':''):'')+'</div></div>';
     }).join('')||'<div class="pill">No staff yet.</div>';

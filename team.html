@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Team App</title>
-<link rel="icon" href="/logo.svg">
+<link rel="icon" href="/icons/momentum-mark.svg">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="/config.js"></script>
 <script src="/skins.js"></script>
@@ -125,7 +125,7 @@
   <div class="two"><div class="fld"><label>Date</label><input id="f_date" type="date"></div>
     <div class="fld"><label>Time</label><input id="f_time" placeholder="6:00 PM"></div></div>
   <div class="fld"><label>Venue</label><input id="f_location" placeholder="Spokane Arena, WA"></div>
-  <div class="grp">✈️ Travel (optional)</div>
+  <div class="grp">Travel (optional)</div>
   <div class="fld"><label>Hotel</label><input id="f_hotel" placeholder="DoubleTree Spokane City Center"></div>
   <div class="fld"><label>Hotel address</label><input id="f_hotelAddr" placeholder="322 N Spokane Falls Ct, Spokane WA"></div>
   <div class="fld"><label>Depart / call time</label><input id="f_depart" placeholder="Depart Fri 4:00 PM · call 8:30 AM Sat"></div>
@@ -180,27 +180,27 @@
     var t=TEAMS.find(function(x){return x.id===curId;}); if(!t){el('main').innerHTML='<div class="panel mut">Add a team to get started.</div>';return;}
     var trips=evsOf(t.name).filter(function(e){return future(e)&&isTrip(e);});
     el('main').innerHTML=
-      '<div class="panel"><div class="thead"><div><div class="tt">'+esc(t.name)+'</div><div class="meta">'+esc(t.level||'')+' · '+esc(t.age||'')+' · 🏅 '+esc(t.coach||'')+' · '+((t.roster||[]).length)+' athletes</div></div><div class="sp"></div><button class="lnk" onclick="editTeam()">✎ Edit</button> <button class="btn" onclick="openEv()">＋ Event</button></div></div>'+
-      (trips.length?'<div class="panel"><div class="sec-t">✈️ Upcoming travel</div><div id="trips"></div></div>':'')+
-      '<div class="panel"><div class="sec-t">📅 Schedule &amp; RSVP</div><div id="sched"></div></div>'+
-      '<div class="panel"><div class="sec-t">👧 Roster</div><div class="roster">'+((t.roster||[]).map(function(a){return '<div class="ath"><div class="av">'+esc(initials(a.athlete))+'</div><div><div class="an">'+esc(a.athlete)+'</div><div class="ap">'+esc(a.parent||'')+(a.phone?' · '+esc(a.phone):'')+'</div></div></div>';}).join('')||'<div class="mut">No athletes yet.</div>')+'</div></div>'+
-      '<div class="panel"><div class="sec-t">📣 Announcements</div><div id="msgs"></div><div class="post"><input id="postText" placeholder="Post to the team…"><button class="btn" onclick="postMsg()">Post</button></div></div>';
+      '<div class="panel"><div class="thead"><div><div class="tt">'+esc(t.name)+'</div><div class="meta">'+esc(t.level||'')+' · '+esc(t.age||'')+' · '+esc(t.coach||'')+' · '+((t.roster||[]).length)+' athletes</div></div><div class="sp"></div><button class="lnk" onclick="editTeam()">✎ Edit</button> <button class="btn" onclick="openEv()">＋ Event</button></div></div>'+
+      (trips.length?'<div class="panel"><div class="sec-t">Upcoming travel</div><div id="trips"></div></div>':'')+
+      '<div class="panel"><div class="sec-t">Schedule &amp; RSVP</div><div id="sched"></div></div>'+
+      '<div class="panel"><div class="sec-t">Roster</div><div class="roster">'+((t.roster||[]).map(function(a){return '<div class="ath"><div class="av">'+esc(initials(a.athlete))+'</div><div><div class="an">'+esc(a.athlete)+'</div><div class="ap">'+esc(a.parent||'')+(a.phone?' · '+esc(a.phone):'')+'</div></div></div>';}).join('')||'<div class="mut">No athletes yet.</div>')+'</div></div>'+
+      '<div class="panel"><div class="sec-t">Announcements</div><div id="msgs"></div><div class="post"><input id="postText" placeholder="Post to the team…"><button class="btn" onclick="postMsg()">Post</button></div></div>';
     if(trips.length)renderTrips(trips); renderSched(t); renderMsgs(t.name);
   }
   function renderTrips(trips){
     el('trips').innerHTML=trips.map(function(e){
       var d=e.date?e.date.split('-'):['','',''];var mo=d[1]?MOS[(+d[1])-1]:'';var dy=d[2]||'';
       return '<div class="trip"><div class="d"><div class="mo">'+mo+'</div><div class="dy">'+dy+'</div></div><div><div class="ti">'+esc(e.title||e.type)+'</div>'+
-      '<div class="tx">'+(e.location?'📍 <b>'+esc(e.location)+'</b><br>':'')+(e.hotel?'🏨 '+esc(e.hotel)+(e.hotelAddr?' · '+esc(e.hotelAddr):'')+'<br>':'')+(e.depart?'🕒 '+esc(e.depart):'')+'</div></div></div>';
+      '<div class="tx">'+(e.location?'<b>'+esc(e.location)+'</b><br>':'')+(e.hotel?''+esc(e.hotel)+(e.hotelAddr?' · '+esc(e.hotelAddr):'')+'<br>':'')+(e.depart?''+esc(e.depart):'')+'</div></div></div>';
     }).join('');
   }
   function renderSched(t){
     var evs=evsOf(t.name);
     el('sched').innerHTML=evs.length?evs.map(function(e){
       var mine=myResp[e.id];
-      var trav=isTrip(e)?'<div class="travel"><div class="th">✈️ Travel</div><div class="tr">'+(e.location?'📍 Venue: <b>'+esc(e.location)+'</b><br>':'')+(e.hotel?'🏨 Hotel: <b>'+esc(e.hotel)+'</b>'+(e.hotelAddr?' — '+esc(e.hotelAddr):'')+'<br>':'')+(e.depart?'🕒 '+esc(e.depart):'')+'</div></div>':'';
+      var trav=isTrip(e)?'<div class="travel"><div class="th">Travel</div><div class="tr">'+(e.location?'Venue: <b>'+esc(e.location)+'</b><br>':'')+(e.hotel?'Hotel: <b>'+esc(e.hotel)+'</b>'+(e.hotelAddr?' — '+esc(e.hotelAddr):'')+'<br>':'')+(e.depart?''+esc(e.depart):'')+'</div></div>':'';
       return '<div class="ev"><div class="er"><span class="type '+esc(e.type||'Event')+'">'+esc(e.type||'Event')+'</span><span class="evt">'+esc(e.title||'')+'</span><span class="sp"></span><button class="lnk" data-edit="'+esc(e.id)+'">✎</button></div>'+
-        '<div class="when">📅 <b>'+esc(e.date||'')+'</b> · '+esc(e.time||'')+(e.location&&!isTrip(e)?' · 📍 '+esc(e.location):'')+'</div>'+trav+
+        '<div class="when"><b>'+esc(e.date||'')+'</b> · '+esc(e.time||'')+(e.location&&!isTrip(e)?' · '+esc(e.location):'')+'</div>'+trav+
         '<div class="rsvp"><button class="rb go'+(mine==='go'?' on':'')+'" data-ev="'+esc(e.id)+'" data-r="go"><span class="c">'+(+e.going||0)+'</span>Going</button>'+
         '<button class="rb mb'+(mine==='mb'?' on':'')+'" data-ev="'+esc(e.id)+'" data-r="mb"><span class="c">'+(+e.maybe||0)+'</span>Maybe</button>'+
         '<button class="rb no'+(mine==='no'?' on':'')+'" data-ev="'+esc(e.id)+'" data-r="no"><span class="c">'+(+e.out||0)+'</span>Out</button></div></div>';

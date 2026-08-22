@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Enrollment &amp; Waitlists</title>
-<link rel="icon" href="/logo.svg">
+<link rel="icon" href="/icons/momentum-mark.svg">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="/config.js"></script>
 <script src="/skins.js"></script>
@@ -105,7 +105,7 @@
       }).join('');
       return '<div class="card"><div style="display:flex;align-items:center;gap:8px"><span class="nm">'+esc(k)+'</span><span class="pill '+(isFull?'full':'open')+'">'+(isFull?((+c.enrolled||0)+' / '+(+c.cap||0)+' · Full'):'Spot open!')+'</span></div>'+
         '<div class="meta">'+esc(c.day||'')+' '+esc(c.time||'')+(c.coach?' · '+esc(c.coach):'')+'</div>'+q+'</div>';
-    }).join('')||'<div class="card"><div class="none">No one is waiting — every family got a spot. 🎉</div></div>';
+    }).join('')||'<div class="card"><div class="none">No one is waiting — every family got a spot. </div></div>';
     el('queues').querySelectorAll('[data-p]').forEach(function(b){b.addEventListener('click',function(){promote(b.getAttribute('data-p'));});});
     var open=CLASSES.filter(function(c){return !full(c) && c.status!=='Upcoming';}).sort(function(a,b){return ((+b.cap||0)-(+b.enrolled||0))-((+a.cap||0)-(+a.enrolled||0));}).slice(0,8);
     el('openGrid').innerHTML=open.map(function(c){var left=(+c.cap||0)-(+c.enrolled||0);
@@ -119,7 +119,7 @@
     var chain=[];
     if(c){ c.roster=(c.roster||[]).concat([{child:w.child,family:w.family||''}]); c.enrolled=(+c.enrolled||0)+1; chain.push(window.HUBDATA.save('classes',c)); }
     w.status='Promoted'; w.promoted=new Date().toISOString().slice(0,10); chain.push(window.HUBDATA.save('waitlist',w));
-    Promise.all(chain).then(function(){ toast('Promoted '+w.child+' into '+w.class+' 🎉'); load(); });
+    Promise.all(chain).then(function(){ toast('Promoted '+w.child+' into '+w.class+' '); load(); });
   }
   function openAdd(){ ['a_class','a_child','a_family','a_phone'].forEach(function(k){el(k).value='';}); el('scrim').classList.add('on'); el('a_class').focus(); }
   function saveAdd(){ var cls=el('a_class').value.trim(), ch=el('a_child').value.trim(); if(!cls||!ch)return;

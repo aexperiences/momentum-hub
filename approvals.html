@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Approval Desk</title>
-<link rel="icon" href="/logo.svg">
+<link rel="icon" href="/icons/momentum-mark.svg">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="/config.js"></script>
 <script src="/skins.js"></script>
@@ -96,7 +96,7 @@
       return '<div class="req"><div class="hd"><span class="type '+esc(a.type)+'">'+esc(a.type)+'</span><span class="from">from '+esc(a.from||'—')+' · '+esc(String(a.ts||'').slice(0,10))+'</span></div>'+
         '<div class="item">'+esc(a.item)+'</div>'+
         '<div class="acts"><button class="ok" data-y="'+esc(a.id)+'">✓ Approve</button><button class="no" data-n="'+esc(a.id)+'">✕ Deny</button></div></div>';
-    }).join('')||'<div class="note">The desk is clear. ✨</div>';
+    }).join('')||'<div class="note">The desk is clear. </div>';
     el('history').innerHTML=done.slice(0,12).map(function(a){
       var den=a.status==='Denied';
       return '<div class="req"><div class="hd"><span class="type '+esc(a.type)+'">'+esc(a.type)+'</span><span class="from">from '+esc(a.from||'—')+'</span></div>'+

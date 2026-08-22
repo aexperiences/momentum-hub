@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Growth Funnel</title>
-<link rel="icon" href="/logo.svg">
+<link rel="icon" href="/icons/momentum-mark.svg">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="/config.js"></script>
 <script src="/skins.js"></script>
@@ -82,7 +82,7 @@
   var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
   var C=window.HUB_CONFIG||{}, BR=C.brand||{}, PC=C.programColors||{};
   var STAGES=['New','Contacted','Trial booked','Trial done','Enrolled'];
-  var ICONS={'New':'🌱','Contacted':'📞','Trial booked':'📅','Trial done':'⭐','Enrolled':'🎉'};
+  var ICONS={'New':'','Contacted':'','Trial booked':'','Trial done':'','Enrolled':''};
   var LEADS=[];
   el('eb').textContent=(BR.center||BR.name||'');
   function load(){ window.HUBDATA.list('leads').then(function(r){ LEADS=r||[]; render(); }); }
@@ -103,7 +103,7 @@
         var enrollHint=st==='Enrolled'?'<div class="note" style="color:#2f6a52">In the door — enroll them on the Classes page.</div>':'';
         return '<div class="lead"><div class="nm">'+esc(l.name)+(l.age?' <small style="color:var(--mut);font-weight:400">· '+esc(l.age)+'</small>':'')+'</div>'+
           '<div class="meta">'+esc(l.program||'')+' &nbsp;<span class="src">'+esc(l.source||'')+'</span></div>'+
-          (l.trial?'<div class="trial">📅 '+esc(l.trial)+'</div>':'')+
+          (l.trial?'<div class="trial">'+esc(l.trial)+'</div>':'')+
           (l.note?'<div class="note">'+esc(l.note)+'</div>':'')+enrollHint+
           '<div class="acts">'+fwd+(st!=='Enrolled'?'<button class="mini" data-x="'+esc(l.id)+'">Lost</button>':'')+'</div></div>';
       }).join('');

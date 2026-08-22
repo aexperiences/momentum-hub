@@ -20,7 +20,7 @@ window.HUB_CONFIG = {
     email:   "hello@momentumsportsandplay.com",
     address: "3877 N Schreiber Way, Coeur d'Alene, ID 83815",
     owners:  "Josh & Katie Terra",
-    logo:    "/logo.svg",
+    logo:    "/icons/momentum-mark.svg",
     credit:  "Powered by Accelerated Experiences, LLC"
   },
 
@@ -46,24 +46,24 @@ window.HUB_CONFIG = {
   ],
 
   sections: [
-    { k:"home",     label:"Command Center",    ic:"🏠", href:"/hub.html",      ds:"Everything you run, in one place" },
-    { k:"checkin",  label:"Check-in & Attendance", ic:"✅", href:"/checkin.html", ds:"One-tap front-desk check-in and the floor log" },
-    { k:"enroll",   label:"Enrollment & Waitlists", ic:"📝", href:"/enroll.html", ds:"Waitlist queues and one-click promotion" },
-    { k:"funnel",   label:"Growth Funnel",     ic:"🧲", href:"/funnel.html",   ds:"Every lead from first click to enrolled" },
-    { k:"schedule", label:"Classes & Schedule", ic:"📅", href:"/schedule.html", ds:"Every class, roster and fill rate" },
-    { k:"studio",   label:"Floor Studio",      ic:"🗺️", href:"/studio.html",   ds:"Rooms, rotations and the level ladders" },
-    { k:"team",     label:"Team App",          ic:"📣", href:"/team.html",     ds:"Rosters, travel and team messages" },
-    { k:"families", label:"Families & Kids",   ic:"👨‍👩‍👧", href:"/families.html", ds:"Every family, every kid, autopay status" },
-    { k:"tuition",  label:"Tuition & Billing", ic:"💳", href:"/tuition.html",  ds:"Continuous enrollment, autopay the 1st" },
-    { k:"books",    label:"Books & Margins",   ic:"📊", href:"/books.html",    ds:"Revenue, expenses and true margins" },
-    { k:"coaches",  label:"Staff & Coaches",   ic:"🏅", href:"/coaches.html",  ds:"Your team and their programs" },
-    { k:"hr",       label:"HR & Certifications", ic:"🗂️", href:"/hr.html",     ds:"Certs, expirations, payroll and onboarding" },
-    { k:"law",      label:"Waivers & Safety",  ic:"🛡️", href:"/law.html",      ds:"The waiver docket and the incident log" },
-    { k:"approvals",label:"Approval Desk",     ic:"✍️", href:"/approvals.html", ds:"Refunds, discounts and changes — owner signs" },
-    { k:"comply",   label:"Comply · Trust Center", ic:"🔒", href:"/comply.html", ds:"Live domain checks + sealed evidence chain" },
-    { k:"it",       label:"System Health",     ic:"🩺", href:"/it.html",       ds:"Every system Momentum runs on, one board" },
-    { k:"org",      label:"AI Staff",          ic:"🤖", href:"/org.html",      ds:"Frankie on duty — and the org that scales" },
-    { k:"skins",    label:"Choose Your Look",  ic:"🎨", href:"/skins.html",    ds:"Six looks, made for Momentum — tap one, the whole hub repaints" }
+    { k:"home",     label:"Command Center",    ic:"/icons/command-center.svg", href:"/hub.html",      ds:"Everything you run, in one place" },
+    { k:"checkin",  label:"Check-in & Attendance", ic:"/icons/checkin.svg", href:"/checkin.html", ds:"One-tap front-desk check-in and the floor log" },
+    { k:"enroll",   label:"Enrollment & Waitlists", ic:"/icons/enroll.svg", href:"/enroll.html", ds:"Waitlist queues and one-click promotion" },
+    { k:"funnel",   label:"Growth Funnel",     ic:"/icons/funnel.svg", href:"/funnel.html",   ds:"Every lead from first click to enrolled" },
+    { k:"schedule", label:"Classes & Schedule", ic:"/icons/schedule.svg", href:"/schedule.html", ds:"Every class, roster and fill rate" },
+    { k:"studio",   label:"Floor Studio",      ic:"/icons/studio.svg", href:"/studio.html",   ds:"Rooms, rotations and the level ladders" },
+    { k:"team",     label:"Team App",          ic:"/icons/team.svg", href:"/team.html",     ds:"Rosters, travel and team messages" },
+    { k:"families", label:"Families & Kids",   ic:"/icons/families.svg", href:"/families.html", ds:"Every family, every kid, autopay status" },
+    { k:"tuition",  label:"Tuition & Billing", ic:"/icons/tuition.svg", href:"/tuition.html",  ds:"Continuous enrollment, autopay the 1st" },
+    { k:"books",    label:"Books & Margins",   ic:"/icons/books.svg", href:"/books.html",    ds:"Revenue, expenses and true margins" },
+    { k:"coaches",  label:"Staff & Coaches",   ic:"/icons/coaches.svg", href:"/coaches.html",  ds:"Your team and their programs" },
+    { k:"hr",       label:"HR & Certifications", ic:"/icons/hr.svg", href:"/hr.html",     ds:"Certs, expirations, payroll and onboarding" },
+    { k:"law",      label:"Waivers & Safety",  ic:"/icons/law.svg", href:"/law.html",      ds:"The waiver docket and the incident log" },
+    { k:"approvals",label:"Approval Desk",     ic:"/icons/approvals.svg", href:"/approvals.html", ds:"Refunds, discounts and changes — owner signs" },
+    { k:"comply",   label:"Comply · Trust Center", ic:"/icons/comply.svg", href:"/comply.html", ds:"Live domain checks + sealed evidence chain" },
+    { k:"it",       label:"System Health",     ic:"/icons/it.svg", href:"/it.html",       ds:"Every system Momentum runs on, one board" },
+    { k:"org",      label:"AI Staff",          ic:"/icons/org.svg", href:"/org.html",      ds:"Frankie on duty — and the org that scales" },
+    { k:"skins",    label:"Choose Your Look",  ic:"/icons/skins.svg", href:"/skins.html",    ds:"Six looks, made for Momentum — tap one, the whole hub repaints" }
   ],
 
   roles: {
@@ -175,10 +175,10 @@ window.HUB_CONFIG = {
       { id:"te15", team:"Rec Cheer · Comets", type:"Event",    title:"Pep rally — local school", date:"2026-09-18", time:"3:00 PM", location:"TBD", going:5, maybe:2, out:1, notes:"Community appearance." }
     ],
     teammsgs: [
-      { id:"tms1", team:"Flare", author:"Coach Jordan", text:"Bring your competition bow AND practice bow Thursday — we run the full routine top to bottom. Hair up, no jewelry. 💪", ts:"2026-07-14T17:02:00Z" },
+      { id:"tms1", team:"Flare", author:"Coach Jordan", text:"Bring your competition bow AND practice bow Thursday — we run the full routine top to bottom. Hair up, no jewelry. ", ts:"2026-07-14T17:02:00Z" },
       { id:"tms2", team:"Flare", author:"Coach Jordan", text:"Rocky Mountain Rumble is an OVERNIGHT trip — book the Hampton Inn room block under 'Momentum' by Oct 1. Details in the Travel section above.", ts:"2026-07-15T14:20:00Z" },
       { id:"tms3", team:"Blaze",  author:"Coach Jordan", text:"New routine drops next practice! Watch the count video I sent so we can jump straight into stunt groups.", ts:"2026-07-15T15:40:00Z" },
-      { id:"tms4", team:"Radiance (Prep)", author:"Coach Jordan", text:"Our Prep athletes have their FIRST showcase Oct 3 — bring the whole family. So proud of these girls already. 🎀", ts:"2026-07-13T16:10:00Z" },
+      { id:"tms4", team:"Radiance (Prep)", author:"Coach Jordan", text:"Our Prep athletes have their FIRST showcase Oct 3 — bring the whole family. So proud of these girls already. ", ts:"2026-07-13T16:10:00Z" },
       { id:"tms5", team:"Exhibition · Sparks", author:"Coach Jordan", text:"Family Showcase tickets are on sale at the front desk — invite grandparents! Sparks perform first, so please arrive by 9:30.", ts:"2026-07-15T18:05:00Z" },
       { id:"tms6", team:"Rec Cheer · Comets", author:"Coach Jordan", text:"Fun one coming up: we've been invited to a local pep rally Sept 18. Totally optional, but a blast. Let me know if your cheerleader is in!", ts:"2026-07-12T13:30:00Z" }
     ],

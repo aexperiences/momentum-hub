@@ -57,7 +57,7 @@
     ".hn-link{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px;color:var(--ink2);text-decoration:none;font-size:14px;transition:background .14s,color .14s}" +
     ".hn-link:hover{background:rgba(0,0,0,.05);color:var(--ink)}" +
     ".hn-link.active{background:rgba(0,0,0,.05);color:var(--accent);box-shadow:inset 3px 0 0 var(--accent);font-weight:600}" +
-    ".hn-ic{font-size:16px;width:20px;text-align:center;flex:none}" +
+    ".hn-ic{width:22px;height:22px;border-radius:6px;flex:none;display:block}" +
     ".hn-foot{margin-top:auto;padding-top:14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:9px}" +
     ".hn-who{font-size:12px;color:var(--mut);line-height:1.5}.hn-who b{color:var(--accent)}" +
     ".hn-acts{display:flex;gap:8px}.hn-acts a{flex:1;text-align:center;font-size:12px;padding:8px;border-radius:8px;text-decoration:none;border:1px solid var(--line);color:var(--ink2);cursor:pointer}.hn-acts a:hover{background:rgba(0,0,0,.04)}" +
@@ -96,7 +96,7 @@
       var items = (d.keys || []).filter(function (k) { return keys.indexOf(k) >= 0; }).map(function (k) { return SECTIONS.filter(function (s) { return s.k === k; })[0]; }).filter(Boolean);
       if (!items.length) return;
       if (d.name) { html += '<div class="hn-dept' + (first ? " first" : "") + '">' + esc(d.name) + "</div>"; }
-      items.forEach(function (s) { html += '<a class="hn-link' + (s.k === here ? " active" : "") + '" href="' + s.href + S + '"><span class="hn-ic">' + (s.ic || "•") + "</span>" + esc(s.label) + "</a>"; });
+      items.forEach(function (s) { html += '<a class="hn-link' + (s.k === here ? " active" : "") + '" href="' + s.href + S + '"><img class="hn-ic" alt="" src="' + (s.ic || "") + '">' + esc(s.label) + "</a>"; });
       first = false;
     });
     document.getElementById("hnLinks").innerHTML = html;
@@ -119,7 +119,7 @@
       if (document.querySelector("header")) return;
       var sec = curSec();
       var ebEl = document.querySelector(".eyebrow"), h1El = document.querySelector("h1");
-      var title = sec ? (sec.ic + " " + sec.label) : ((h1El && h1El.textContent.trim()) || BR.name);
+      var title = sec ? sec.label : ((h1El && h1El.textContent.trim()) || BR.name);
       var sub = (ebEl && ebEl.textContent.trim()) || BR.name;
       var hdr = document.createElement("header"); hdr.className = "hn-hdr";
       hdr.innerHTML = '<div class="hn-hb"><div><div class="hn-htitle">' + esc(title) + '</div><div class="hn-hsub">' + esc(sub) + '</div></div><div class="hn-hsp"></div><span class="hn-hrole" id="hnHdrRole"></span></div>';

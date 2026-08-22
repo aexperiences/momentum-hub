@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Classes &amp; Schedule</title>
-<link rel="icon" href="/logo.svg">
+<link rel="icon" href="/icons/momentum-mark.svg">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="/config.js"></script>
 <script src="/skins.js"></script>
@@ -139,7 +139,7 @@
       var badge=c.status==='Upcoming'?'<span class="pill up">Upcoming</span>':(full(c)?'<span class="pill full">Full · waitlist</span>':'');
       return '<div class="card" data-id="'+esc(c.id)+'"><div class="row"><span class="tag" style="background:'+pcolor(c.program)+'">'+esc(c.program)+'</span>'+badge+'</div>'+
         '<div class="nm">'+esc(c.name||'')+'</div><div class="meta">'+esc(c.ages||'')+(c.level?' · '+esc(c.level):'')+'</div>'+
-        '<div class="when">📅 <b>'+esc(c.day||'')+'</b> · '+esc(c.time||'')+' &nbsp; 🏅 '+esc(c.coach||'')+'</div>'+
+        '<div class="when"><b>'+esc(c.day||'')+'</b> · '+esc(c.time||'')+' &nbsp; '+esc(c.coach||'')+'</div>'+
         '<div class="bar2"><i class="'+(full(c)?'full':'')+'" style="width:'+pct+'%"></i></div>'+
         '<div class="row"><span class="fill"><b>'+(+c.enrolled||0)+'</b> / '+(+c.cap||0)+' · '+esc(c.room||'')+'</span><span class="tu">'+money(c.tuition)+'<small>/mo</small></span></div></div>';
     }).join('')||'<div class="stat">No classes in this program.</div>';
