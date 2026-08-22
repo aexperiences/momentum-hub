@@ -26,26 +26,46 @@
   .tile .ds{font-size:12.5px;color:var(--mut)}
   .credit{color:var(--mut);font-size:12px;text-align:center;margin-top:34px}
   .credit b{color:var(--ink2)}
-  /* Command Center cockpit — colored graphs off the live seed */
-  .cockpit{margin:0 0 22px;display:flex;flex-direction:column;gap:14px}
-  .cc-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
-  .cc-stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px;box-shadow:0 6px 18px rgba(60,45,20,.06)}
-  .cc-n{font-family:Georgia,serif;font-weight:800;font-size:26px;color:var(--accent);line-height:1}
-  .cc-l{font-size:11.5px;color:var(--mut);margin-top:5px;text-transform:uppercase;letter-spacing:.08em}
+  /* Command Center cockpit — computed live from the seed. Status colors are RESERVED
+     (ok / nearly full / full) and never follow the skin; everything else does. */
+  .cockpit{margin:0 0 22px;display:flex;flex-direction:column;gap:14px;
+    --cc-ok:#0f9d9d;--cc-warn:#dda12e;--cc-full:#c2492a}
+  .cc-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+  .cc-stat{position:relative;background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:15px 16px 15px 19px;box-shadow:0 6px 18px rgba(60,45,20,.06);overflow:hidden}
+  .cc-stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent)}
+  .cc-n{font-family:Georgia,serif;font-weight:800;font-size:27px;color:var(--ink);line-height:1;
+    font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+  .cc-l{font-size:11px;color:var(--mut);margin-top:6px;text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+  .cc-ctx{font-size:11.5px;color:var(--mut);margin-top:7px;padding-top:7px;border-top:1px dotted var(--line)}
   .cc-cols{display:grid;grid-template-columns:1.6fr 1fr;gap:14px}
   @media(max-width:720px){.cc-cols{grid-template-columns:1fr}}
   .cc-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 17px;box-shadow:0 6px 18px rgba(60,45,20,.06)}
-  .cc-h{font-family:Georgia,serif;font-weight:700;font-size:15px;margin-bottom:12px}
-  .cc-row{display:flex;align-items:center;gap:10px;margin:7px 0;font-size:12.5px}
-  .cc-pl{width:96px;flex:none;color:var(--ink2)}
-  .cc-track{flex:1;height:12px;background:var(--line);border-radius:99px;overflow:hidden}
-  .cc-track i{display:block;height:100%;border-radius:99px;transition:width .6s ease}
-  .cc-pv{width:52px;flex:none;text-align:right;color:var(--mut);font-variant-numeric:tabular-nums}
-  .cc-dcard{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-  .cc-donut{width:132px;height:132px;border-radius:50%;display:grid;place-items:center;margin:4px 0 10px}
-  .cc-donut span{width:96px;height:96px;background:var(--card);border-radius:50%;display:grid;place-items:center;flex-direction:column;font-family:Georgia,serif;font-weight:800;font-size:26px;color:var(--accent)}
-  .cc-donut small{display:block;font-size:10.5px;color:var(--mut);font-weight:600;letter-spacing:.08em;text-transform:uppercase}
-  .cc-sub{font-size:12px;color:var(--mut)}
+  .cc-h{font-family:Georgia,serif;font-weight:700;font-size:15px}
+  .cc-hs{font-size:11.5px;color:var(--mut);margin:3px 0 13px}
+  .cc-row{display:flex;align-items:center;gap:10px;margin:9px 0;font-size:12.5px}
+  .cc-pl{width:92px;flex:none;color:var(--ink2)}
+  .cc-track{flex:1;height:14px;background:var(--cream);border-radius:99px;position:relative;overflow:hidden}
+  .cc-track i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;transition:width .6s ease}
+  .cc-pv{width:56px;flex:none;text-align:right;color:var(--ink2);font-variant-numeric:tabular-nums;font-weight:600}
+  .cc-chip{flex:none;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    padding:2px 7px;border-radius:99px;border:1px solid currentColor;width:74px;text-align:center}
+  .cc-chip.is-none{border-color:transparent;color:transparent}
+  .cc-key{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);
+    font-size:11.5px;color:var(--mut)}
+  .cc-key b{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+  .cc-dcard{display:flex;flex-direction:column}
+  .cc-dwrap{display:flex;align-items:center;gap:16px;margin-top:4px}
+  .cc-donut{width:118px;height:118px;border-radius:50%;flex:none;display:grid;place-items:center}
+  .cc-donut span{width:86px;height:86px;background:var(--card);border-radius:50%;display:flex;align-items:center;
+    justify-content:center;flex-direction:column;font-family:Georgia,serif;font-weight:800;font-size:24px;
+    color:var(--ink);font-variant-numeric:tabular-nums}
+  .cc-donut small{display:block;font-size:9.5px;color:var(--mut);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+  .cc-dleg{font-size:12px;color:var(--ink2);display:flex;flex-direction:column;gap:7px}
+  .cc-dleg div{display:flex;align-items:center;gap:7px}
+  .cc-dleg b{width:10px;height:10px;border-radius:3px;flex:none}
+  .cc-dleg em{font-style:normal;color:var(--mut);font-variant-numeric:tabular-nums}
+  .cc-sub{font-size:11.5px;color:var(--mut);margin-top:13px;padding-top:11px;border-top:1px solid var(--line)}
 </style>
 </head>
 <body>
@@ -92,17 +112,55 @@
   var fill=cap?Math.round(enrolled/cap*100):0;
   function render(keys){
     var el=document.getElementById('cockpit'); if(!el)return;
+    /* Status colours are RESERVED and do not follow the skin — but they do get a dark-mode
+       step, validated against the dark surface rather than flipped automatically. */
+    var isDark=!!((window.HUB_CONFIG||{}).activeSkin||{}).dark;
+    el.style.setProperty('--cc-warn', isDark?'#b8862a':'#dda12e');
+    el.style.setProperty('--cc-full', isDark?'#e2607a':'#c2492a');
     var canEnroll=keys.indexOf('enroll')>=0||keys.indexOf('tuition')>=0, canMoney=keys.indexOf('books')>=0;
     if(!canEnroll){el.hidden=true;return;}
-    var cards=[['Kids enrolled',enrolled],['Classes running',classes.length],['Families',fams.length]];
-    cards.push(canMoney?['Monthly tuition',money(monthly)]:['Full · waitlist',wait]);
-    var cardsH=cards.map(function(c){return '<div class="cc-stat"><div class="cc-n">'+c[1]+'</div><div class="cc-l">'+c[0]+'</div></div>';}).join('');
-    var bars=Object.keys(byP).map(function(p){var d=byP[p],pct=d.c?Math.round(d.e/d.c*100):0,col=PC[p]||'var(--accent)';
-      return '<div class="cc-row"><span class="cc-pl">'+p+'</span><span class="cc-track"><i style="width:'+pct+'%;background:'+col+'"></i></span><span class="cc-pv">'+d.e+'/'+d.c+'</span></div>';}).join('');
-    var don='<div class="cc-donut" style="background:conic-gradient(var(--accent) '+(fill*3.6)+'deg,var(--line) 0)"><span>'+fill+'%<small>full</small></span></div>';
+    var progN=Object.keys(byP).length, kidsPer=fams.length?(enrolled/fams.length):0;
+    var cards=[['Kids enrolled',enrolled,'of '+cap+' seats across the gym'],
+               ['Classes running',classes.length,'across '+progN+' program'+(progN===1?'':'s')],
+               ['Families',fams.length,fams.length?(Math.round(kidsPer*10)/10)+' kids per family':'']];
+    cards.push(canMoney?['Monthly tuition',money(monthly),enrolled?money(monthly/enrolled)+' a kid':'']
+                       :['Full · waitlist',wait,wait?'class'+(wait===1?'':'es')+' at capacity':'every class has room']);
+    var cardsH=cards.map(function(c){return '<div class="cc-stat"><div class="cc-n">'+c[1]+'</div><div class="cc-l">'+c[0]+'</div>'+
+      (c[2]?'<div class="cc-ctx">'+c[2]+'</div>':'')+'</div>';}).join('');
+    var nFull=0,nWarn=0;
+    var bars=Object.keys(byP).map(function(p){
+      var d=byP[p],pct=d.c?Math.round(d.e/d.c*100):0;
+      var state=pct>=100?'full':(pct>=90?'warn':'ok');
+      if(state==='full')nFull++; else if(state==='warn')nWarn++;
+      var col=state==='full'?'var(--cc-full)':(state==='warn'?'var(--cc-warn)':'var(--accent)');
+      var chip=state==='full'?'<span class="cc-chip" style="color:var(--cc-full)">Full</span>'
+              :(state==='warn'?'<span class="cc-chip" style="color:var(--cc-warn)">'+(d.c-d.e)+' left</span>'
+              :'<span class="cc-chip is-none">.</span>');
+      return '<div class="cc-row"><span class="cc-pl">'+p+'</span>'+
+        '<span class="cc-track"><i style="width:'+Math.min(pct,100)+'%;background:'+col+'"></i></span>'+
+        '<span class="cc-pv">'+d.e+'/'+d.c+'</span>'+chip+'</div>';}).join('');
+    var key='<div class="cc-key">'+
+      '<span><b style="background:var(--accent)"></b>Room to grow</span>'+
+      '<span><b style="background:var(--cc-warn)"></b>Nearly full — 90% or more</span>'+
+      '<span><b style="background:var(--cc-full)"></b>Full — the rest go on a waitlist</span></div>';
+    var open=Math.max(cap-enrolled,0);
+    var don='<div class="cc-dwrap"><div class="cc-donut" style="background:conic-gradient(var(--accent) '+(fill*3.6)+'deg,var(--cream) 0)">'+
+      '<span>'+fill+'%<small>full</small></span></div>'+
+      '<div class="cc-dleg">'+
+        '<div><b style="background:var(--accent)"></b>Seats taken <em>'+enrolled+'</em></div>'+
+        '<div><b style="background:var(--cream);box-shadow:inset 0 0 0 1px var(--line)"></b>Seats open <em>'+open+'</em></div>'+
+        '<div><b style="background:var(--cc-full)"></b>Classes full <em>'+wait+'</em></div>'+
+      '</div></div>';
+    var head=nFull?(nFull+' program'+(nFull===1?' is':'s are')+' full'+(nWarn?', '+nWarn+' nearly there':''))
+                  :(nWarn?nWarn+' program'+(nWarn===1?' is':'s are')+' nearly full':'every program still has room');
     el.innerHTML='<div class="cc-stats">'+cardsH+'</div>'+
-      '<div class="cc-cols"><div class="cc-card"><div class="cc-h">Enrollment by program</div>'+bars+'</div>'+
-      '<div class="cc-card cc-dcard"><div class="cc-h">Gym fill rate</div>'+don+'<div class="cc-sub">'+enrolled+' of '+cap+' seats filled'+(canMoney?' · '+wait+' full/waitlist':'')+'</div></div></div>';
+      '<div class="cc-cols">'+
+        '<div class="cc-card"><div class="cc-h">Enrollment by program</div>'+
+          '<div class="cc-hs">Seats taken against seats available \u2014 '+head+'.</div>'+bars+key+'</div>'+
+        '<div class="cc-card cc-dcard"><div class="cc-h">Gym fill rate</div>'+
+          '<div class="cc-hs">Every class, added up.</div>'+don+
+          '<div class="cc-sub">'+enrolled+' of '+cap+' seats filled across '+classes.length+' classes. Computed live from the roster \u2014 nothing typed in.</div></div>'+
+      '</div>';
     el.hidden=false;
   }
   (window.hubWho||Promise.resolve(null)).then(function(w){
