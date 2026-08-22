@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+<defs>
+<linearGradient id="gsk" x1="0" y1="0" x2="0.65" y2="1">
+<stop offset="0%" stop-color="#8a7360"/><stop offset="55%" stop-color="#42301f"/><stop offset="100%" stop-color="#170d05"/></linearGradient>
+<radialGradient id="glsk" cx="32%" cy="6%" r="80%">
+<stop offset="0%" stop-color="#ffffff" stop-opacity=".26"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+
+</defs>
+<rect x="0" y="0" width="1024" height="1024" fill="url(#gsk)"/>
+<g id="art" transform="translate(107.02,84.87) scale(1.5820)">
+
+
+<ellipse cx="262" cy="488" rx="196" ry="26" fill="#2a1810" opacity=".24"/>
+<circle cx="262" cy="264" r="214" fill="#2a1810" opacity=".30"/>
+<circle cx="256" cy="252" r="226" fill="#faf6ee"/>
+<path d="M264.2 38.2 A214 214 0 0 1 437.1 138.0 L364.3 183.8 A128 128 0 0 0 260.9 124.1 Z" fill="#a35c22" opacity="1.0"/><path d="M445.3 152.2 A214 214 0 0 1 445.3 351.8 L369.2 311.7 A128 128 0 0 0 369.2 192.3 Z" fill="#d95d43" opacity="1.0"/><path d="M437.1 366.0 A214 214 0 0 1 264.2 465.8 L260.9 379.9 A128 128 0 0 0 364.3 320.2 Z" fill="#8e4a9e" opacity="1.0"/><path d="M247.8 465.8 A214 214 0 0 1 74.9 366.0 L147.7 320.2 A128 128 0 0 0 251.1 379.9 Z" fill="#0f9d9d" opacity="1.0"/><path d="M66.7 351.8 A214 214 0 0 1 66.7 152.2 L142.8 192.3 A128 128 0 0 0 142.8 311.7 Z" fill="#5c7f3f" opacity="1.0"/><path d="M74.9 138.0 A214 214 0 0 1 247.8 38.2 L251.1 124.1 A128 128 0 0 0 147.7 183.8 Z" fill="#2fc4b2" opacity="1.0"/><path d="M261.6 106.1 A146 146 0 0 1 379.5 174.2 L364.3 183.8 A128 128 0 0 0 260.9 124.1 Z" fill="#794419" opacity="1.0"/><path d="M385.1 183.9 A146 146 0 0 1 385.1 320.1 L369.2 311.7 A128 128 0 0 0 369.2 192.3 Z" fill="#a14532" opacity="1.0"/><path d="M379.5 329.8 A146 146 0 0 1 261.6 397.9 L260.9 379.9 A128 128 0 0 0 364.3 320.2 Z" fill="#693775" opacity="1.0"/><path d="M250.4 397.9 A146 146 0 0 1 132.5 329.8 L147.7 320.2 A128 128 0 0 0 251.1 379.9 Z" fill="#0b7474" opacity="1.0"/><path d="M126.9 320.1 A146 146 0 0 1 126.9 183.9 L142.8 192.3 A128 128 0 0 0 142.8 311.7 Z" fill="#445e2f" opacity="1.0"/><path d="M132.5 174.2 A146 146 0 0 1 250.4 106.1 L251.1 124.1 A128 128 0 0 0 147.7 183.8 Z" fill="#239184" opacity="1.0"/><path d="M264.2 38.2 A214 214 0 0 1 437.1 138.0 L423.5 146.5 A198 198 0 0 0 263.6 54.1 Z" fill="#c2936d" opacity="1.0"/><path d="M445.3 152.2 A214 214 0 0 1 445.3 351.8 L431.1 344.3 A198 198 0 0 0 431.1 159.7 Z" fill="#e69483" opacity="1.0"/><path d="M437.1 366.0 A214 214 0 0 1 264.2 465.8 L263.6 449.9 A198 198 0 0 0 423.5 357.5 Z" fill="#b488bf" opacity="1.0"/><path d="M247.8 465.8 A214 214 0 0 1 74.9 366.0 L88.5 357.5 A198 198 0 0 0 248.4 449.9 Z" fill="#61bebe" opacity="1.0"/><path d="M66.7 351.8 A214 214 0 0 1 66.7 152.2 L80.9 159.7 A198 198 0 0 0 80.9 344.3 Z" fill="#93ab80" opacity="1.0"/><path d="M74.9 138.0 A214 214 0 0 1 247.8 38.2 L248.4 54.1 A198 198 0 0 0 88.5 146.5 Z" fill="#76d8cc" opacity="1.0"/>
+
+<!-- the selector, sitting on the look that's on -->
+<path d="M252.8 479.0 A227 227 0 0 1 61.0 368.2 L157.2 310.9 A115 115 0 0 0 254.4 367.0 Z" fill="#faf6ee" opacity="1.0"/>
+<path d="M247.8 465.8 A214 214 0 0 1 74.9 366.0 L147.7 320.2 A128 128 0 0 0 251.1 379.9 Z" fill="#0f9d9d" opacity="1.0"/>
+<path d="M247.8 465.8 A214 214 0 0 1 74.9 366.0 L88.5 357.5 A198 198 0 0 0 248.4 449.9 Z" fill="#61bebe" opacity="1.0"/>
+<path d="M250.4 397.9 A146 146 0 0 1 132.5 329.8 L147.7 320.2 A128 128 0 0 0 251.1 379.9 Z" fill="#0b7474" opacity="1.0"/>
+
+<!-- wearing it now -->
+<circle cx="256" cy="252" r="114" fill="#faf6ee"/>
+<circle cx="256" cy="252" r="100" fill="#0a6e6e"/>
+<circle cx="256" cy="248" r="100" fill="#0f9d9d"/>
+<path d="M210 246 L242 280 L304 214" fill="none" stroke="#faf6ee"
+      stroke-width="19" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M194 200 A100 100 0 0 1 262 156" fill="none" stroke="#fff"
+      stroke-width="12" stroke-linecap="round" opacity=".26"/>
+
+</g>
+<rect x="0" y="0" width="1024" height="1024" fill="url(#glsk)"/>
+
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="Momentum">
+<defs>
+<linearGradient id="mmt" x1="0" y1="0" x2="0.65" y2="1">
+<stop offset="0%" stop-color="#3fd6c6"/><stop offset="55%" stop-color="#0f9d9d"/><stop offset="100%" stop-color="#0a5f5f"/></linearGradient>
+<radialGradient id="mmg" cx="32%" cy="6%" r="80%">
+<stop offset="0%" stop-color="#ffffff" stop-opacity=".26"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+</defs>
+<rect x="0" y="0" width="1024" height="1024" fill="url(#mmt)"/>
+<g transform="translate(512,512) scale(0.83,-0.83) translate(-459.5,-369.5)">
+  <path d="M76 0H150V658L427 0H491L769 658V0H843V739H728L460 110L191 739H76Z" fill="#faf6ee"/>
+</g>
+<rect x="0" y="0" width="1024" height="1024" fill="url(#mmg)"/>
+</svg>
