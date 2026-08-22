@@ -152,6 +152,24 @@
     .door .dn{font-size:20px}
   }
 </style>
+<style>
+/* ============================================================
+   ALWAYS-VISIBLE SCROLLBARS
+   macOS hides overlay scrollbars until you start scrolling, which leaves
+   anyone who navigates by DRAGGING the bar with nothing to grab - the page
+   just looks like it ends. Styling ::-webkit-scrollbar brings the classic,
+   always-on bar back. Neutral grey so it sits on any skin, light or dark.
+   Accelerated Experiences, LLC.
+   ============================================================ */
+html{scrollbar-gutter:stable}
+*{scrollbar-width:auto;scrollbar-color:rgba(136,136,136,.62) rgba(136,136,136,.14)}
+::-webkit-scrollbar{width:15px;height:15px}
+::-webkit-scrollbar-track{background:rgba(136,136,136,.14);border-radius:10px}
+::-webkit-scrollbar-thumb{background:rgba(136,136,136,.62);border-radius:10px;border:3px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:rgba(136,136,136,.82);border:3px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:active{background:rgba(136,136,136,.95);border:3px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-corner{background:transparent}
+</style>
 </head>
 <body>
 

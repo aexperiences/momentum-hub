@@ -20,6 +20,9 @@ window.HUB_CONFIG = {
     email:   "hello@momentumsportsandplay.com",
     address: "3877 N Schreiber Way, Coeur d'Alene, ID 83815",
     owners:  "Josh & Katie Terra",
+    website:      "https://momentum-site-accelerated-experiences.vercel.app",
+    websiteLabel: "Your website",
+    websiteNote:  "What families see",
     logo:    "/icons/momentum-mark.svg",
     credit:  "Powered by Accelerated Experiences, LLC"
   },

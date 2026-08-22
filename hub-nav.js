@@ -58,6 +58,13 @@
     ".hn-link:hover{background:rgba(0,0,0,.05);color:var(--ink)}" +
     ".hn-link.active{background:rgba(0,0,0,.05);color:var(--accent);box-shadow:inset 3px 0 0 var(--accent);font-weight:600}" +
     ".hn-ic{width:30px;height:30px;border-radius:8px;flex:none;display:block}" +
+    ".hn-site{display:flex;align-items:center;gap:10px;text-decoration:none;margin-top:14px;padding:11px 12px;border:1px solid var(--line);border-radius:11px;background:rgba(255,255,255,.04);color:var(--ink);transition:background .15s,border-color .15s}" +
+    ".hn-site:hover{background:var(--accent);border-color:var(--accent);color:var(--onAccent)}" +
+    ".hn-site svg{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:1.7}" +
+    ".hn-site .t{flex:1;min-width:0}" +
+    ".hn-site .l{font-size:13px;font-weight:700;line-height:1.2}" +
+    ".hn-site .n{font-size:11px;opacity:.72;margin-top:2px}" +
+    ".hn-site .x{font-size:13px;opacity:.6}" +
     ".hn-foot{margin-top:auto;padding-top:14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:9px}" +
     ".hn-who{font-size:12px;color:var(--mut);line-height:1.5}.hn-who b{color:var(--accent)}" +
     ".hn-acts{display:flex;gap:8px}.hn-acts a{flex:1;text-align:center;font-size:12px;padding:8px;border-radius:8px;text-decoration:none;border:1px solid var(--line);color:var(--ink2);cursor:pointer}.hn-acts a:hover{background:rgba(0,0,0,.04)}" +
@@ -69,6 +76,7 @@
     ".hn-htitle{font-family:Georgia,serif;font-weight:700;font-size:19px;line-height:1.1}.hn-hsub{font-size:11px;opacity:.85;margin-top:2px}.hn-hsp{flex:1}" +
     ".hn-hrole{font-size:11px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);padding:5px 10px;border-radius:99px}.hn-hrole:empty{display:none}" +
     "@media(max-width:900px){.hn-hb{padding-left:60px}}";
+  css += "html{scrollbar-gutter:stable}*{scrollbar-width:auto;scrollbar-color:rgba(136,136,136,.62) rgba(136,136,136,.14)}::-webkit-scrollbar{width:15px;height:15px}::-webkit-scrollbar-track{background:rgba(136,136,136,.14);border-radius:10px}::-webkit-scrollbar-thumb{background:rgba(136,136,136,.62);border-radius:10px;border:3px solid transparent;background-clip:padding-box}::-webkit-scrollbar-thumb:hover{background:rgba(136,136,136,.82);border:3px solid transparent;background-clip:padding-box}::-webkit-scrollbar-thumb:active{background:rgba(136,136,136,.95);border:3px solid transparent;background-clip:padding-box}::-webkit-scrollbar-corner{background:transparent}";
   var st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
 
   var logoImg = BR.logo ? ('<img class="hn-mark" src="' + esc(BR.logo) + '" alt="" onerror="this.replaceWith(Object.assign(document.createElement(\'span\'),{className:\'hn-mark\',textContent:\'' + esc((BR.short || "H")[0]) + '\'}))">') : ('<span class="hn-mark">' + esc((BR.short || "H")[0]) + '</span>');
@@ -80,6 +88,13 @@
     '<div class="hn-tag">' + esc(BR.tagline || "") + '</div>' +
     '<nav class="hn-links" id="hnLinks"></nav>' +
     '<div class="hn-foot"><div class="hn-who" id="hnWho">Loading…</div>' +
+    (BR.website
+      ? '<a class="hn-site" href="' + esc(BR.website) + '" target="_blank" rel="noopener">' +
+        '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 2.6 15.4 0 18M12 3C9.4 5.6 9.4 18.4 12 21"/></svg>' +
+        '<span class="t"><span class="l">' + esc(BR.websiteLabel || 'Your website') + '</span>' +
+        (BR.websiteNote ? '<span class="n">' + esc(BR.websiteNote) + '</span>' : '') + '</span>' +
+        '<span class="x">&#8599;</span></a>'
+      : '') +
     '<div class="hn-acts"><a href="/signin.html">Switch role</a><a id="hnOut">Sign out</a></div></div>';
   var openBtn = document.createElement("button");
   openBtn.className = "hn-openbtn"; openBtn.setAttribute("aria-label", "Open menu"); openBtn.innerHTML = "&#9776;"; openBtn.onclick = function () { window.hubToggle(); };
