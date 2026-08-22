@@ -5,6 +5,7 @@
 
 const KV_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || "";
 const KV_TOK = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || "";
+const NS = (process.env.HUB_NS || "momentum") + ":"; // key namespace — keeps this hub's keys out of any other hub sharing the same store
 const ADMIN_PASS = process.env.HUB_ADMIN_PASS || "";
 const configured = !!(KV_URL && KV_TOK);
 const TTL = 60 * 60 * 12; // 12h
@@ -25,7 +26,7 @@ export default async function handler(req, res) {
   if ((q.do || "") === "whoami") {
     const t = q.t || "";
     if (!t || !configured) { res.status(200).json({ roles: ["guest"], role: "guest", name: "" }); return; }
-    let raw = null; try { raw = await kvGet("hub:sess:" + t); } catch (_) {}
+    let raw = null; try { raw = await kvGet(NS + "sess:" + t); } catch (_) {}
     if (!raw) { res.status(200).json({ roles: ["guest"], role: "guest", name: "" }); return; }
     const s = String(raw), i = s.indexOf("|");
     const role = i >= 0 ? s.slice(0, i) : "guest", name = i >= 0 ? s.slice(i + 1) : "";
@@ -44,7 +45,7 @@ export default async function handler(req, res) {
     }
     if (!configured) { res.status(200).json({ ok: false, error: "NOKV", message: "Add KV_REST_API_URL + KV_REST_API_TOKEN to enable sign-in." }); return; }
     const t = token();
-    try { await kvSetEx("hub:sess:" + t, role + "|" + name, TTL); } catch (_) { res.status(200).json({ ok: false, message: "Could not start a session." }); return; }
+    try { await kvSetEx(NS + "sess:" + t, role + "|" + name, TTL); } catch (_) { res.status(200).json({ ok: false, message: "Could not start a session." }); return; }
     res.status(200).json({ ok: true, token: t, role, name });
     return;
   }

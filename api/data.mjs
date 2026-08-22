@@ -5,16 +5,17 @@
 
 const KV_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || "";
 const KV_TOK = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || "";
+const NS = (process.env.HUB_NS || "momentum") + ":"; // key namespace — keeps this hub's keys out of any other hub sharing the same store
 const configured = !!(KV_URL && KV_TOK);
 
 async function kvGet(k) { const r = await fetch(`${KV_URL}/get/${encodeURIComponent(k)}`, { headers: { Authorization: `Bearer ${KV_TOK}` } }); return (await r.json()).result; }
 async function kvSet(k, v) { await fetch(`${KV_URL}/set/${encodeURIComponent(k)}`, { method: "POST", headers: { Authorization: `Bearer ${KV_TOK}`, "Content-Type": "text/plain" }, body: v }); }
-async function roleOf(t) { if (!t || !configured) return "guest"; let raw = null; try { raw = await kvGet("hub:sess:" + t); } catch (_) {} if (!raw) return "guest"; const s = String(raw), i = s.indexOf("|"); return i >= 0 ? s.slice(0, i) : "guest"; }
+async function roleOf(t) { if (!t || !configured) return "guest"; let raw = null; try { raw = await kvGet(NS + "sess:" + t); } catch (_) {} if (!raw) return "guest"; const s = String(raw), i = s.indexOf("|"); return i >= 0 ? s.slice(0, i) : "guest"; }
 
 const clean = (s, n) => String(s == null ? "" : s).replace(/[^a-z0-9_-]/gi, "").slice(0, n || 40);
 const id = () => (Date.now().toString(36) + Math.random().toString(36).slice(2, 8));
-async function loadCol(name) { let a = null; try { const raw = await kvGet("hub:col:" + name); if (raw) a = JSON.parse(raw); } catch (_) {} return Array.isArray(a) ? a : []; }
-async function saveCol(name, arr) { await kvSet("hub:col:" + name, JSON.stringify(arr.slice(0, 5000))); }
+async function loadCol(name) { let a = null; try { const raw = await kvGet(NS + "col:" + name); if (raw) a = JSON.parse(raw); } catch (_) {} return Array.isArray(a) ? a : []; }
+async function saveCol(name, arr) { await kvSet(NS + "col:" + name, JSON.stringify(arr.slice(0, 5000))); }
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");

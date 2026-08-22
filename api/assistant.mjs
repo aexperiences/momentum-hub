@@ -5,11 +5,12 @@
 
 const KV_URL   = process.env.KV_REST_API_URL   || process.env.UPSTASH_REDIS_REST_URL   || "";
 const KV_TOK   = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || "";
+const NS = (process.env.HUB_NS || "momentum") + ":"; // key namespace — keeps this hub's keys out of any other hub sharing the same store
 const DEEPSEEK = process.env.DEEPSEEK_API_KEY   || "";
 const configured = !!(KV_URL && KV_TOK);
 
 async function kvGet(k) { const r = await fetch(`${KV_URL}/get/${encodeURIComponent(k)}`, { headers: { Authorization: `Bearer ${KV_TOK}` } }); return (await r.json()).result; }
-async function roleOf(t) { if (!t || !configured) return "guest"; let raw = null; try { raw = await kvGet("hub:sess:" + t); } catch (_) {} if (!raw) return "guest"; const s = String(raw), i = s.indexOf("|"); return i >= 0 ? s.slice(0, i) : "guest"; }
+async function roleOf(t) { if (!t || !configured) return "guest"; let raw = null; try { raw = await kvGet(NS + "sess:" + t); } catch (_) {} if (!raw) return "guest"; const s = String(raw), i = s.indexOf("|"); return i >= 0 ? s.slice(0, i) : "guest"; }
 const clean = (s, n) => String(s == null ? "" : s).slice(0, n || 4000);
 
 const HONESTY = " Ground every answer in the real data you are given. NEVER invent facts — names, dates, numbers, prices, quotes. If you don't know or weren't given it, say so or say 'verify'. Be warm, concise, and useful.";
