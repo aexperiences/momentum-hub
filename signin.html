@@ -72,6 +72,9 @@
 </div>
 <script>
 (function(){
+  /* Every other page gets its colours from hub-nav.js. This one has no nav, which is why it
+     used to render as a bare white card while the rest of the hub wore the house skin. */
+  try{ if(window.HubSkins) window.HubSkins.applyLive(window.HubSkins.currentId()); }catch(e){}
   var C=window.HUB_CONFIG||{}, BR=C.brand||{}, R=C.roles||{}, P=C.rolePretty||{}, SEC=C.sections||[];
   var ALL=SEC.length;
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
@@ -86,7 +89,12 @@
     var head=names.slice(0,3).join(' · ');
     return head + (names.length>3 ? ' · +'+(names.length-3)+' more' : '');
   }
-  function initials(r){ var t=P[r]||r; return t.replace(/[^A-Za-z ]/g,'').trim().split(/\s+/).slice(0,2).map(function(w){return w[0];}).join('').toUpperCase(); }
+  var BADGE={ manager:'OW', frontdesk:'FD', coach:'CO', trainee:'CT', teacher:'TE', parent:'PA', admin:'AE' };
+  function initials(r){
+    if(BADGE[r]) return BADGE[r];
+    var t=String(P[r]||r).replace(/[^A-Za-z ]/g,'').trim().split(/\s+/);
+    return ((t[0]||' ')[0]+((t[1]||'')[0]||'')).toUpperCase();
+  }
 
   document.getElementById('ttl').textContent = BR.short ? ('Your gym · '+BR.short) : 'Your gym';
   document.getElementById('sub').innerHTML = 'Pick your seat — <b>one click, no password</b>.<br>Everybody walks into their own view of '+esc(BR.name||'the gym')+'.';
