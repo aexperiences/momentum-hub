@@ -9,7 +9,7 @@
   var name = AS.name || "Assistant";
 
   var css =
-    ".as-fab{position:fixed;right:18px;bottom:18px;z-index:1400;width:54px;height:54px;border-radius:50%;border:none;cursor:pointer;font-size:23px;background:linear-gradient(180deg,var(--accent),var(--accent2));color:var(--onAccent);box-shadow:0 8px 22px rgba(0,0,0,.28)}" +
+    ".as-fab{position:fixed;right:18px;bottom:18px;z-index:1400;width:62px;height:62px;border-radius:50%;border:none;cursor:pointer;padding:0;overflow:hidden;background:none;box-shadow:0 8px 22px rgba(0,0,0,.28)}" +
     ".as-fab:hover{transform:translateY(-2px)}" +
     ".as-panel{position:fixed;right:18px;bottom:84px;z-index:1400;width:360px;max-width:calc(100vw - 28px);max-height:74vh;display:none;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 22px 60px rgba(0,0,0,.28);overflow:hidden;font-family:Inter,system-ui,sans-serif}" +
     ".as-panel.on{display:flex}" +
@@ -29,10 +29,10 @@
 
   var fab, panel, out, busy = false;
   function mountUI() {
-    fab = document.createElement("button"); fab.className = "as-fab"; fab.type = "button"; fab.title = name; fab.innerHTML = "&#10024;";
+    fab = document.createElement("button"); fab.className = "as-fab"; fab.type = "button"; fab.title = name; fab.innerHTML = '<img src="/icons/frankie.svg" alt="" style="width:100%;height:100%;border-radius:50%;display:block">';
     panel = document.createElement("div"); panel.className = "as-panel";
     panel.innerHTML =
-      '<div class="as-head"><span>&#10024;</span><div><b>' + esc(name) + "</b><br><small>" + esc(AS.role || "Assistant") + "</small></div><button class=\"as-x\">&times;</button></div>" +
+      '<div class="as-head"><img src="/icons/frankie.svg" alt="" style="width:34px;height:34px;border-radius:10px;display:block;flex:none"><div><b>' + esc(name) + "</b><br><small>" + esc(AS.role || "Assistant") + "</small></div><button class=\"as-x\">&times;</button></div>" +
       '<div class="as-body" id="asBody"><div class="as-hint">' + esc(AS.blurb || "Ask me anything about your work here.") + "</div></div>" +
       '<div class="as-in"><textarea id="asPrompt" placeholder="Ask ' + esc(name) + "…\"></textarea><button class=\"as-go\" id=\"asGo\">Ask</button></div>";
     document.body.appendChild(fab); document.body.appendChild(panel);

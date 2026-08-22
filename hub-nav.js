@@ -57,7 +57,7 @@
     ".hn-link{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px;color:var(--ink2);text-decoration:none;font-size:14px;transition:background .14s,color .14s}" +
     ".hn-link:hover{background:rgba(0,0,0,.05);color:var(--ink)}" +
     ".hn-link.active{background:rgba(0,0,0,.05);color:var(--accent);box-shadow:inset 3px 0 0 var(--accent);font-weight:600}" +
-    ".hn-ic{width:22px;height:22px;border-radius:6px;flex:none;display:block}" +
+    ".hn-ic{width:30px;height:30px;border-radius:8px;flex:none;display:block}" +
     ".hn-foot{margin-top:auto;padding-top:14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:9px}" +
     ".hn-who{font-size:12px;color:var(--mut);line-height:1.5}.hn-who b{color:var(--accent)}" +
     ".hn-acts{display:flex;gap:8px}.hn-acts a{flex:1;text-align:center;font-size:12px;padding:8px;border-radius:8px;text-decoration:none;border:1px solid var(--line);color:var(--ink2);cursor:pointer}.hn-acts a:hover{background:rgba(0,0,0,.04)}" +
@@ -65,6 +65,7 @@
     "body:not(.hn-open) .hn-openbtn{display:flex}" +
     ".hn-hdr{background:linear-gradient(180deg,var(--accent),var(--accent2));color:var(--onAccent);padding:12px 0;position:sticky;top:0;z-index:30;box-shadow:0 3px 14px rgba(0,0,0,.12)}" +
     ".hn-hb{max-width:1180px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:12px}" +
+    ".hn-hic{width:40px;height:40px;border-radius:10px;flex:none;display:block;box-shadow:0 3px 9px rgba(0,0,0,.22)}" +
     ".hn-htitle{font-family:Georgia,serif;font-weight:700;font-size:19px;line-height:1.1}.hn-hsub{font-size:11px;opacity:.85;margin-top:2px}.hn-hsp{flex:1}" +
     ".hn-hrole{font-size:11px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);padding:5px 10px;border-radius:99px}.hn-hrole:empty{display:none}" +
     "@media(max-width:900px){.hn-hb{padding-left:60px}}";
@@ -122,7 +123,8 @@
       var title = sec ? sec.label : ((h1El && h1El.textContent.trim()) || BR.name);
       var sub = (ebEl && ebEl.textContent.trim()) || BR.name;
       var hdr = document.createElement("header"); hdr.className = "hn-hdr";
-      hdr.innerHTML = '<div class="hn-hb"><div><div class="hn-htitle">' + esc(title) + '</div><div class="hn-hsub">' + esc(sub) + '</div></div><div class="hn-hsp"></div><span class="hn-hrole" id="hnHdrRole"></span></div>';
+      var hic = (sec && sec.ic) ? '<img class="hn-hic" src="' + esc(sec.ic) + '" alt="">' : '';
+      hdr.innerHTML = '<div class="hn-hb">' + hic + '<div><div class="hn-htitle">' + esc(title) + '</div><div class="hn-hsub">' + esc(sub) + '</div></div><div class="hn-hsp"></div><span class="hn-hrole" id="hnHdrRole"></span></div>';
       document.body.insertBefore(hdr, document.body.firstChild);
       if (ebEl) ebEl.style.display = "none";
       if (h1El && sec && h1El.textContent.trim().toLowerCase() === sec.label.toLowerCase()) h1El.style.display = "none";
