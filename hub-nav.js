@@ -101,6 +101,9 @@
   var openBtn = document.createElement("button");
   openBtn.className = "hn-openbtn"; openBtn.setAttribute("aria-label", "Open menu"); openBtn.innerHTML = "&#9776;"; openBtn.onclick = function () { window.hubToggle(); };
 
+  var tabsEl = document.createElement("nav");
+  tabsEl.className = "hn-tabs"; tabsEl.setAttribute("aria-label", "Sections");
+
   var scrim = document.createElement("div");
   scrim.className = "hn-scrim"; scrim.onclick = function () { window.hubToggle(false); };
   var closeBtn = document.createElement("button");
@@ -133,9 +136,6 @@
   });
   // open by default on wide screens
   if (window.innerWidth > 900) document.body.classList.add("hn-open");
-
-  var tabsEl = document.createElement("nav");
-  tabsEl.className = "hn-tabs"; tabsEl.setAttribute("aria-label", "Sections");
 
   function renderTabs(keys) {
     var here = curKey();

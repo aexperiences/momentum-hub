@@ -295,3 +295,25 @@ window.HUB_CONFIG = {
     ]
   }
 };
+
+/* ---------------------------------------------------------------------------
+   WHO IS SIGNED IN -- resolved here, in the <head>, before anything renders.
+
+   This used to live only in hub-nav.js, which is deferred. Deferred scripts run
+   AFTER the inline scripts on a page, so every inline block that wrote
+   `window.hubWho || Promise.resolve(null)` silently fell through to null and
+   treated the visitor as a guest. Guest is "*". The practical effect was that a
+   PARENT opening the Command Center was shown the owner's board -- headcounts,
+   fill rates and monthly revenue -- while the sidebar beside it correctly showed
+   them only two rooms. Defining the promise first closes that hole for every
+   page at once, not just the one where it was noticed.
+--------------------------------------------------------------------------- */
+(function () {
+  var t = "";
+  try { t = new URLSearchParams(location.search).get("sess") || localStorage.getItem("hub_sess") || ""; }
+  catch (e) { t = ""; }
+  try { if (t) localStorage.setItem("hub_sess", t); } catch (e) {}
+  window.hubWho = window.hubWho || fetch("/api/auth?do=whoami&t=" + encodeURIComponent(t))
+    .then(function (r) { return r.json(); })
+    .catch(function () { return null; });
+})();
