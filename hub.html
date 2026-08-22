@@ -119,15 +119,16 @@
     el.style.setProperty('--cc-full', isDark?'#e2607a':'#c2492a');
     var canEnroll=keys.indexOf('enroll')>=0||keys.indexOf('tuition')>=0, canMoney=keys.indexOf('books')>=0;
     if(!canEnroll){el.hidden=true;return;}
-    var progN=Object.keys(byP).length, kidsPer=fams.length?(enrolled/fams.length):0;
+    var progN=Object.keys(byP).length;
     var cards=[['Kids enrolled',enrolled,'of '+cap+' seats across the gym'],
                ['Classes running',classes.length,'across '+progN+' program'+(progN===1?'':'s')],
-               ['Families',fams.length,fams.length?(Math.round(kidsPer*10)/10)+' kids per family':'']];
+               ['Families',fams.length,'on the roster']];
     cards.push(canMoney?['Monthly tuition',money(monthly),enrolled?money(monthly/enrolled)+' a kid':'']
                        :['Full · waitlist',wait,wait?'class'+(wait===1?'':'es')+' at capacity':'every class has room']);
     var cardsH=cards.map(function(c){return '<div class="cc-stat"><div class="cc-n">'+c[1]+'</div><div class="cc-l">'+c[0]+'</div>'+
       (c[2]?'<div class="cc-ctx">'+c[2]+'</div>':'')+'</div>';}).join('');
-    var nFull=0,nWarn=0;
+    var nFull=0,nWarn=0,CHIPS=false;
+    Object.keys(byP).forEach(function(p){var d=byP[p];if(d.c&&d.e/d.c>=0.9)CHIPS=true;});
     var bars=Object.keys(byP).map(function(p){
       var d=byP[p],pct=d.c?Math.round(d.e/d.c*100):0;
       var state=pct>=100?'full':(pct>=90?'warn':'ok');
@@ -136,6 +137,7 @@
       var chip=state==='full'?'<span class="cc-chip" style="color:var(--cc-full)">Full</span>'
               :(state==='warn'?'<span class="cc-chip" style="color:var(--cc-warn)">'+(d.c-d.e)+' left</span>'
               :'<span class="cc-chip is-none">.</span>');
+      if(state==='ok')chip=CHIPS?chip:'';
       return '<div class="cc-row"><span class="cc-pl">'+p+'</span>'+
         '<span class="cc-track"><i style="width:'+Math.min(pct,100)+'%;background:'+col+'"></i></span>'+
         '<span class="cc-pv">'+d.e+'/'+d.c+'</span>'+chip+'</div>';}).join('');
@@ -149,7 +151,7 @@
       '<div class="cc-dleg">'+
         '<div><b style="background:var(--accent)"></b>Seats taken <em>'+enrolled+'</em></div>'+
         '<div><b style="background:var(--cream);box-shadow:inset 0 0 0 1px var(--line)"></b>Seats open <em>'+open+'</em></div>'+
-        '<div><b style="background:var(--cc-full)"></b>Classes full <em>'+wait+'</em></div>'+
+        '<div><b style="background:var(--cc-full)"></b>Classes at capacity <em>'+wait+'</em></div>'+
       '</div></div>';
     var head=nFull?(nFull+' program'+(nFull===1?' is':'s are')+' full'+(nWarn?', '+nWarn+' nearly there':''))
                   :(nWarn?nWarn+' program'+(nWarn===1?' is':'s are')+' nearly full':'every program still has room');
