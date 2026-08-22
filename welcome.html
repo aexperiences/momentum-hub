@@ -116,9 +116,14 @@
   .door .du{margin-top:12px;font-size:12.5px;color:var(--sage2);font-weight:700;word-break:break-all}
   .door .go{margin-top:12px;display:inline-block;background:linear-gradient(160deg,var(--sage),var(--coral2));color:#fff;font-weight:800;font-size:13.5px;padding:11px 18px;border-radius:999px}
   /* ---- CV: iframe on desktop, button on phones (iOS will not render inline PDFs) ---- */
-  .cvbox{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff}
+  .cvbox{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;margin-top:16px}
   .cvbox object,.cvbox iframe{display:block;width:100%;height:800px;border:0}
   .cvphone{display:none}
+  .cvcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px 24px}
+  .cvname{font-family:Fraunces,Georgia,serif;font-weight:800;font-size:20px;color:var(--ink)}
+  .cvline{font-size:14px;color:var(--ink2);margin:7px 0 16px;max-width:640px}
+  .cvbtn{display:inline-block;background:linear-gradient(160deg,var(--sage),var(--coral2));color:#fff;font-weight:800;font-size:14.5px;padding:13px 26px;border-radius:999px;text-decoration:none}
+  .cvdl{display:inline-block;margin-left:16px;font-size:13.5px;font-weight:700;color:var(--sage2);text-decoration:none;border-bottom:1px solid rgba(14,125,125,.4)}
   /* ---- PHONES ---- */
   @media(max-width:760px){
     .wrap{padding:0 16px}
@@ -142,7 +147,8 @@
     .freebanner .t{min-width:0;font-size:13.5px}
     .replbar{display:block}
     .replbar .x{min-width:0;margin-bottom:10px}
-    .cvbox object,.cvbox iframe{display:none}
+    .cvbox{display:none}
+    .cvdl{display:block;margin:14px 0 0 0}
     .cvphone{display:block;padding:26px 20px;text-align:center}
     .steps li{padding-left:38px;font-size:14px}
     video{max-height:none !important}
@@ -334,13 +340,16 @@ html{scrollbar-gutter:stable}
   <div class="eyebrow">For the record</div>
   <h2>My CV — because you know me, not my company yet.</h2>
   <div class="rmeta" style="margin-bottom:14px">Anthony Esposito · Founder, Accelerated Experiences, LLC &nbsp;·&nbsp; anthonye@aexperiences.studio · aexperiences.com · Post Falls, Idaho</div>
+  <div class="cvcard">
+    <div class="cvname">Anthony Esposito — Curriculum Vitae</div>
+    <div class="cvline">Twenty-one years in marketing, audience research and operations — fourteen of them in healthcare — and everything I've shipped since.</div>
+    <a class="cvbtn" href="/cv.pdf" target="_blank" rel="noopener">Open my CV &rarr;</a>
+    <a class="cvdl" href="/cv.pdf" download>Download the PDF</a>
+  </div>
   <div class="cvbox">
-    <object data="/cv.pdf#view=FitH" type="application/pdf"><iframe src="/cv.pdf"></iframe></object>
-    <div class="cvphone">
-      <div style="font-family:Fraunces,serif;font-weight:800;font-size:18px;margin-bottom:6px">Anthony Esposito — Curriculum Vitae</div>
-      <div style="font-size:13.5px;color:var(--ink2);margin-bottom:14px">Twenty years of marketing, audience research and product — and what I've shipped since.</div>
-      <a class="go" style="display:inline-block;background:linear-gradient(160deg,var(--sage),var(--coral2));color:#fff;font-weight:800;font-size:14px;padding:12px 22px;border-radius:999px;text-decoration:none" href="/cv.pdf" target="_blank" rel="noopener">Open my CV →</a>
-    </div>
+    <object data="/cv.pdf#view=FitH" type="application/pdf">
+      <iframe src="/cv.pdf" title="Anthony Esposito CV"></iframe>
+    </object>
   </div>
   <div style="margin-top:12px;font-size:14px"><a href="/cv.pdf" target="_blank" rel="noopener" style="color:var(--sage2);font-weight:700">Open the CV in its own tab →</a></div>
 </div></section>
