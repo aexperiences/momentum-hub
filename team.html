@@ -16,6 +16,7 @@
   .wrap{max-width:1180px;margin:0 auto;padding:20px 20px 70px}
   .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
   .kpis{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 16px}
+  @media(max-width:760px){.kpis{display:grid;grid-template-columns:1fr 1fr;gap:9px}.kpis>*{min-width:0}}
   .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 14px}
   .stat .n{font-family:Georgia,serif;font-weight:800;font-size:20px;color:var(--accent)}
   .stat .l{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
@@ -121,7 +122,7 @@
   </div>
   <div class="grid">
     <div class="rail">
-      <div class="railhead"><div class="l">Teams</div><div class="sp"></div><button class="addbtn" onclick="openTeam()">＋ Team</button></div>
+      <div class="railhead"><div class="l">Teams</div><div class="sp"></div><button class="addbtn" id="addTeamBtn" onclick="openTeam()">＋ Team</button></div>
       <div id="rail"></div>
     </div>
     <div id="main"></div>
@@ -183,6 +184,7 @@
   var ROLE_READY=(window.hubWho||Promise.resolve(null)).then(function(w){
     var r=(w&&(w.roles||(w.role?[w.role]:[])))||[];
     MY_ROLES=r.length?r:["parent"]; WHO_KNOWN=true;
+    if(readOnly()){ var ab=document.getElementById('addTeamBtn'); if(ab) ab.style.display='none'; }
   }).catch(function(){ MY_ROLES=["parent"]; WHO_KNOWN=true; });
 
   function load(){ Promise.all([window.HUBDATA.list('teams'),window.HUBDATA.list('teamevents'),window.HUBDATA.list('teammsgs')]).then(function(r){

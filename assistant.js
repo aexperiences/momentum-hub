@@ -11,6 +11,8 @@
   var css =
     ".as-fab{position:fixed;right:18px;bottom:18px;z-index:1400;width:62px;height:62px;border-radius:50%;border:none;cursor:pointer;padding:0;overflow:hidden;background:none;box-shadow:0 8px 22px rgba(0,0,0,.28)}" +
     ".as-fab:hover{transform:translateY(-2px)}" +
+    "/* as-fab-phone: clear the bottom tab bar and the home indicator */" +
+    "@media(max-width:900px){.as-fab{bottom:calc(78px + env(safe-area-inset-bottom));right:14px;width:56px;height:56px}}" +
     ".as-panel{position:fixed;right:18px;bottom:84px;z-index:1400;width:360px;max-width:calc(100vw - 28px);max-height:74vh;display:none;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 22px 60px rgba(0,0,0,.28);overflow:hidden;font-family:Inter,system-ui,sans-serif}" +
     ".as-panel.on{display:flex}" +
     ".as-head{display:flex;align-items:center;gap:9px;padding:12px 15px;background:linear-gradient(180deg,var(--accent),var(--accent2));color:var(--onAccent)}" +
