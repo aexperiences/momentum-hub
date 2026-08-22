@@ -180,7 +180,7 @@
     var t=TEAMS.find(function(x){return x.id===curId;}); if(!t){el('main').innerHTML='<div class="panel mut">Add a team to get started.</div>';return;}
     var trips=evsOf(t.name).filter(function(e){return future(e)&&isTrip(e);});
     el('main').innerHTML=
-      '<div class="panel"><div class="thead"><div><div class="tt">'+esc(t.name)+'</div><div class="meta">'+esc(t.level||'')+' · '+esc(t.age||'')+' · '+esc(t.coach||'')+' · '+((t.roster||[]).length)+' athletes</div></div><div class="sp"></div><button class="lnk" onclick="editTeam()">✎ Edit</button> <button class="btn" onclick="openEv()">＋ Event</button></div></div>'+
+      '<div class="panel"><div class="thead"><div><div class="tt">'+esc(t.name)+'</div><div class="meta">'+esc(t.level||'')+' · '+esc(t.age||'')+' · '+esc(t.coach||'')+' · '+((t.roster||[]).length)+' athletes</div></div><div class="sp"></div><button class="lnk" onclick="editTeam()">Edit</button> <button class="btn" onclick="openEv()">＋ Event</button></div></div>'+
       (trips.length?'<div class="panel"><div class="sec-t">Upcoming travel</div><div id="trips"></div></div>':'')+
       '<div class="panel"><div class="sec-t">Schedule &amp; RSVP</div><div id="sched"></div></div>'+
       '<div class="panel"><div class="sec-t">Roster</div><div class="roster">'+((t.roster||[]).map(function(a){return '<div class="ath"><div class="av">'+esc(initials(a.athlete))+'</div><div><div class="an">'+esc(a.athlete)+'</div><div class="ap">'+esc(a.parent||'')+(a.phone?' · '+esc(a.phone):'')+'</div></div></div>';}).join('')||'<div class="mut">No athletes yet.</div>')+'</div></div>'+
@@ -199,7 +199,7 @@
     el('sched').innerHTML=evs.length?evs.map(function(e){
       var mine=myResp[e.id];
       var trav=isTrip(e)?'<div class="travel"><div class="th">Travel</div><div class="tr">'+(e.location?'Venue: <b>'+esc(e.location)+'</b><br>':'')+(e.hotel?'Hotel: <b>'+esc(e.hotel)+'</b>'+(e.hotelAddr?' — '+esc(e.hotelAddr):'')+'<br>':'')+(e.depart?''+esc(e.depart):'')+'</div></div>':'';
-      return '<div class="ev"><div class="er"><span class="type '+esc(e.type||'Event')+'">'+esc(e.type||'Event')+'</span><span class="evt">'+esc(e.title||'')+'</span><span class="sp"></span><button class="lnk" data-edit="'+esc(e.id)+'">✎</button></div>'+
+      return '<div class="ev"><div class="er"><span class="type '+esc(e.type||'Event')+'">'+esc(e.type||'Event')+'</span><span class="evt">'+esc(e.title||'')+'</span><span class="sp"></span><button class="lnk" data-edit="'+esc(e.id)+'">Edit</button></div>'+
         '<div class="when"><b>'+esc(e.date||'')+'</b> · '+esc(e.time||'')+(e.location&&!isTrip(e)?' · '+esc(e.location):'')+'</div>'+trav+
         '<div class="rsvp"><button class="rb go'+(mine==='go'?' on':'')+'" data-ev="'+esc(e.id)+'" data-r="go"><span class="c">'+(+e.going||0)+'</span>Going</button>'+
         '<button class="rb mb'+(mine==='mb'?' on':'')+'" data-ev="'+esc(e.id)+'" data-r="mb"><span class="c">'+(+e.maybe||0)+'</span>Maybe</button>'+

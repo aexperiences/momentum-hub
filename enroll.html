@@ -101,7 +101,7 @@
       var isFull=c.id?full(c):true;
       var q=byClass[k].map(function(w,i){
         return '<div class="qe"><span class="pos">'+(i+1)+'</span><b>'+esc(w.child)+'</b><span class="fm">'+esc(w.family||'')+'</span><span class="since">'+daysAgo(w.since)+'d</span>'+
-          '<button class="mini go" data-p="'+esc(w.id)+'">Promote ↑</button></div>';
+          '<button class="mini go" data-p="'+esc(w.id)+'">Promote</button></div>';
       }).join('');
       return '<div class="card"><div style="display:flex;align-items:center;gap:8px"><span class="nm">'+esc(k)+'</span><span class="pill '+(isFull?'full':'open')+'">'+(isFull?((+c.enrolled||0)+' / '+(+c.cap||0)+' · Full'):'Spot open!')+'</span></div>'+
         '<div class="meta">'+esc(c.day||'')+' '+esc(c.time||'')+(c.coach?' · '+esc(c.coach):'')+'</div>'+q+'</div>';
