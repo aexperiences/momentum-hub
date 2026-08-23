@@ -190,8 +190,9 @@
     var who=prompt('Join the waitlist for '+c.name+' ('+c.day+' '+c.time+')\n\nChild\'s name:');
     if(!who) return;
     var contact=prompt('Best phone or email to reach you:') || '';
-    window.HUBDATA.save('waitlist',{ classId:c.id, className:c.name, program:c.program,
-      day:c.day, time:c.time, child:who, contact:contact, added:new Date().toISOString(), status:'Waiting' })
+    window.HUBDATA.save('waitlist',{ class:c.name, child:who, family:'', phone:contact,
+      since:new Date().toISOString().slice(0,10), status:'Waiting',
+      classId:c.id, className:c.name, program:c.program, day:c.day, time:c.time, contact:contact })
       .then(function(){ alert('Added to the waitlist for '+c.name+'. The front desk sees it straight away.'); });
   }
 
