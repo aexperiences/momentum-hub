@@ -90,6 +90,34 @@ export default async function handler(req, res) {
   if (role === "guest") { res.status(401).json({ ok: false, error: "AUTH", message: "Sign in to use the data spine." }); return; }
   if (!col) { res.status(400).json({ ok: false, error: "NO_COLLECTION" }); return; }
 
+  // ---- FIRST-RUN SEED -----------------------------------------------------
+  // The trap this closes: KV always wins over config.js, so the day a new
+  // collection ships, every signed-in seat sees an empty room while the demo
+  // seat (which falls back to the seed) looks fine. Nobody notices until a
+  // customer does.
+  //
+  // So: the first authed read of a collection that is empty in KV plants the
+  // seed once. It NEVER overwrites — if there is a single record already, this
+  // does nothing and says so. Deleting every record on purpose is respected via
+  // the tombstone, so an emptied collection does not refill itself.
+  if (doo === "seed") {
+    const arr = await loadCol(col);
+    if (arr.length) { res.status(200).json({ ok: true, seeded: 0, reason: "already has records" }); return; }
+    let tomb = null; try { tomb = await kvGet(NS + "seeded:" + col); } catch (_) {}
+    if (tomb) { res.status(200).json({ ok: true, seeded: 0, reason: "already seeded once" }); return; }
+    const recs = Array.isArray(body.records) ? body.records : [];
+    if (!recs.length) { res.status(200).json({ ok: true, seeded: 0, reason: "nothing to seed" }); return; }
+    const now = new Date().toISOString();
+    const out = recs.slice(0, 5000).map((r) => Object.assign({}, r, {
+      id: clean(r && r.id, 20) || id(), createdAt: now, updatedAt: now, seeded: true
+    }));
+    await saveCol(col, out);
+    await kvSet(NS + "seeded:" + col, now);
+    res.status(200).json({ ok: true, seeded: out.length });
+    return;
+  }
+
+
   // reads
   if (doo === "list") { const arr = await loadCol(col); res.status(200).json({ ok: true, records: arr, count: arr.length }); return; }
   if (doo === "get") { const arr = await loadCol(col); const r = arr.find((x) => x.id === clean(body.id || q.id, 20)); res.status(200).json({ ok: !!r, record: r || null }); return; }
