@@ -26,8 +26,28 @@ window.HUBDATA = (function () {
   async function api(action, body) {
     return fetch("/api/data", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(Object.assign({ action: action, sess: SESS }, body)) }).then(function (r) { return r.json(); });
   }
+  var planted = {};
   async function list(c) {
-    try { var j = await api("list", { collection: c }); if (j && j.ok) { lset(c, j.records); return j.records; } } catch (e) {}
+    try {
+      var j = await api("list", { collection: c });
+      if (j && j.ok) {
+        // A collection that is empty in KV but has a seed has almost certainly
+        // just shipped. Plant it once, server-side, so every seat sees the same
+        // thing — instead of the demo seat looking right and real seats looking
+        // broken. The server refuses to overwrite and remembers it has done it.
+        if ((!j.records || !j.records.length) && SEED[c] && SEED[c].length && !planted[c]) {
+          planted[c] = 1;
+          try {
+            var sd = await api("seed", { collection: c, records: SEED[c] });
+            if (sd && sd.ok && sd.seeded) {
+              var j2 = await api("list", { collection: c });
+              if (j2 && j2.ok) { lset(c, j2.records); return j2.records; }
+            }
+          } catch (e2) {}
+        }
+        lset(c, j.records); return j.records;
+      }
+    } catch (e) {}
     seedIfEmpty(); return lget(c);
   }
   async function save(c, rec) {
