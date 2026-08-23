@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Bring Your Data</title>
+<link rel="icon" href="/icons/momentum-mark.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/config.js"></script>
+<script src="/skins.js"></script>
+<style>
+  *{box-sizing:border-box}html,body{margin:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#2a201a);background:var(--paper,#fbf7f2);min-height:100vh}
+  h1,h2,h3{font-family:Georgia,serif;font-weight:800;margin:0}
+  .wrap{max-width:1080px;margin:0 auto;padding:20px 20px 90px}
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+  .lede{color:var(--mut);font-size:15px;max-width:62ch;margin:8px 0 0;line-height:1.6}
+  .steps{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0 18px}
+  .step{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:7px 14px;font-size:12.5px;font-weight:600;color:var(--mut)}
+  .step.on{background:var(--accent);color:var(--onAccent);border-color:transparent}
+  .step.done{border-color:var(--accent);color:var(--accent)}
+  .step b{font-family:Georgia,serif;font-size:13px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 19px;box-shadow:0 4px 14px rgba(80,50,20,.05);margin-bottom:14px}
+  .card h2{font-size:19px;margin-bottom:5px}
+  .card p.sub{color:var(--mut);font-size:13.5px;margin:0 0 14px;line-height:1.55}
+  textarea{width:100%;min-height:190px;border:1px solid var(--line);border-radius:11px;padding:12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;background:var(--paper);color:var(--ink);resize:vertical;line-height:1.5}
+  textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 18%,transparent)}
+  .row{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:12px}
+  .btn{background:linear-gradient(180deg,var(--accent),var(--accent2));color:var(--onAccent);border:none;border-radius:10px;padding:11px 18px;font-weight:700;font-family:Georgia,serif;font-size:14.5px;cursor:pointer}
+  .btn:disabled{opacity:.45;cursor:default}
+  .btn.ghost{background:none;color:var(--ink2);border:1px solid var(--line)}
+  .hint{font-size:12.5px;color:var(--mut)}
+  .file{border:1.5px dashed var(--line);border-radius:11px;padding:16px;text-align:center;font-size:13.5px;color:var(--mut);cursor:pointer}
+  .file:hover{border-color:var(--accent);color:var(--ink2)}
+  .file input{display:none}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:11px}
+  th{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);background:var(--cream);white-space:nowrap}
+  td{padding:9px 11px;border-bottom:1px solid var(--line2);white-space:nowrap}
+  tr:last-child td{border-bottom:none}
+  select{border:1px solid var(--line);border-radius:8px;padding:6px 8px;font:inherit;font-size:12.5px;background:var(--card);color:var(--ink);max-width:190px}
+  .pill{display:inline-block;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:2px 8px;border-radius:99px;background:var(--cream);color:var(--mut)}
+  .pill.ok{background:#e8f4ec;color:#2f6a52}
+  .pill.warn{background:#fdf0e3;color:#9a5a1c}
+  .pill.skip{background:var(--cream);color:var(--mut)}
+  .tally{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:11px;margin:4px 0 0}
+  .t{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:11px 13px}
+  .t .n{font-family:Georgia,serif;font-weight:800;font-size:24px;color:var(--accent);line-height:1}
+  .t .l{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin-top:3px}
+  .warnbox{background:#fdf6ec;border:1px solid #f0dcc0;color:#7d5520;border-radius:11px;padding:12px 14px;font-size:13.5px;line-height:1.55;margin-top:12px}
+  .okbox{background:#eef6f0;border:1px solid #cbe4d5;color:#2f6a52;border-radius:11px;padding:12px 14px;font-size:13.5px;line-height:1.55;margin-top:12px}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:13.5px;opacity:0;transition:.25s;pointer-events:none;z-index:80}.toast.on{opacity:1}
+  a:focus-visible,button:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--accent)!important;outline-offset:2px}
+  code{background:var(--cream);padding:1px 5px;border-radius:5px;font-size:12.5px}
+</style>
+<meta name="theme-color" content="#0f9d9d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Momentum">
+<link rel="apple-touch-icon" href="/momentum-logo.png">
+<link rel="manifest" href="/manifest.webmanifest">
+</head>
+<body>
+<script src="/hub-nav.js" defer></script>
+<script src="/data.js"></script>
+<script src="/roomguard.js"></script>
+<script src="/assistant.js" defer></script>
+
+<div class="wrap">
+  <div class="eyebrow" id="eb"></div>
+  <h1>Bring Your Data</h1>
+  <p class="lede">Whatever you run the gym on now — iClassPro, Jackrabbit, a spreadsheet — export it and drop it here. Nothing is retyped, nothing is lost, and you look at every row before a single one is saved.</p>
+
+  <div class="steps">
+    <div class="step on"  id="s1"><b>1</b> Paste or drop your export</div>
+    <div class="step"     id="s2"><b>2</b> Check the columns</div>
+    <div class="step"     id="s3"><b>3</b> Look it over</div>
+    <div class="step"     id="s4"><b>4</b> Bring it in</div>
+  </div>
+
+  <div class="card" id="c1">
+    <h2>Your export</h2>
+    <p class="sub">A CSV with a header row. One line per child is ideal — if you have one line per family that works too, just map the columns you have and leave the rest blank.</p>
+    <label class="file">Choose a .csv file<input type="file" id="fileIn" accept=".csv,text/csv"></label>
+    <div class="row"><span class="hint">…or paste it straight in:</span></div>
+    <textarea id="raw" spellcheck="false" placeholder="Child,Family,Parent,Email,Phone,Age,Program,Level&#10;Nora Diaz,Diaz Family,Ana Diaz,ana@example.com,(208) 555-0122,7,Gymnastics,Rec Level 1"></textarea>
+    <div class="row">
+      <button class="btn" id="readBtn">Read it →</button>
+      <button class="btn ghost" id="sampleBtn">Show me an example</button>
+      <span class="hint" id="rawHint"></span>
+    </div>
+  </div>
+
+  <div class="card" id="c2" hidden>
+    <h2>Check the columns</h2>
+    <p class="sub">I guessed at these from your header row. Change anything I got wrong — or set a column to <b>Skip</b> and it will be ignored entirely.</p>
+    <div class="scroll"><table id="mapT"></table></div>
+    <div class="row"><button class="btn" id="previewBtn">Look it over →</button><button class="btn ghost" id="backBtn">Back</button></div>
+  </div>
+
+  <div class="card" id="c3" hidden>
+    <h2>Look it over</h2>
+    <p class="sub">This is exactly what will be saved. Nothing has been written yet.</p>
+    <div class="tally" id="tally"></div>
+    <div id="issues"></div>
+    <div class="scroll" style="margin-top:13px"><table id="prevT"></table></div>
+    <div class="row">
+      <button class="btn" id="commitBtn">Bring in <span id="commitN"></span> →</button>
+      <button class="btn ghost" id="back2Btn">Back</button>
+      <span class="hint">Existing sample records stay unless you tick the box below.</span>
+    </div>
+    <div class="row"><label class="hint"><input type="checkbox" id="clearSample"> Clear the sample kids and families first (recommended on your first real import)</label></div>
+  </div>
+
+  <div class="card" id="c4" hidden>
+    <h2>Done</h2>
+    <div id="doneBox"></div>
+    <div class="row"><a class="btn" href="/families.html">See your families →</a><a class="btn ghost" href="/desk.html">Open the desk</a></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  var el=function(i){return document.getElementById(i);};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var C=window.HUB_CONFIG||{}, BR=C.brand||{};
+  el('eb').textContent=(BR.center||BR.name||'');
+
+  /* ---- the fields we can fill, and the header words that usually mean them ---- */
+  var FIELDS=[
+    {k:'child',   label:'Child name',   hints:['child','student','athlete','participant','kid','first name','name']},
+    {k:'family',  label:'Family',       hints:['family','household','account','last name','surname']},
+    {k:'parent',  label:'Parent name',  hints:['parent','guardian','contact name','mother','father','primary']},
+    {k:'email',   label:'Email',        hints:['email','e-mail']},
+    {k:'phone',   label:'Phone',        hints:['phone','mobile','cell','tel']},
+    {k:'age',     label:'Age',          hints:['age','years']},
+    {k:'dob',     label:'Date of birth',hints:['dob','birth','birthday']},
+    {k:'program', label:'Program',      hints:['program','activity','sport','department']},
+    {k:'level',   label:'Level / class',hints:['level','class','belt','group','team','session']},
+    {k:'notes',   label:'Notes',        hints:['note','comment','remark','medical','allergy']}
+  ];
+
+  var rows=[], headers=[], mapping=[], built=null;
+
+  /* ---- a CSV reader that survives quoted commas and newlines inside fields ---- */
+  function parseCSV(text){
+    var out=[], row=[], cell='', q=false, i=0, ch;
+    text=String(text).replace(/\r\n/g,'\n').replace(/\r/g,'\n');
+    for(i=0;i<text.length;i++){
+      ch=text[i];
+      if(q){
+        if(ch==='"'){ if(text[i+1]==='"'){cell+='"';i++;} else q=false; }
+        else cell+=ch;
+      } else if(ch==='"'){ q=true; }
+      else if(ch===','){ row.push(cell); cell=''; }
+      else if(ch==='\n'){ row.push(cell); cell=''; if(row.some(function(c){return c.trim()!=='';})) out.push(row); row=[]; }
+      else cell+=ch;
+    }
+    row.push(cell);
+    if(row.some(function(c){return c.trim()!=='';})) out.push(row);
+    return out;
+  }
+
+  function guess(header){
+    var h=String(header||'').toLowerCase().trim();
+    if(!h) return '';
+    for(var f=0;f<FIELDS.length;f++){
+      var hints=FIELDS[f].hints;
+      for(var n=0;n<hints.length;n++){ if(h===hints[n]) return FIELDS[f].k; }
+    }
+    for(var f2=0;f2<FIELDS.length;f2++){
+      var hh=FIELDS[f2].hints;
+      for(var m=0;m<hh.length;m++){ if(h.indexOf(hh[m])>=0) return FIELDS[f2].k; }
+    }
+    return '';
+  }
+
+  function step(n){
+    [1,2,3,4].forEach(function(i){
+      var s=el('s'+i), c=el('c'+i);
+      s.className='step'+(i===n?' on':(i<n?' done':''));
+      c.hidden = (i!==n);
+    });
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  el('sampleBtn').addEventListener('click',function(){
+    el('raw').value='Child,Family,Parent,Email,Phone,Age,Program,Level\n'+
+      'Nora Diaz,Diaz Family,Ana Diaz,ana@example.com,(208) 555-0122,7,Gymnastics,Rec Level 1\n'+
+      'Tommy Vance,Vance Family,Beth Vance,beth@example.com,(208) 555-0121,6,Ninja,White & Blue\n'+
+      'Milo Kraft,Kraft Family,Dan Kraft,dan@example.com,(208) 555-0123,9,Ninja,Red & Purple\n'+
+      'June Alcott,Alcott Family,Sara Alcott,sara@example.com,(208) 555-0126,5,Preschool,Tot Town';
+    el('rawHint').textContent='An example, so you can see the shape. Replace it with yours.';
+  });
+
+  el('fileIn').addEventListener('change',function(e){
+    var f=e.target.files && e.target.files[0]; if(!f) return;
+    var r=new FileReader();
+    r.onload=function(){ el('raw').value=r.result; el('rawHint').textContent=f.name+' loaded — '+Math.round(f.size/1024)+' KB'; readIt(); };
+    r.readAsText(f);
+  });
+
+  function readIt(){
+    var t=el('raw').value.trim();
+    if(!t){ toast('Paste your export or choose a file first.'); return; }
+    var all=parseCSV(t);
+    if(all.length<2){ toast('I need a header row and at least one row of data.'); return; }
+    headers=all[0].map(function(h){return String(h).trim();});
+    rows=all.slice(1);
+    mapping=headers.map(guess);
+    /* never map two columns to the same field — first guess wins */
+    var seen={};
+    mapping=mapping.map(function(m){ if(!m) return ''; if(seen[m]) return ''; seen[m]=1; return m; });
+    drawMap();
+    step(2);
+  }
+  el('readBtn').addEventListener('click',readIt);
+
+  function drawMap(){
+    var opts=function(sel){
+      return '<option value=""'+(sel===''?' selected':'')+'>— Skip —</option>'+
+        FIELDS.map(function(f){return '<option value="'+f.k+'"'+(sel===f.k?' selected':'')+'>'+esc(f.label)+'</option>';}).join('');
+    };
+    var sampleRow=rows[0]||[];
+    el('mapT').innerHTML='<thead><tr><th>Your column</th><th>First value</th><th>Becomes</th></tr></thead><tbody>'+
+      headers.map(function(h,i){
+        return '<tr><td><b>'+esc(h||'(no header)')+'</b></td>'+
+          '<td style="color:var(--mut)">'+esc(String(sampleRow[i]||'').slice(0,40))+'</td>'+
+          '<td><select data-i="'+i+'">'+opts(mapping[i])+'</select></td></tr>';
+      }).join('')+'</tbody>';
+    el('mapT').querySelectorAll('select').forEach(function(s){
+      s.addEventListener('change',function(){
+        var i=+s.getAttribute('data-i'), v=s.value;
+        if(v){ mapping.forEach(function(m,j){ if(j!==i && m===v) mapping[j]=''; }); }
+        mapping[i]=v; drawMap();
+      });
+    });
+  }
+
+  function build(){
+    var idx={}; mapping.forEach(function(m,i){ if(m) idx[m]=i; });
+    var val=function(r,k){ return idx[k]===undefined ? '' : String(r[idx[k]]==null?'':r[idx[k]]).trim(); };
+    var fams={}, kids=[], skipped=[], noContact=0;
+
+    rows.forEach(function(r,n){
+      var child=val(r,'child');
+      var famName=val(r,'family') || (child ? (child.split(/\s+/).slice(-1)[0]+' Family') : '');
+      if(!child && !famName){ skipped.push({line:n+2, why:'no child and no family name'}); return; }
+
+      var email=val(r,'email'), phone=val(r,'phone');
+      if(!email && !phone) noContact++;
+
+      var key=famName.toLowerCase();
+      if(famName && !fams[key]){
+        fams[key]={ family:famName, parent:val(r,'parent'), email:email, phone:phone,
+                    kids:[], autopay:false, notes:'', imported:true };
+      }
+      if(famName){
+        if(email && !fams[key].email) fams[key].email=email;
+        if(phone && !fams[key].phone) fams[key].phone=phone;
+        if(val(r,'parent') && !fams[key].parent) fams[key].parent=val(r,'parent');
+        if(child && fams[key].kids.indexOf(child)<0) fams[key].kids.push(child);
+      }
+      if(child){
+        var age=val(r,'age').replace(/[^0-9]/g,'');
+        kids.push({ child:child, family:famName, age:age?+age:'', dob:val(r,'dob'),
+                    program:val(r,'program'), level:val(r,'level'),
+                    photoConsent:'unset', notes:val(r,'notes'), imported:true, line:n+2 });
+      }
+    });
+
+    var famArr=Object.keys(fams).map(function(k){return fams[k];});
+    /* duplicate child names inside one family are almost always a double row */
+    var dupes=[], seenKid={};
+    kids.forEach(function(k){
+      var kk=(k.family+'|'+k.child).toLowerCase();
+      if(seenKid[kk]) dupes.push(k.child+' in '+k.family); else seenKid[kk]=1;
+    });
+    return { families:famArr, kids:kids, skipped:skipped, noContact:noContact, dupes:dupes };
+  }
+
+  el('previewBtn').addEventListener('click',function(){
+    var idx={}; mapping.forEach(function(m,i){ if(m) idx[m]=i; });
+    if(idx.child===undefined && idx.family===undefined){ toast('Map at least a child name or a family name.'); return; }
+    built=build();
+    el('tally').innerHTML=
+      '<div class="t"><div class="n">'+built.kids.length+'</div><div class="l">Kids</div></div>'+
+      '<div class="t"><div class="n">'+built.families.length+'</div><div class="l">Families</div></div>'+
+      '<div class="t"><div class="n">'+built.skipped.length+'</div><div class="l">Rows skipped</div></div>'+
+      '<div class="t"><div class="n">'+built.dupes.length+'</div><div class="l">Possible duplicates</div></div>';
+    var w=[];
+    if(built.dupes.length) w.push('<b>'+built.dupes.length+' name'+(built.dupes.length>1?'s appear':' appears')+' twice</b> in the same family — usually one row per class. They will come in as one child each: '+esc(built.dupes.slice(0,4).join(', '))+(built.dupes.length>4?'…':''));
+    if(built.noContact) w.push('<b>'+built.noContact+' row'+(built.noContact>1?'s have':' has')+' no email or phone.</b> They will still import — you just will not be able to reach those families from here.');
+    if(built.skipped.length) w.push('<b>'+built.skipped.length+' row'+(built.skipped.length>1?'s':'')+' skipped</b> for having neither a child nor a family name (line'+(built.skipped.length>1?'s':'')+' '+built.skipped.slice(0,6).map(function(s){return s.line;}).join(', ')+').');
+    el('issues').innerHTML = w.length
+      ? '<div class="warnbox">'+w.join('<br><br>')+'</div>'
+      : '<div class="okbox">Every row read cleanly. No duplicates, nothing skipped, everyone has a way to be contacted.</div>';
+    el('prevT').innerHTML='<thead><tr><th>Child</th><th>Family</th><th>Parent</th><th>Contact</th><th>Age</th><th>Program</th><th>Level</th></tr></thead><tbody>'+
+      built.kids.slice(0,40).map(function(k){
+        var f=built.families.filter(function(x){return x.family===k.family;})[0]||{};
+        return '<tr><td><b>'+esc(k.child)+'</b></td><td>'+esc(k.family)+'</td><td>'+esc(f.parent||'')+'</td>'+
+          '<td>'+esc(f.email||f.phone||'<span class="pill warn">none</span>')+'</td><td>'+esc(k.age||'')+'</td>'+
+          '<td>'+esc(k.program||'')+'</td><td>'+esc(k.level||'')+'</td></tr>';
+      }).join('')+'</tbody>';
+    el('commitN').textContent=built.kids.length+' kids and '+built.families.length+' families';
+    step(3);
+  });
+
+  el('backBtn').addEventListener('click',function(){step(1);});
+  el('back2Btn').addEventListener('click',function(){step(2);});
+
+  el('commitBtn').addEventListener('click',async function(){
+    if(!built) return;
+    var b=el('commitBtn'); b.disabled=true; b.textContent='Bringing it in…';
+    try{
+      if(el('clearSample').checked){
+        var oldKids=await window.HUBDATA.list('kids');
+        var oldFams=await window.HUBDATA.list('families');
+        for(var i=0;i<oldKids.length;i++){ if(oldKids[i].sample) await window.HUBDATA.del('kids',oldKids[i].id); }
+        for(var j=0;j<oldFams.length;j++){ if(oldFams[j].sample) await window.HUBDATA.del('families',oldFams[j].id); }
+      }
+      var famIds={};
+      for(var f=0;f<built.families.length;f++){
+        var r=await window.HUBDATA.save('families',built.families[f]);
+        famIds[built.families[f].family]=r && r.id;
+        b.textContent='Bringing it in… families '+(f+1)+'/'+built.families.length;
+      }
+      for(var k=0;k<built.kids.length;k++){
+        var kid=built.kids[k];
+        await window.HUBDATA.save('kids',{ child:kid.child, family:kid.family, familyId:famIds[kid.family]||'',
+          age:kid.age, dob:kid.dob, program:kid.program, level:kid.level,
+          photoConsent:'unset', notes:kid.notes, imported:true });
+        if(k%10===0) b.textContent='Bringing it in… kids '+(k+1)+'/'+built.kids.length;
+      }
+      el('doneBox').innerHTML='<div class="okbox"><b>'+built.kids.length+' kids and '+built.families.length+' families are in.</b><br><br>'+
+        'Every one of them now shows up in Families &amp; Kids, on the desk screen, in attendance, and in the retention watch. '+
+        'Photo consent is set to <b>not yet asked</b> for everyone — nothing gets treated as consented just because it was imported.</div>';
+      step(4);
+      toast('Imported.');
+    }catch(e){
+      b.disabled=false; b.textContent='Bring it in →';
+      toast('Something went wrong — nothing was half-saved. Try again.');
+    }
+  });
+
+  window.RoomGuard("bring", function(role, seat){ window.SEAT=seat; });
+
+  function toast(m){var t=el('toast');t.textContent=m;t.classList.add('on');setTimeout(function(){t.classList.remove('on');},2600);}
+  window.AssistantContext=function(){ return { view:'bringing the gym’s existing roster in from a CSV export', center:BR.center,
+    columnsFound:headers, rowsFound:rows.length }; };
+})();
+</script>
+</body>
+</html>

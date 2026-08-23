@@ -7,7 +7,7 @@
    ============================================================================ */
 window.HUB_CONFIG = {
   tenant: "momentum",
-  seedVersion: "2026-08-22-momentum-v9-realschedule",
+  seedVersion: "2026-08-23-momentum-v10-kids-visits-rooms",
 
   brand: {
     name:    "Momentum Sports and Play",
@@ -38,13 +38,13 @@ window.HUB_CONFIG = {
 
   departments: [
     { name:"",           keys:["home"] },
-    { name:"Front Desk", keys:["checkin","enroll","funnel"], accent:"#14b8a6" },
-    { name:"Programs",   keys:["schedule","studio","coaches"], accent:"#0f9d9d" },
+    { name:"Front Desk", keys:["desk","checkin","enroll","funnel"], accent:"#14b8a6" },
+    { name:"Programs",   keys:["schedule","studio","pathway","coaches"], accent:"#0f9d9d" },
     { name:"Team App",   keys:["team"], accent:"#0e7490" },
-    { name:"Families",   keys:["families"],  accent:"#14b8a6" },
+    { name:"Families",   keys:["families","parties"],  accent:"#14b8a6" },
     { name:"Money",      keys:["tuition","books"], accent:"#0f9d9d" },
     { name:"People & Safety", keys:["hr","law","approvals"], accent:"#0a6f6f" },
-    { name:"System",     keys:["comply","it","org"], accent:"#0891b2" },
+    { name:"System",     keys:["comply","it","org","bring"], accent:"#0891b2" },
     { name:"Your Gym, Your Look", keys:["skins"], accent:"#0f9d9d" }
   ],
 
@@ -66,16 +66,20 @@ window.HUB_CONFIG = {
     { k:"comply",   label:"Comply · Trust Center", ic:"/icons/comply.svg", href:"/comply.html", ds:"Live domain checks + sealed evidence chain" },
     { k:"it",       label:"System Health",     ic:"/icons/it.svg", href:"/it.html",       ds:"Every system Momentum runs on, one board" },
     { k:"org",      label:"AI Staff",          ic:"/icons/org.svg", href:"/org.html",      ds:"Frankie on duty — and the org that scales" },
+    { k:"desk",     label:"The Desk Today",    ic:"/icons/checkin.svg", href:"/desk.html",     ds:"Who is here, who is late, who is waiting \u2014 right now" },
+    { k:"pathway",  label:"Skill Pathways",    ic:"/icons/studio.svg", href:"/pathway.html",  ds:"Every level, and what each kid is working toward" },
+    { k:"parties",  label:"Parties & Rooms",   ic:"/icons/families.svg", href:"/parties.html", ds:"Every booking against a room \u2014 no double-bookings" },
+    { k:"bring",    label:"Bring Your Data",   ic:"/icons/enroll.svg", href:"/import.html",   ds:"Your roster, imported in about a minute" },
     { k:"skins",    label:"Choose Your Look",  ic:"/icons/skins.svg", href:"/skins.html",    ds:"Six looks, made for Momentum — tap one, the whole hub repaints" }
   ],
 
   roles: {
     admin:     "*",
     manager:   "*",
-    frontdesk: ["home","checkin","enroll","funnel","schedule","team","families","tuition","skins"],
-    coach:     ["home","checkin","schedule","studio","team","coaches","hr"],
-    trainee:   ["home","checkin","schedule","studio"],
-    teacher:   ["home","checkin","schedule","studio","team"],
+    frontdesk: ["home","desk","checkin","enroll","funnel","schedule","pathway","team","families","parties","tuition","skins"],
+    coach:     ["home","desk","checkin","schedule","studio","pathway","team","coaches","hr"],
+    trainee:   ["home","checkin","schedule","studio","pathway"],
+    teacher:   ["home","checkin","schedule","studio","pathway","team"],
     parent:    ["home","team"],
     guest:     "*"
   },
@@ -94,7 +98,7 @@ window.HUB_CONFIG = {
     note: "Names are hidden here on purpose. Coaches and the front desk see the full roster."
   },
 
-  collections: ["classes","families","coaches","teams","teamevents","teammsgs","expenses","attendance","waitlist","leads","hrrecords","waivers","incidents","approvals","systems","evidence"],
+  collections: ["classes","families","coaches","teams","teamevents","teammsgs","expenses","attendance","waitlist","leads","hrrecords","waivers","incidents","approvals","systems","evidence","kids","visits","offers","rooms","bookings","ladders"],
 
   programColors: { Gymnastics:"#12968f", Ninja:"#b8461f", Cheer:"#dda12e", Tumbling:"#9b4fd0", STEAM:"#1f6fa8", Preschool:"#d4608c", Homeschool:"#6f9a30", Camps:"#2f8fbf", "Open Gym":"#7a8a94" },
 
@@ -369,6 +373,106 @@ window.HUB_CONFIG = {
     ],
 
     // ---- APPROVAL DESK: anything that spends, discounts or changes policy waits for an owner.
+    // ---- KIDS ------------------------------------------------------------
+    // Derived from the sample families already in this seed, not invented anew.
+    // Real kids arrive via Bring Your Data (/import.html) the day Momentum says yes.
+    // `photoConsent` is deliberately "unset" by default: silence is not consent.
+    kids: [
+      { id:"k1",  child:"Gabby",  family:"The Esposito Family", familyId:"f1", age:11, program:"Cheer",      level:"Ignite \u00b7 Flare",     photoConsent:"yes",   sample:true },
+      { id:"k2",  child:"Leo",    family:"The Esposito Family", familyId:"f1", age:6,  program:"Ninja",      level:"White & Blue",       photoConsent:"yes",   sample:true },
+      { id:"k3",  child:"Mia",    family:"The Esposito Family", familyId:"f1", age:4,  program:"Preschool",  level:"Little Ninjas",      photoConsent:"no",    sample:true },
+      { id:"k4",  child:"Sam",    family:"The Harmon Family",   familyId:"f2", age:9,  program:"Gymnastics", level:"Rec Level 2",        photoConsent:"unset", sample:true },
+      { id:"k5",  child:"Ellie",  family:"The Harmon Family",   familyId:"f2", age:7,  program:"Tumbling",   level:"Rec Level 1",        photoConsent:"unset", sample:true },
+      { id:"k6",  child:"Zara",   family:"Okonkwo Family",      familyId:"f3", age:5,  program:"Preschool",  level:"Tot Town",           photoConsent:"yes",   sample:true },
+      { id:"k7",  child:"Chloe",  family:"The Bennett Family",  familyId:"f4", age:10, program:"Cheer",      level:"Exhibition \u00b7 Sparks", photoConsent:"unset", sample:true },
+      { id:"k8",  child:"Ruby",   family:"The Bennett Family",  familyId:"f4", age:8,  program:"Gymnastics", level:"Rec Level 1",        photoConsent:"unset", sample:true },
+      { id:"k9",  child:"Mateo",  family:"The Reyes Family",    familyId:"f5", age:12, program:"Ninja",      level:"Red & Purple",       photoConsent:"yes",   sample:true },
+      { id:"k10", child:"Owen",   family:"The Walsh Family",    familyId:"f6", age:6,  program:"Gymnastics", level:"Rec Level 1",        photoConsent:"no",    sample:true }
+    ],
+
+    // ---- VISITS ----------------------------------------------------------
+    // Per-child attendance. THREE statuses, and the difference between the last
+    // two is the whole point: a family who tells you they cannot make it is not
+    // drifting away. A family who simply stops showing up is.
+    //   present  \u2014 in the gym
+    //   told     \u2014 absent, parent said so in advance
+    //   noshow   \u2014 absent, nobody said anything
+    // Ruby (k8) is the demonstration: three silent misses in a row.
+    visits: [
+      { id:"v01", kidId:"k1", child:"Gabby", class:"Ignite Cheer", date:"2026-08-04", status:"present", sample:true },
+      { id:"v02", kidId:"k1", child:"Gabby", class:"Ignite Cheer", date:"2026-08-11", status:"present", sample:true },
+      { id:"v03", kidId:"k1", child:"Gabby", class:"Ignite Cheer", date:"2026-08-18", status:"present", sample:true },
+      { id:"v04", kidId:"k2", child:"Leo",   class:"Ninja \u00b7 White & Blue", date:"2026-08-04", status:"present", sample:true },
+      { id:"v05", kidId:"k2", child:"Leo",   class:"Ninja \u00b7 White & Blue", date:"2026-08-11", status:"told", note:"Family holiday", sample:true },
+      { id:"v06", kidId:"k2", child:"Leo",   class:"Ninja \u00b7 White & Blue", date:"2026-08-18", status:"present", sample:true },
+      { id:"v07", kidId:"k3", child:"Mia",   class:"Little Ninjas", date:"2026-08-05", status:"present", sample:true },
+      { id:"v08", kidId:"k3", child:"Mia",   class:"Little Ninjas", date:"2026-08-12", status:"present", sample:true },
+      { id:"v09", kidId:"k3", child:"Mia",   class:"Little Ninjas", date:"2026-08-19", status:"present", sample:true },
+      { id:"v10", kidId:"k4", child:"Sam",   class:"Rec Gym \u00b7 Level 2", date:"2026-08-05", status:"present", sample:true },
+      { id:"v11", kidId:"k4", child:"Sam",   class:"Rec Gym \u00b7 Level 2", date:"2026-08-12", status:"noshow", sample:true },
+      { id:"v12", kidId:"k4", child:"Sam",   class:"Rec Gym \u00b7 Level 2", date:"2026-08-19", status:"present", sample:true },
+      { id:"v13", kidId:"k5", child:"Ellie", class:"Tumbling", date:"2026-08-06", status:"present", sample:true },
+      { id:"v14", kidId:"k5", child:"Ellie", class:"Tumbling", date:"2026-08-13", status:"present", sample:true },
+      { id:"v15", kidId:"k5", child:"Ellie", class:"Tumbling", date:"2026-08-20", status:"told", note:"Sick", sample:true },
+      { id:"v16", kidId:"k6", child:"Zara",  class:"Tot Town", date:"2026-08-04", status:"present", sample:true },
+      { id:"v17", kidId:"k6", child:"Zara",  class:"Tot Town", date:"2026-08-11", status:"present", sample:true },
+      { id:"v18", kidId:"k6", child:"Zara",  class:"Tot Town", date:"2026-08-18", status:"present", sample:true },
+      { id:"v19", kidId:"k7", child:"Chloe", class:"Exhibition Cheer", date:"2026-08-04", status:"present", sample:true },
+      { id:"v20", kidId:"k7", child:"Chloe", class:"Exhibition Cheer", date:"2026-08-11", status:"noshow", sample:true },
+      { id:"v21", kidId:"k7", child:"Chloe", class:"Exhibition Cheer", date:"2026-08-18", status:"noshow", sample:true },
+      { id:"v22", kidId:"k8", child:"Ruby",  class:"Rec Gym \u00b7 Level 1", date:"2026-08-05", status:"noshow", sample:true },
+      { id:"v23", kidId:"k8", child:"Ruby",  class:"Rec Gym \u00b7 Level 1", date:"2026-08-12", status:"noshow", sample:true },
+      { id:"v24", kidId:"k8", child:"Ruby",  class:"Rec Gym \u00b7 Level 1", date:"2026-08-19", status:"noshow", sample:true },
+      { id:"v25", kidId:"k9", child:"Mateo", class:"Ninja \u00b7 Red & Purple", date:"2026-08-06", status:"present", sample:true },
+      { id:"v26", kidId:"k9", child:"Mateo", class:"Ninja \u00b7 Red & Purple", date:"2026-08-13", status:"present", sample:true },
+      { id:"v27", kidId:"k9", child:"Mateo", class:"Ninja \u00b7 Red & Purple", date:"2026-08-20", status:"present", sample:true },
+      { id:"v28", kidId:"k10", child:"Owen", class:"Rec Gym \u00b7 Level 1", date:"2026-08-05", status:"present", sample:true },
+      { id:"v29", kidId:"k10", child:"Owen", class:"Rec Gym \u00b7 Level 1", date:"2026-08-12", status:"present", sample:true },
+      { id:"v30", kidId:"k10", child:"Owen", class:"Rec Gym \u00b7 Level 1", date:"2026-08-19", status:"noshow", sample:true }
+    ],
+
+    // ---- LADDERS ---------------------------------------------------------
+    // Lifted verbatim from the Floor Studio page, where they were hardcoded.
+    // They are Momentum's real progressions. Now data, so Josh and Katie can
+    // edit a rung without anyone touching a file.
+    ladders: [
+      { id:"ld1", program:"Ninja", title:"Momentum Ninjas \u2014 the belt ladder", rungs:[
+        { name:"Little / Mighty Ninjas", note:"Ages 3\u20135 \u00b7 fundamentals", color:"#9ad5cf" },
+        { name:"White & Blue",           note:"First belts \u00b7 obstacles + safety", color:"#0f9d9d" },
+        { name:"Red & Purple",           note:"Bigger walls, longer laches", color:"#0e7490" },
+        { name:"Gray & Black",           note:"Advanced lines + spotting others", color:"#0f1417" } ] },
+      { id:"ld2", program:"Gymnastics", title:"Gymnastics \u2014 Rec to team", rungs:[
+        { name:"Preschool Gym", note:"Ages 3\u20135 \u00b7 Tot Town \u2192 floor", color:"#9ad5cf" },
+        { name:"Rec Level 1",   note:"Shapes, rolls, cartwheel", color:"#14b8a6" },
+        { name:"Rec Level 2",   note:"Handstands, bridges, bars", color:"#0f9d9d" },
+        { name:"Rec Level 3\u20134", note:"Back handspring track", color:"#0e7490" },
+        { name:"PreComp Team",  note:"Routines + mock meets", color:"#134e4a" } ] },
+      { id:"ld3", program:"Cheer", title:"Cheer \u2014 Sparks to Ignite", rungs:[
+        { name:"Exhibition \u00b7 Sparks", note:"Non-comp \u00b7 performance first", color:"#9ad5cf" },
+        { name:"Rec Cheer \u00b7 Comets",  note:"Skills + school-spirit events", color:"#14b8a6" },
+        { name:"Radiance (Prep)",     note:"First competition season", color:"#0f9d9d" },
+        { name:"Ignite \u2014 Flare \u00b7 Fusion \u00b7 Blaze", note:"Full competitive program", color:"#0e7490" } ] }
+    ],
+
+    // ---- OFFERS ----------------------------------------------------------
+    // A seat offered to someone on a waitlist, holding for a set window. When it
+    // lapses the seat passes to the next in line instead of sitting empty.
+    offers: [],
+
+    // ---- ROOMS -----------------------------------------------------------
+    // Named from rooms already referenced in Momentum's own class and incident
+    // data. Editable in Parties & Rooms \u2014 nothing here is guessed at.
+    rooms: [
+      { id:"rm1", name:"Cheer Gym",     note:"On 9 of their listed cheer classes" },
+      { id:"rm2", name:"Ninja Zone",    note:"From the incident log" },
+      { id:"rm3", name:"Tot Town",      note:"Preschool room" },
+      { id:"rm4", name:"Preschool Gym", note:"From the level ladder" }
+    ],
+
+    // ---- BOOKINGS --------------------------------------------------------
+    // Parties bound to a room and a time, so two cannot occupy one room at once.
+    bookings: [],
+
     approvals: [
       { id:"ap1", type:"Refund",   item:"Whitfield Family — $87 August tuition (moved out of state mid-month)", from:"Front Desk", status:"Pending", ts:"2026-08-18" },
       { id:"ap2", type:"Discount", item:"Staff-child rate for Coach Emma's daughter — 50% on Rec Gym L1", from:"Coach Emma", status:"Pending", ts:"2026-08-17" },

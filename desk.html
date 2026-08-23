@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>The Desk Today</title>
+<link rel="icon" href="/icons/momentum-mark.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/config.js"></script>
+<script src="/skins.js"></script>
+<style>
+  *{box-sizing:border-box}html,body{margin:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#2a201a);background:var(--paper,#fbf7f2);min-height:100vh}
+  h1,h2,h3{font-family:Georgia,serif;font-weight:800;margin:0}
+  .wrap{max-width:1240px;margin:0 auto;padding:20px 20px 90px}
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+  .head{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:4px}
+  .when{font-size:14px;color:var(--mut);padding-bottom:3px}
+  .filters{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 16px}
+  .flt{border:1px solid var(--line);background:var(--card);border-radius:99px;padding:7px 14px;font-size:12.5px;font-weight:600;color:var(--ink2);cursor:pointer}
+  .flt.on{background:var(--accent);color:var(--onAccent);border-color:transparent}
+  .bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0 18px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 15px;min-width:104px}
+  .stat .n{font-family:Georgia,serif;font-weight:800;font-size:22px;color:var(--accent);line-height:1.1}
+  .stat .l{font-size:10.5px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+  .stat.alert .n{color:#b4552e}
+  .cols{display:grid;grid-template-columns:1.35fr 1fr;gap:15px;align-items:start}
+  @media(max-width:940px){.cols{grid-template-columns:1fr}}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 14px rgba(80,50,20,.05);overflow:hidden;margin-bottom:15px}
+  .ph{display:flex;align-items:center;gap:9px;padding:13px 16px;border-bottom:1px solid var(--line);background:var(--cream)}
+  .ph h2{font-size:16px}
+  .ph .c{margin-left:auto;font-size:11.5px;color:var(--mut);font-weight:600}
+  .pb{padding:6px 16px 14px}
+  .cls{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px dotted var(--line)}
+  .cls:last-child{border-bottom:none}
+  .tm{font-family:Georgia,serif;font-weight:800;font-size:14px;min-width:74px;color:var(--ink)}
+  .cn{flex:1;min-width:0}
+  .cn b{display:block;font-size:14.5px;font-weight:600}
+  .cn span{font-size:12px;color:var(--mut)}
+  .dot{width:9px;height:9px;border-radius:50%;flex:none}
+  .fill{font-size:12px;color:var(--mut);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .now{background:color-mix(in srgb,var(--accent) 9%,transparent);margin:0 -16px;padding-left:16px;padding-right:16px;border-left:3px solid var(--accent)}
+  .kid{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px dotted var(--line)}
+  .kid:last-child{border-bottom:none}
+  .kid b{font-size:14px}
+  .kid .fm{font-size:11.5px;color:var(--mut)}
+  .kid .sp{flex:1}
+  .sig{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:3px 9px;border-radius:99px;white-space:nowrap}
+  .sig.bad{background:#fbeae2;color:#9c4520}
+  .sig.warn{background:#fdf4e3;color:#8a5f1a}
+  .sig.ok{background:#e9f4ee;color:#2f6a52}
+  .sig.told{background:var(--cream);color:var(--mut)}
+  .act{border:1px solid var(--line);background:var(--card);border-radius:9px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--ink2);cursor:pointer}
+  .act:hover{border-color:var(--accent);color:var(--accent)}
+  .none{font-size:13px;color:var(--mut);padding:14px 0}
+  .why{font-size:12.5px;color:var(--mut);line-height:1.5;padding:2px 0 10px}
+  .samp{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:var(--cream);color:var(--mut);padding:2px 7px;border-radius:99px;margin-left:7px}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:13.5px;opacity:0;transition:.25s;pointer-events:none;z-index:80}.toast.on{opacity:1}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--accent)!important;outline-offset:2px}
+</style>
+<meta name="theme-color" content="#0f9d9d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Momentum">
+<link rel="apple-touch-icon" href="/momentum-logo.png">
+<link rel="manifest" href="/manifest.webmanifest">
+</head>
+<body>
+<script src="/hub-nav.js" defer></script>
+<script src="/data.js"></script>
+<script src="/roomguard.js"></script>
+<script src="/assistant.js" defer></script>
+
+<div class="wrap">
+  <div class="eyebrow" id="eb"></div>
+  <div class="head"><h1>The Desk Today</h1><div class="when" id="when"></div></div>
+
+  <div class="bar">
+    <div class="stat"><div class="n" id="kNow">—</div><div class="l">On the floor now</div></div>
+    <div class="stat"><div class="n" id="kNext">—</div><div class="l">Next class</div></div>
+    <div class="stat"><div class="n" id="kToday">—</div><div class="l">Classes today</div></div>
+    <div class="stat"><div class="n" id="kWait">—</div><div class="l">Waiting for a spot</div></div>
+    <div class="stat alert"><div class="n" id="kDrift">—</div><div class="l">Slipping away</div></div>
+  </div>
+
+  <div class="filters" id="days"></div>
+
+  <div class="cols">
+    <div>
+      <div class="panel">
+        <div class="ph"><h2>Today, hour by hour</h2><span class="c" id="dayName"></span></div>
+        <div class="pb" id="today"></div>
+      </div>
+      <div class="panel">
+        <div class="ph"><h2>Slipping away</h2><span class="c">three silent misses in a row</span></div>
+        <div class="pb">
+          <div class="why">A family who tells you they cannot make it is not leaving. A family who simply stops coming usually is — and by the time they cancel, they left weeks ago. These are the ones worth a phone call this week.</div>
+          <div id="drift"></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel">
+        <div class="ph"><h2>Waiting for a spot</h2><span class="c" id="waitC"></span></div>
+        <div class="pb" id="wait"></div>
+      </div>
+      <div class="panel">
+        <div class="ph"><h2>Told us they’re out</h2><span class="c">this week</span></div>
+        <div class="pb"><div class="why">Marked by the family themselves. Nobody needs to chase these.</div><div id="told"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  var el=function(i){return document.getElementById(i);};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var C=window.HUB_CONFIG||{}, BR=C.brand||{}, PC=C.programColors||{};
+  var DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var now=new Date(), day=DAYS[now.getDay()];
+  var CLASSES=[],VISITS=[],KIDS=[],WAIT=[];
+  el('eb').textContent=(BR.center||BR.name||'');
+  el('when').textContent=now.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'});
+  el('dayName').textContent=day;
+
+  function mins(t){
+    var m=String(t||'').match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i); if(!m) return null;
+    var h=+m[1]%12, ap=(m[3]||'').toUpperCase();
+    if(ap==='PM') h+=12; if(!ap && +m[1]<8) h=+m[1]+12;
+    return h*60+(+m[2]);
+  }
+  function onDay(c,d){ return String(c.day||'').indexOf(d)>=0; }
+  function pcolor(p){ return PC[p]||'#9a8b7d'; }
+
+  /* consecutive silent misses, most recent first — a 'told' or a 'present' resets it */
+  function driftFor(kid){
+    var vs=VISITS.filter(function(v){return v.kidId===kid.id;})
+                 .sort(function(a,b){return String(b.date).localeCompare(String(a.date));});
+    var n=0;
+    for(var i=0;i<vs.length;i++){ if(vs[i].status==='noshow') n++; else break; }
+    return { streak:n, last: vs[0] ? vs[0].date : '' };
+  }
+
+  function load(){
+    Promise.all([window.HUBDATA.list('classes'),window.HUBDATA.list('visits'),
+                 window.HUBDATA.list('kids'),window.HUBDATA.list('waitlist')])
+    .then(function(r){ CLASSES=r[0]||[]; VISITS=r[1]||[]; KIDS=r[2]||[]; WAIT=r[3]||[]; render(); });
+  }
+
+  function render(){
+    var mnow=now.getHours()*60+now.getMinutes();
+    var todays=CLASSES.filter(function(c){return onDay(c,day);})
+      .map(function(c){ return Object.assign({},c,{_m:mins(c.time)}); })
+      .filter(function(c){return c._m!=null;})
+      .sort(function(a,b){return a._m-b._m;});
+
+    var live=todays.filter(function(c){return mnow>=c._m && mnow<c._m+60;});
+    var next=todays.filter(function(c){return c._m>mnow;})[0];
+    el('kToday').textContent=todays.length;
+    el('kNow').textContent=live.reduce(function(s,c){return s+(+c.enrolled||0);},0)||'0';
+    el('kNext').textContent=next?next.time.replace(/:00/,''):'—';
+    el('kWait').textContent=WAIT.filter(function(w){return (w.status||'Waiting')==='Waiting';}).length;
+
+    el('days').innerHTML=DAYS.map(function(d){
+      var n=CLASSES.filter(function(c){return onDay(c,d);}).length;
+      return '<button class="flt'+(d===day?' on':'')+'" data-d="'+d+'">'+d+(n?' <span style="opacity:.65">'+n+'</span>':'')+'</button>';
+    }).join('');
+    el('days').querySelectorAll('[data-d]').forEach(function(b){
+      b.addEventListener('click',function(){ day=b.getAttribute('data-d'); el('dayName').textContent=day; render(); });
+    });
+
+    el('today').innerHTML = todays.length ? todays.map(function(c){
+      var isNow=mnow>=c._m && mnow<c._m+60, past=c._m+60<=mnow;
+      return '<div class="cls'+(isNow?' now':'')+'" style="'+(past?'opacity:.5':'')+'">'+
+        '<span class="dot" style="background:'+pcolor(c.program)+'"></span>'+
+        '<span class="tm">'+esc(c.time||'')+'</span>'+
+        '<span class="cn"><b>'+esc(c.name||'')+'</b><span>'+esc(c.program||'')+(c.coach?' · '+esc(c.coach):'')+(c.room?' · '+esc(c.room):'')+'</span></span>'+
+        '<span class="fill">'+(+c.enrolled||0)+' / '+(+c.cap||0)+'</span></div>';
+    }).join('') : '<div class="none">Nothing scheduled on '+esc(day)+'. Tap another day above.</div>';
+
+    /* --- slipping away --- */
+    var drift=KIDS.map(function(k){ var d=driftFor(k); return {k:k,d:d}; })
+                  .filter(function(x){return x.d.streak>=2;})
+                  .sort(function(a,b){return b.d.streak-a.d.streak;});
+    el('kDrift').textContent=drift.filter(function(x){return x.d.streak>=3;}).length;
+    el('drift').innerHTML = drift.length ? drift.map(function(x){
+      var bad=x.d.streak>=3;
+      return '<div class="kid"><b>'+esc(x.k.child)+'</b><span class="fm">'+esc(x.k.family||'')+(x.k.sample?'<span class="samp">sample</span>':'')+'</span><span class="sp"></span>'+
+        '<span class="sig '+(bad?'bad':'warn')+'">'+x.d.streak+' missed, no word</span>'+
+        '<button class="act" data-call="'+esc(x.k.id)+'">Mark called</button></div>';
+    }).join('') : '<div class="none">Nobody has gone quiet. Every family is either showing up or telling you why not.</div>';
+    el('drift').querySelectorAll('[data-call]').forEach(function(b){
+      b.addEventListener('click',function(){
+        var k=KIDS.filter(function(x){return x.id===b.getAttribute('data-call');})[0]; if(!k)return;
+        window.HUBDATA.save('kids',{id:k.id,lastCalled:new Date().toISOString().slice(0,10)})
+          .then(function(){ toast('Logged — you called about '+k.child+'.'); });
+        b.textContent='Called ✓'; b.disabled=true;
+      });
+    });
+
+    /* --- waitlist --- */
+    var waiting=WAIT.filter(function(w){return (w.status||'Waiting')==='Waiting';});
+    el('waitC').textContent=waiting.length+' in the queue';
+    el('wait').innerHTML = waiting.length ? waiting.slice(0,10).map(function(w){
+      var cls=CLASSES.filter(function(c){return c.name===(w.class||w.className);})[0];
+      var room=cls ? (+cls.cap||0)-(+cls.enrolled||0) : null;
+      return '<div class="kid"><b>'+esc(w.child||w.name||'—')+'</b><span class="fm">'+esc(w.class||w.className||'')+' · since '+esc(w.since||'')+'</span><span class="sp"></span>'+
+        (room>0?'<span class="sig ok">'+room+' seat'+(room>1?'s':'')+' free</span>':'<span class="sig told">full</span>')+
+        '</div>';
+    }).join('') : '<div class="none">Nobody waiting.</div>';
+
+    /* --- told us --- */
+    var cut=new Date(Date.now()-7*864e5).toISOString().slice(0,10);
+    var told=VISITS.filter(function(v){return v.status==='told' && String(v.date)>=cut;});
+    el('told').innerHTML = told.length ? told.map(function(v){
+      return '<div class="kid"><b>'+esc(v.child||'')+'</b><span class="fm">'+esc(v.class||'')+' · '+esc(v.date)+(v.note?' · '+esc(v.note):'')+'</span></div>';
+    }).join('') : '<div class="none">No absences called in this week.</div>';
+  }
+
+  function toast(m){var t=el('toast');t.textContent=m;t.classList.add('on');setTimeout(function(){t.classList.remove('on');},2400);}
+  window.AssistantContext=function(){
+    var drift=KIDS.map(function(k){return {child:k.child,streak:driftFor(k).streak};}).filter(function(x){return x.streak>=3;});
+    return { view:'the front desk day screen', center:BR.center, day:day,
+      classesToday:CLASSES.filter(function(c){return onDay(c,day);}).map(function(c){return {name:c.name,time:c.time,enrolled:c.enrolled,cap:c.cap};}),
+      slippingAway:drift, waiting:WAIT.filter(function(w){return (w.status||'Waiting')==='Waiting';}).length };
+  };
+  window.RoomGuard("desk", function(role, seat){ window.SEAT=seat; load(); });
+})();
+</script>
+</body>
+</html>
