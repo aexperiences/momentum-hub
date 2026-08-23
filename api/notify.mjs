@@ -117,8 +117,10 @@ export default async function handler(req, res) {
   const token = body.sess || q.sess || "";
   const role = await roleOf(token);
   const owner = role === "manager" || role === "admin";
+  // Vercel stamps its own scheduled invocations; a shared key still works for
+  // anything else that wants to trigger this.
   const cronKey = (req.headers["x-cron-key"] || q.key || "");
-  const viaCron = !!(process.env.CRON_KEY && cronKey === process.env.CRON_KEY);
+  const viaCron = !!req.headers["x-vercel-cron"] || !!(process.env.CRON_KEY && cronKey === process.env.CRON_KEY);
 
   if (!owner && !viaCron) { res.status(401).json({ ok: false, error: "AUTH", message: "Owner seat required." }); return; }
 

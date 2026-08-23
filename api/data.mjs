@@ -58,6 +58,15 @@ export default async function handler(req, res) {
     // Land it in the exact shape the Growth Funnel board already reads, so a
     // website enquiry appears in the New column next to every other lead
     // instead of sitting invisibly in the collection.
+    // The Enrolment & Waitlists board reads `class` and `phone`. A website
+    // waitlist must speak that shape or it lands unpromotable.
+    if (col === "waitlist") {
+      rec.class = rec.className || rec.class || "";
+      rec.phone = rec.phone || rec.contact || "";
+      rec.since = now.slice(0, 10);
+      rec.status = "Waiting";
+    }
+
     if (col === "leads") {
       rec.name = rec.child || rec.name || "New enquiry";
       if (rec.childAge) rec.age = rec.childAge;
