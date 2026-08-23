@@ -54,6 +54,24 @@ export default async function handler(req, res) {
     if (arr.length > 4000) { res.status(429).json({ ok: false, error: "FULL" }); return; }
     const now = new Date().toISOString();
     const rid = id();
+
+    // Land it in the exact shape the Growth Funnel board already reads, so a
+    // website enquiry appears in the New column next to every other lead
+    // instead of sitting invisibly in the collection.
+    if (col === "leads") {
+      rec.name = rec.child || rec.name || "New enquiry";
+      if (rec.childAge) rec.age = rec.childAge;
+      rec.stage = "New";
+      rec.date = now.slice(0, 10);
+      const extra = [];
+      if (rec.contact) extra.push("Contact: " + rec.contact);
+      if (rec.preferred) extra.push("Prefers: " + rec.preferred);
+      if (rec.partyDate) extra.push("Date wanted: " + rec.partyDate);
+      if (rec.guests) extra.push("About " + rec.guests + " kids");
+      if (rec.name && rec.child && rec.name !== rec.child) extra.push("Parent: " + rec.name);
+      rec.note = [rec.note, extra.join(" · ")].filter(Boolean).join(" — ");
+    }
+
     arr.push(Object.assign({ status: "New", source: "Website" }, rec, { id: rid, createdAt: now, updatedAt: now }));
     await saveCol(col, arr);
     res.status(200).json({ ok: true, id: rid });
