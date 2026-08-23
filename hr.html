@@ -10,6 +10,16 @@
 <script src="/config.js"></script>
 <script src="/skins.js"></script>
 <style>
+  .nudge{display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:15px;padding:17px 20px}
+  .nudge .nl{flex:1;min-width:260px}
+  .nudge .nt{font-family:Georgia,serif;font-weight:800;font-size:16px;margin-bottom:4px}
+  .nudge .nd{font-size:13px;color:var(--mut);line-height:1.55;max-width:640px}
+  .nudge .nb{border:1px solid var(--accent);background:transparent;color:var(--accent);font:inherit;font-weight:700;font-size:13.5px;padding:12px 20px;border-radius:10px;cursor:pointer;min-height:44px}
+  .nudge .nb:hover{background:var(--accent);color:var(--onAccent,#fff)}
+  .nprev{margin-top:12px}
+  .nprev .box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:6px 14px;max-height:420px;overflow:auto}
+  .nprev .st{font-size:12.5px;color:var(--mut);margin:9px 2px 0;line-height:1.6}
+
   *{box-sizing:border-box}html,body{margin:0}
   body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#2a201a);background:var(--paper,#fbf7f2);min-height:100vh}
   h1,h2,h3{font-family:Georgia,serif;font-weight:800;margin:0}
@@ -64,6 +74,16 @@
     <div class="sp"></div>
   </div>
   <div class="note"><b>Why certs sit at the top of this room:</b> in a kids' gym, an expired CPR card or background check isn't paperwork — it's the one thing an insurer, a licensor, or a worried parent will ask for first. This board tracks every expiry so nothing lapses quietly. Anything inside 60 days turns amber; expired turns red.</div>
+  <h2 class="sec">The reminder that does the watching</h2>
+  <div class="nudge" id="nudgeBox">
+    <div class="nl">
+      <div class="nt">Nobody watches a dashboard.</div>
+      <div class="nd">Certificates get an email at 60, 30 and 7 days out, and every day once one has actually lapsed &mdash; alongside any waitlist family who could be called into a seat that just opened. See exactly what would go out.</div>
+    </div>
+    <button class="nb" id="nudgeBtn">Show me today&rsquo;s reminder</button>
+  </div>
+  <div class="nprev" id="nudgePrev"></div>
+
   <h2 class="sec">The roster — one list</h2>
   <div class="grid" id="staff"></div>
   <h2 class="sec">Payroll snapshot <small style="font-weight:400;font-size:12px;color:var(--mut)">— from Books &amp; Margins</small></h2>
@@ -106,6 +126,32 @@
   window.AssistantContext=function(){ return { view:'HR & certifications', center:BR.center,
     staff:HR.map(function(h){return {name:h.name,role:h.role,certs:(h.certs||[]).map(function(c){var s=certStatus(c.exp);return c.cert+' ('+s.label+')';})};}) }; };
   load();
+})();
+
+/* The nudge preview. It calls the real endpoint against the real records, so
+   what is shown here is literally what would be delivered -- not a mockup. */
+(function(){
+  var btn=document.getElementById('nudgeBtn'); if(!btn) return;
+  btn.addEventListener('click', function(){
+    btn.disabled=true; btn.textContent='Checking…';
+    var sess=''; try{ sess=new URLSearchParams(location.search).get('sess')||localStorage.getItem('hub_sess')||''; }catch(e){}
+    fetch('/api/notify',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'preview',sess:sess,brand:((window.HUB_CONFIG||{}).brand||{}).name||''})})
+      .then(function(r){return r.json();})
+      .then(function(d){
+        btn.disabled=false; btn.textContent='Refresh';
+        var host=document.getElementById('nudgePrev');
+        if(!d||!d.ok){ host.innerHTML='<div class="st">'+((d&&d.message)||'Could not build the reminder.')+'</div>'; return; }
+        var n=(d.digest.certs||[]).length, w=(d.digest.ready||[]).length;
+        host.innerHTML='<div class="box">'+d.html+'</div>'+
+          '<div class="st">'+(d.ready
+            ? 'Sending is switched on — this goes out on the schedule.'
+            : 'Built and deployed, delivery switched off. It starts sending the day a mail key is added in Vercel; nothing else changes.')+
+          ' Right now: '+n+' certificate'+(n===1?'':'s')+' inside the window, '+w+' waitlist famil'+(w===1?'y':'ies')+' who could be called.</div>';
+      })
+      .catch(function(){ btn.disabled=false; btn.textContent='Show me today\u2019s reminder';
+        document.getElementById('nudgePrev').innerHTML='<div class="st">Could not reach the reminder service.</div>'; });
+  });
 })();
 </script>
 </body>
