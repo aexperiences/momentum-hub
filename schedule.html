@@ -16,6 +16,14 @@
   .wrap{max-width:1200px;margin:0 auto;padding:20px 20px 70px}
   .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
   .bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:8px 0 12px}
+  .fltgap{width:1px;height:26px;background:var(--line);margin:0 6px;display:inline-block;vertical-align:middle}
+  .dayhead{display:flex;align-items:baseline;gap:10px;margin:24px 0 10px;padding-bottom:7px;border-bottom:1px solid var(--line)}
+  .dayhead b{font-family:Georgia,serif;font-size:19px;color:var(--ink)}
+  .dayhead span{font-size:12px;color:var(--mut)}
+  .daygrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+  @media(max-width:760px){.daygrid{grid-template-columns:1fr}}
+  .wl{margin-top:10px;width:100%;border:1px solid var(--accent);background:transparent;color:var(--accent);font:inherit;font-weight:700;font-size:12.5px;padding:9px;border-radius:9px;cursor:pointer}
+  .wl:hover{background:var(--accent);color:var(--onAccent,#fff)}
   .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 14px}
   .stat .n{font-family:Georgia,serif;font-weight:800;font-size:20px;color:var(--accent)}
   .stat .l{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
@@ -24,7 +32,7 @@
   .filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
   .flt{border:1px solid var(--line);background:var(--card);border-radius:99px;padding:7px 13px;font-size:12.5px;font-weight:600;color:var(--ink2);cursor:pointer}
   .flt.on{background:var(--accent);color:var(--onAccent);border-color:transparent}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:13px}
+  .grid{display:block}
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 15px;cursor:pointer;box-shadow:0 4px 14px rgba(80,50,20,.05);transition:.13s}
   .card:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 10px 22px rgba(80,50,20,.1)}
   .tag{display:inline-block;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#fff;padding:2px 9px;border-radius:99px}
@@ -132,27 +140,61 @@
     el('famList').innerHTML=FAMILIES.map(function(f){return '<option value="'+esc(f.family)+'">';}).join('');
     el('progList').innerHTML=Object.keys(PC).map(function(p){return '<option value="'+esc(p)+'">';}).join('');
     render(); }); }
+  var DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  var dayFilter='All';
   function render(){
     var progs=['All'].concat(Object.keys(PC).filter(function(p){return CLASSES.some(function(c){return c.program===p;});}));
-    el('filters').innerHTML=progs.map(function(p){return '<button class="flt'+(p===filter?' on':'')+'" data-p="'+esc(p)+'">'+esc(p)+'</button>';}).join('');
+    var days=['All'].concat(DAYS.filter(function(d){return CLASSES.some(function(c){return c.day===d;});}));
+    el('filters').innerHTML=
+      progs.map(function(p){return '<button class="flt'+(p===filter?' on':'')+'" data-p="'+esc(p)+'">'+esc(p)+'</button>';}).join('')+
+      '<span class="fltgap"></span>'+
+      days.map(function(d){return '<button class="flt day'+(d===dayFilter?' on':'')+'" data-d="'+esc(d)+'">'+esc(d==='All'?'Every day':d)+'</button>';}).join('');
     el('filters').querySelectorAll('[data-p]').forEach(function(b){b.addEventListener('click',function(){filter=b.getAttribute('data-p');render();});});
-    var list=CLASSES.filter(function(c){return filter==='All'||c.program===filter;});
+    el('filters').querySelectorAll('[data-d]').forEach(function(b){b.addEventListener('click',function(){dayFilter=b.getAttribute('data-d');render();});});
+    var list=CLASSES.filter(function(c){return (filter==='All'||c.program===filter)&&(dayFilter==='All'||c.day===dayFilter);});
     var totEnr=CLASSES.reduce(function(s,c){return s+(+c.enrolled||0);},0);
     var caps=CLASSES.reduce(function(s,c){return s+(+c.cap||0);},0);
     el('kClasses').textContent=CLASSES.length; el('kEnrolled').textContent=totEnr;
     el('kFill').textContent=(caps?Math.round(totEnr/caps*100):0)+'%';
     el('kWait').textContent=CLASSES.filter(full).length;
-    el('grid').innerHTML=list.map(function(c){
+    // Grouped by day, because that is how a parent reads a gym schedule --
+    // "what can my kid do on a Tuesday", not "show me 108 cards".
+    function card(c){
       var pct=Math.min(100,Math.round((+c.enrolled||0)/(+c.cap||1)*100));
       var badge=c.status==='Upcoming'?'<span class="pill up">Upcoming</span>':(full(c)?'<span class="pill full">Full · waitlist</span>':'');
       return '<div class="card" data-id="'+esc(c.id)+'"><div class="row"><span class="tag" style="background:'+pcolor(c.program)+'">'+esc(c.program)+'</span>'+badge+'</div>'+
         '<div class="nm">'+esc(c.name||'')+'</div><div class="meta">'+esc(c.ages||'')+(c.level?' · '+esc(c.level):'')+'</div>'+
         '<div class="when"><b>'+esc(c.day||'')+'</b> · '+esc(c.time||'')+' &nbsp; '+esc(c.coach||'')+'</div>'+
         '<div class="bar2"><i class="'+(full(c)?'full':'')+'" style="width:'+pct+'%"></i></div>'+
-        '<div class="row"><span class="fill"><b>'+(+c.enrolled||0)+'</b> / '+(+c.cap||0)+' · '+esc(c.room||'')+'</span><span class="tu">'+money(c.tuition)+'<small>/mo</small></span></div></div>';
-    }).join('')||'<div class="stat">No classes in this program.</div>';
+        '<div class="row"><span class="fill"><b>'+(+c.enrolled||0)+'</b> / '+(+c.cap||0)+(c.room?' · '+esc(c.room):'')+'</span><span class="tu">'+(c.tuition?money(c.tuition)+'<small>/mo</small>':'<small>ask us</small>')+'</span></div>'+
+        (full(c)?'<button class="wl" data-wait="'+esc(c.id)+'">Join the waitlist &rarr;</button>':'')+'</div>';
+    }
+    var groups={};
+    list.forEach(function(c){ (groups[c.day||'—']=groups[c.day||'—']||[]).push(c); });
+    var order=DAYS.filter(function(d){return groups[d];});
+    Object.keys(groups).forEach(function(d){ if(order.indexOf(d)<0) order.push(d); });
+    var mins=function(t){ var m=String(t).match(/(\d+):(\d+)\s*(AM|PM)/i); if(!m)return 0;
+      var h=+m[1]%12+(/pm/i.test(m[3])?12:0); return h*60 + (+m[2]); };
+    el('grid').innerHTML = order.map(function(d){
+      var items=groups[d].slice().sort(function(a,b){return mins(a.time)-mins(b.time);});
+      return '<div class="dayhead"><b>'+esc(d)+'</b><span>'+items.length+' class'+(items.length===1?'':'es')+'</span></div>'+
+             '<div class="daygrid">'+items.map(card).join('')+'</div>';
+    }).join('')||'<div class="stat">Nothing scheduled for that combination.</div>';
+    el('grid').querySelectorAll('[data-wait]').forEach(function(b){b.addEventListener('click',function(ev){ev.stopPropagation();joinWait(b.getAttribute('data-wait'));});});
     document.querySelectorAll('[data-id]').forEach(function(x){x.addEventListener('click',function(){openRoster(x.getAttribute('data-id'));});});
   }
+  // A full class used to be a dead end. Now it captures the family instead --
+  // the one moment a gym most reliably loses a lead.
+  function joinWait(id){
+    var c=CLASSES.find(function(x){return x.id===id;}); if(!c)return;
+    var who=prompt('Join the waitlist for '+c.name+' ('+c.day+' '+c.time+')\n\nChild\'s name:');
+    if(!who) return;
+    var contact=prompt('Best phone or email to reach you:') || '';
+    window.HUBDATA.save('waitlist',{ classId:c.id, className:c.name, program:c.program,
+      day:c.day, time:c.time, child:who, contact:contact, added:new Date().toISOString(), status:'Waiting' })
+      .then(function(){ alert('Added to the waitlist for '+c.name+'. The front desk sees it straight away.'); });
+  }
+
   function openRoster(id){ CUR=CLASSES.find(function(x){return x.id===id;}); if(!CUR)return; present={};
     el('mTitle').textContent=CUR.name; el('mSub').textContent=CUR.program+' · '+(CUR.ages||'')+' · '+(CUR.day||'')+' '+(CUR.time||'')+' · '+(CUR.coach||'');
     renderRoster(); el('e_child').value=''; el('e_family').value=''; el('scrim').classList.add('on'); }

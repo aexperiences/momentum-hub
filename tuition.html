@@ -37,6 +37,21 @@
   .ap{font-size:10.5px;font-weight:800;text-transform:uppercase;padding:2px 8px;border-radius:99px}
   .ap.yes{background:#eef6f0;color:#2f6a52}.ap.no{background:#fbeee0;color:#a85f1f}
   .mut{color:var(--mut)}
+  .ratecard{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:4px 0 18px}
+  .rate{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+  .rate.reg{background:transparent;border-style:dashed}
+  .rate .rl{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-weight:700}
+  .rate .rn{font-family:Georgia,serif;font-weight:800;font-size:27px;color:var(--accent);margin-top:5px;line-height:1}
+  .rate .rn small{font-size:13px;font-weight:600;color:var(--mut)}
+  .rate .rx{font-size:11.5px;color:var(--mut);margin-top:4px}
+  .calc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:20px}
+  .calch{font-family:Georgia,serif;font-weight:800;font-size:16px;margin-bottom:10px}
+  .calct{width:100%;border-collapse:collapse;font-size:13.5px}
+  .calct th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);padding:6px 8px;border-bottom:1px solid var(--line)}
+  .calct td{padding:8px;border-bottom:1px solid var(--line2,var(--line))}
+  .calct .r{text-align:right}
+  .calct .n{color:var(--mut);font-size:12px}
+  .calcn{font-size:12.5px;color:var(--mut);margin-top:11px;line-height:1.55}
   .stub{font-size:11px;color:var(--mut);margin-top:14px;line-height:1.5}
 </style>
 <meta name="theme-color" content="#0f9d9d">
@@ -62,6 +77,10 @@
     <div class="kpi soft"><div class="n" id="kAvg">—</div><div class="l">Avg tuition / enrollment</div></div>
     <div class="kpi soft"><div class="n" id="kAuto">—</div><div class="l">On autopay</div></div>
   </div>
+  <h3 class="sec">What a class costs</h3>
+  <div class="ratecard" id="ratecard"></div>
+  <div class="calc" id="calc"></div>
+
   <h3 class="sec">Monthly revenue by program</h3>
   <div class="progs" id="progs"></div>
   <h3 class="sec">Family billing</h3>
@@ -76,7 +95,47 @@
   var C=window.HUB_CONFIG||{}, BR=C.brand||{}, PC=C.programColors||{};
   var CLASSES=[], FAMILIES=[];
   el('eb').textContent=(BR.center||BR.name||'');
-  el('stub').innerHTML=(C.billing&&C.billing.note?esc(C.billing.note)+'<br>':'')+'Payments are stubbed in this demo — no card is charged.';
+  el('stub').innerHTML=(C.billing&&C.billing.note?esc(C.billing.note)+'<br>':'')+
+    '<b>Your rates and your class list are real.</b> Enrolment counts \u2014 and therefore the revenue figures above \u2014 are sample data until we connect your roster. Payments are stubbed: no card is charged.';
+  // Momentum's real rates, in plain text. Their own site publishes these only
+  // inside a PNG, which means no parent can search them and no phone can read
+  // them out. The single most-asked question at any gym front desk, answerable
+  // in one glance.
+  (function rateCard(){
+    var B = C.billing || {}, R = B.rates || {};
+    var keys = Object.keys(R);
+    if (!keys.length) { var rc0=el('ratecard'); if(rc0) rc0.style.display='none'; return; }
+    el('ratecard').innerHTML = keys.map(function (k) {
+      return '<div class="rate"><div class="rl">' + esc(k) + ' class</div>' +
+             '<div class="rn">' + money(R[k]) + '<small>/mo</small></div></div>';
+    }).join('') +
+      '<div class="rate reg"><div class="rl">Registration</div><div class="rn">' + money(B.regFee || 0) +
+      '<small>/child</small></div><div class="rx">' + money(B.regMax || 0) + ' family cap</div></div>' +
+      '<div class="rate reg"><div class="rl">First class, any program</div><div class="rn">' + money(B.trial || 0) +
+      '</div><div class="rx">try before you enrol</div></div>';
+
+    // The discounts stack, and nobody can do that arithmetic in their head at
+    // the front desk. So do it for them, on the real numbers.
+    var mid = R['55 min'] || R[keys[0]];
+    var sib = (B.sibling || 0) / 100, mc = (B.multiClass || 0) / 100;
+    function row(label, gross, net, note) {
+      return '<tr><td>' + esc(label) + '</td><td class="r">' + money(gross) + '</td><td class="r"><b>' + money(net) +
+             '</b></td><td class="n">' + esc(note) + '</td></tr>';
+    }
+    el('calc').innerHTML =
+      '<div class="calch">What it actually comes to</div>' +
+      '<table class="calct"><thead><tr><th>Family</th><th class="r">Before discounts</th><th class="r">Per month</th><th></th></tr></thead><tbody>' +
+      row('One child, one class', mid, mid, 'the ' + money(mid) + ' rate') +
+      row('One child, two classes', mid * 2, mid + mid * (1 - mc), (B.multiClass || 0) + '% off the second class') +
+      row('Two children, one class each', mid * 2, mid + mid * (1 - sib), (B.sibling || 0) + '% sibling discount') +
+      row('Two children, two classes each', mid * 4,
+          (mid + mid * (1 - mc)) + (mid + mid * (1 - mc)) * (1 - sib),
+          'multi-class, then sibling on top') +
+      '</tbody></table>' +
+      '<div class="calcn">Flat rate across ' + (B.weeks || 47) + ' weeks a year, so a five-week month costs the same as a four-week one. ' +
+      'Autopay runs on the 1st. Your spot is held whether you make every class or not.</div>';
+  })();
+
   var recurring=function(c){ return c.program!=='Camps'; };
   function enrollmentsOf(fam){ var out=[]; CLASSES.forEach(function(c){ (c.roster||[]).forEach(function(e){ if((e.family||'')===fam) out.push(+c.tuition||0); }); }); return out; }
 
@@ -91,9 +150,16 @@
     // by program
     var byP={}; rec.forEach(function(c){ byP[c.program]=(byP[c.program]||0)+(+c.enrolled||0)*(+c.tuition||0); });
     var max=Math.max.apply(null,Object.keys(byP).map(function(k){return byP[k];}).concat([1]));
-    el('progs').innerHTML=Object.keys(byP).sort(function(a,b){return byP[b]-byP[a];}).map(function(p){
+    var unpriced=Object.keys(byP).filter(function(p){return !byP[p];});
+    el('progs').innerHTML=Object.keys(byP).filter(function(p){return byP[p]>0;}).sort(function(a,b){return byP[b]-byP[a];}).map(function(p){
       return '<div class="prow"><div class="pn">'+esc(p)+'</div><div class="track"><i style="width:'+Math.round(byP[p]/max*100)+'%;background:'+(PC[p]||'#17a2a2')+'"></i></div><div class="pv">'+money(byP[p])+'</div></div>';
     }).join('');
+    if(unpriced.length){
+      el('progs').insertAdjacentHTML('beforeend',
+        '<div class="calcn" style="grid-column:1/-1">Momentum does not publish a monthly rate for '+
+        unpriced.map(esc).join(', ')+' \u2014 those sit outside the 45/55/85-minute tiers, so nothing is guessed here.</div>');
+    }
+
     // family billing (named families)
     var rows=FAMILIES.map(function(f){var e=enrollmentsOf(f.family);return {f:f,cnt:e.length,tu:e.reduce(function(s,x){return s+x;},0)};}).filter(function(o){return o.cnt>0;}).sort(function(a,b){return b.tu-a.tu;});
     el('rows').innerHTML=rows.map(function(o){var f=o.f;

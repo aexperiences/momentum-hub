@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Birthday parties — Momentum Sports and Play</title>
+<link rel="icon" href="/icons/momentum-mark.svg">
+<meta name="description" content="Birthday parties at Momentum Sports and Play in Coeur d'Alene — the whole gym, run by our coaches, while you enjoy the party.">
+<meta name="theme-color" content="#0f9d9d">
+<link rel="apple-touch-icon" href="/momentum-logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,700;9..144,800&display=swap" rel="stylesheet">
+<script src="/config.js"></script>
+<style>
+  :root{--ink:#0f1417;--ink2:#3b4448;--mut:#6b7780;--line:#e2e8e8;--cream:#f5f8f8;--teal:#0f9d9d;--teal2:#0c8686;--sage:#14b8a6}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--cream);line-height:1.55}
+  h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:800;line-height:1.12}
+  .hero{background:radial-gradient(760px 340px at 78% -12%,rgba(20,184,166,.42),transparent 60%),linear-gradient(160deg,#0f1417,#0a1c1c 60%,#04100f);color:#fff;padding:44px 22px 40px;text-align:center}
+  .hero .m{font-size:26px;font-weight:300;letter-spacing:.34em}
+  .hero .s{font-size:9.5px;letter-spacing:.4em;opacity:.85;margin-top:3px}
+  .hero h1{font-size:38px;margin:22px 0 10px}
+  .hero p{max-width:540px;margin:0 auto;color:#dff7f4;font-size:15.5px}
+  .wrap{max-width:760px;margin:0 auto;padding:28px 20px 70px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 10px 34px rgba(15,60,60,.07)}
+  .what{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
+  @media(max-width:640px){.what{grid-template-columns:1fr}}
+  .w{background:#fff;border:1px solid var(--line);border-radius:15px;padding:17px 19px}
+  .w h3{font-size:16px;margin-bottom:6px}
+  .w p{font-size:13.5px;color:var(--ink2)}
+  label{display:block;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--mut);margin:16px 0 6px}
+  label:first-of-type{margin-top:0}
+  input,select,textarea{width:100%;font:inherit;font-size:16px;padding:13px 14px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink)}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--sage);outline-offset:1px;border-color:var(--sage)}
+  textarea{min-height:84px;resize:vertical}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:520px){.two{grid-template-columns:1fr}}
+  button.go{margin-top:22px;width:100%;border:none;background:linear-gradient(160deg,var(--sage),var(--teal2));color:#fff;font:inherit;font-weight:800;font-size:16px;padding:16px;border-radius:12px;cursor:pointer;min-height:52px}
+  button.go:disabled{opacity:.55;cursor:not-allowed}
+  .note{font-size:12.5px;color:var(--mut);margin-top:14px;text-align:center;line-height:1.6}
+  .done{display:none;text-align:center;padding:14px 4px}
+  .done h2{font-size:26px;margin-bottom:10px}
+  .tick{width:60px;height:60px;border-radius:50%;background:#e2f0da;color:#3d6b23;font-size:30px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+  .err{display:none;background:#f7dede;color:#8a2a22;border-radius:11px;padding:12px 14px;font-size:13.5px;margin-top:14px}
+  .err.show{display:block}
+  .foot{text-align:center;font-size:12px;color:var(--mut);margin-top:22px;line-height:1.7}
+  .foot a{color:var(--teal2);font-weight:600}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="m">MOMENTUM</div><div class="s">SPORTS AND PLAY</div>
+  <h1>Have the party here.</h1>
+  <p>The floor, the trampoline, the foam pit and the rope swing — run by our coaches, so the grown-ups get to enjoy it too.</p>
+</header>
+
+<div class="wrap">
+  <div class="what">
+    <div class="w"><h3>Coaches run it</h3><p>Games, obstacle courses and open play, led by the same people who teach here every day.</p></div>
+    <div class="w"><h3>The whole gym</h3><p>Bars, beam, vault, trampoline, foam pit and the ninja course — not a corner of a room.</p></div>
+    <div class="w"><h3>You bring the cake</h3><p>Party room time for food and presents at the end. We handle the rest.</p></div>
+    <div class="w"><h3>Any age we teach</h3><p>From preschoolers to big kids. Tell us the ages and we'll pitch it right.</p></div>
+  </div>
+
+  <div class="card" id="card">
+    <form id="f" novalidate>
+      <div class="two">
+        <div><label for="child">Who's the birthday for?</label><input id="child" autocomplete="off" required></div>
+        <div><label for="age">Turning</label><input id="age" inputmode="numeric" autocomplete="off" placeholder="age"></div>
+      </div>
+      <div class="two">
+        <div><label for="date">Date you have in mind</label><input id="date" type="date"></div>
+        <div><label for="guests">Roughly how many kids</label><input id="guests" inputmode="numeric" autocomplete="off" placeholder="e.g. 12"></div>
+      </div>
+      <div class="two">
+        <div><label for="name">Your name</label><input id="name" autocomplete="name"></div>
+        <div><label for="contact">Phone or email</label><input id="contact" autocomplete="tel" required></div>
+      </div>
+      <label for="note">Anything you're picturing?</label>
+      <textarea id="note" placeholder="A theme, a sibling who wants to join in, food you're bringing — whatever's on your mind."></textarea>
+      <button class="go" type="submit" id="go">Ask about a party &rarr;</button>
+      <div class="err" id="err"></div>
+      <div class="note">We'll come back with what's free that week and what it costs — no deposit to ask.</div>
+    </form>
+  </div>
+
+  <div class="card done" id="done">
+    <div class="tick">&#10003;</div>
+    <h2>Thanks — we'll come straight back to you.</h2>
+    <p style="color:var(--ink2);max-width:440px;margin:0 auto">We'll check the floor for that date and send you times and pricing.</p>
+  </div>
+
+  <div class="foot" id="foot"></div>
+</div>
+
+<script>
+(function () {
+  var C = window.HUB_CONFIG || {}, BR = C.brand || {};
+  var el = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+
+  el('foot').innerHTML = esc(BR.name || '') + (BR.address ? '<br>' + esc(BR.address) : '') +
+    (BR.phone ? '<br><a href="tel:' + esc(BR.phone.replace(/[^0-9+]/g, '')) + '">' + esc(BR.phone) + '</a>' : '');
+
+  el('f').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var child = el('child').value.trim(), contact = el('contact').value.trim();
+    var e = el('err'); e.className = 'err';
+    if (!child) { e.className = 'err show'; e.textContent = 'Whose birthday is it?'; el('child').focus(); return; }
+    if (!contact) { e.className = 'err show'; e.textContent = 'Add a phone number or email so we can reply.'; el('contact').focus(); return; }
+
+    el('go').disabled = true; el('go').textContent = 'Sending…';
+    // Party enquiries land in the same funnel as every other lead, so the front
+    // desk works one list rather than remembering to check a second inbox.
+    fetch('/api/data', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'intake', collection: 'leads', record: {
+        child: child, childAge: el('age').value.trim(), name: el('name').value.trim(),
+        contact: contact, program: 'Birthday party', partyDate: el('date').value,
+        guests: el('guests').value.trim(), note: el('note').value.trim(),
+        source: 'Party form', status: 'New'
+      } })
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      if (d && d.ok) { el('card').style.display = 'none'; el('done').style.display = 'block'; window.scrollTo(0, 0); }
+      else { throw new Error((d && d.message) || 'Something went wrong.'); }
+    }).catch(function () {
+      el('go').disabled = false; el('go').innerHTML = 'Ask about a party &rarr;';
+      e.className = 'err show';
+      e.innerHTML = 'We could not send that just now. Please call us on ' +
+        (BR.phone ? '<b>' + esc(BR.phone) + '</b>' : 'the number below') + '.';
+    });
+  });
+})();
+</script>
+</body>
+</html>

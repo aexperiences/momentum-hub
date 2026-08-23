@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Try a class — Momentum Sports and Play</title>
+<link rel="icon" href="/icons/momentum-mark.svg">
+<meta name="description" content="Try any class at Momentum Sports and Play in Coeur d'Alene for $10. Gymnastics, ninja, tumbling, cheer, preschool and STEAM.">
+<meta name="theme-color" content="#0f9d9d">
+<link rel="apple-touch-icon" href="/momentum-logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,700;9..144,800&display=swap" rel="stylesheet">
+<script src="/config.js"></script>
+<style>
+  :root{--ink:#0f1417;--ink2:#3b4448;--mut:#6b7780;--line:#e2e8e8;--cream:#f5f8f8;--teal:#0f9d9d;--teal2:#0c8686;--sage:#14b8a6}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--cream);line-height:1.55}
+  h1,h2{font-family:Fraunces,Georgia,serif;font-weight:800;line-height:1.1}
+  .hero{background:radial-gradient(760px 340px at 78% -12%,rgba(20,184,166,.42),transparent 60%),linear-gradient(160deg,#0f1417,#0a1c1c 60%,#04100f);color:#fff;padding:44px 22px 40px;text-align:center}
+  .hero .m{font-size:26px;font-weight:300;letter-spacing:.34em}
+  .hero .s{font-size:9.5px;letter-spacing:.4em;opacity:.85;margin-top:3px}
+  .hero h1{font-size:38px;margin:22px 0 10px}
+  .hero p{max-width:520px;margin:0 auto;color:#dff7f4;font-size:15.5px}
+  .price{display:inline-block;margin-top:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:99px;padding:8px 20px;font-weight:700;font-size:14px;color:#9fe8e3}
+  .wrap{max-width:620px;margin:0 auto;padding:28px 20px 70px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px 24px 26px;box-shadow:0 10px 34px rgba(15,60,60,.07)}
+  label{display:block;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--mut);margin:16px 0 6px}
+  label:first-of-type{margin-top:0}
+  input,select,textarea{width:100%;font:inherit;font-size:16px;padding:13px 14px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink)}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--sage);outline-offset:1px;border-color:var(--sage)}
+  textarea{min-height:84px;resize:vertical}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:520px){.two{grid-template-columns:1fr}}
+  .hint{font-size:12px;color:var(--mut);margin-top:5px}
+  button.go{margin-top:22px;width:100%;border:none;background:linear-gradient(160deg,var(--sage),var(--teal2));color:#fff;font:inherit;font-weight:800;font-size:16px;padding:16px;border-radius:12px;cursor:pointer;min-height:52px}
+  button.go:disabled{opacity:.55;cursor:not-allowed}
+  .note{font-size:12.5px;color:var(--mut);margin-top:14px;text-align:center;line-height:1.6}
+  .done{display:none;text-align:center;padding:14px 4px}
+  .done h2{font-size:26px;margin-bottom:10px}
+  .done p{color:var(--ink2);font-size:15px;max-width:420px;margin:0 auto}
+  .tick{width:60px;height:60px;border-radius:50%;background:#e2f0da;color:#3d6b23;font-size:30px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+  .err{display:none;background:#f7dede;color:#8a2a22;border-radius:11px;padding:12px 14px;font-size:13.5px;margin-top:14px}
+  .err.show{display:block}
+  .foot{text-align:center;font-size:12px;color:var(--mut);margin-top:22px;line-height:1.7}
+  .foot a{color:var(--teal2);font-weight:600}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="m">MOMENTUM</div><div class="s">SPORTS AND PLAY</div>
+  <h1>Come try a class.</h1>
+  <p>Pick what looks fun, tell us how to reach you, and we'll get you on the floor. No account to make, no commitment.</p>
+  <div class="price" id="priceTag">First class in any program &middot; $10</div>
+</header>
+
+<div class="wrap">
+  <div class="card" id="card">
+    <form id="f" novalidate>
+      <div class="two">
+        <div><label for="child">Your child's name</label><input id="child" autocomplete="off" required></div>
+        <div><label for="age">Age</label><input id="age" inputmode="numeric" autocomplete="off"></div>
+      </div>
+
+      <label for="program">What would they like to try?</label>
+      <select id="program"><option value="">Not sure yet — help us pick</option></select>
+      <div class="hint" id="progHint">We'll match them to the right class for their age.</div>
+
+      <label for="when">Days that work for you</label>
+      <input id="when" placeholder="e.g. weekday afternoons, or Saturdays" autocomplete="off">
+
+      <div class="two">
+        <div><label for="name">Your name</label><input id="name" autocomplete="name"></div>
+        <div><label for="contact">Phone or email</label><input id="contact" autocomplete="tel" required></div>
+      </div>
+
+      <label for="note">Anything we should know?</label>
+      <textarea id="note" placeholder="First time in a gym, a sibling coming too, anything at all."></textarea>
+
+      <button class="go" type="submit" id="go">Book our $10 trial &rarr;</button>
+      <div class="err" id="err"></div>
+      <div class="note">A real person at the front desk picks this up — usually the same day.</div>
+    </form>
+  </div>
+
+  <div class="card done" id="done">
+    <div class="tick">&#10003;</div>
+    <h2>Got it — we'll be in touch.</h2>
+    <p id="doneMsg">Someone from the front desk will call or email you to lock in a time. Bring water and something they can move in.</p>
+  </div>
+
+  <div class="foot" id="foot"></div>
+</div>
+
+<script>
+(function () {
+  var C = window.HUB_CONFIG || {}, BR = C.brand || {}, B = C.billing || {};
+  var el = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+
+  if (B.trial) el('priceTag').innerHTML = 'First class in any program &middot; $' + B.trial;
+
+  // The programs offered are read from the gym's own class list, so this form
+  // can never drift out of step with what is actually on the schedule.
+  var progs = {};
+  (((C.seed || {}).classes) || []).forEach(function (c) { if (c.program) progs[c.program] = 1; });
+  Object.keys(progs).sort().forEach(function (p) {
+    var o = document.createElement('option'); o.value = p; o.textContent = p; el('program').appendChild(o);
+  });
+
+  el('foot').innerHTML = esc(BR.name || '') + (BR.address ? '<br>' + esc(BR.address) : '') +
+    (BR.phone ? '<br><a href="tel:' + esc(BR.phone.replace(/[^0-9+]/g, '')) + '">' + esc(BR.phone) + '</a>' : '');
+
+  el('f').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var child = el('child').value.trim(), contact = el('contact').value.trim();
+    var e = el('err'); e.className = 'err';
+    if (!child) { e.className = 'err show'; e.textContent = 'We just need your child’s name to get started.'; el('child').focus(); return; }
+    if (!contact) { e.className = 'err show'; e.textContent = 'Add a phone number or email so we can reach you.'; el('contact').focus(); return; }
+
+    el('go').disabled = true; el('go').textContent = 'Sending…';
+    fetch('/api/data', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'intake', collection: 'leads', record: {
+        child: child, childAge: el('age').value.trim(), name: el('name').value.trim(),
+        contact: contact, program: el('program').value, preferred: el('when').value.trim(),
+        note: el('note').value.trim(), source: 'Trial form', status: 'New'
+      } })
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      if (d && d.ok) { el('card').style.display = 'none'; el('done').style.display = 'block'; window.scrollTo(0, 0); }
+      else { throw new Error((d && d.message) || 'Something went wrong.'); }
+    }).catch(function (x) {
+      el('go').disabled = false; el('go').innerHTML = 'Book our $' + (B.trial || 10) + ' trial &rarr;';
+      e.className = 'err show';
+      e.innerHTML = 'We could not send that just now. Please call us on ' +
+        (BR.phone ? '<b>' + esc(BR.phone) + '</b>' : 'the number below') + ' and we will book you in.';
+    });
+  });
+})();
+</script>
+</body>
+</html>
