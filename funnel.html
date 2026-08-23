@@ -10,6 +10,9 @@
 <script src="/config.js"></script>
 <script src="/skins.js"></script>
 <style>
+  .lead .ct{font-size:12px;margin:2px 0 4px}
+  .lead .ct a{color:var(--accent);font-weight:600;text-decoration:none}
+
   *{box-sizing:border-box}html,body{margin:0}
   body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#2a201a);background:var(--paper,#fbf7f2);min-height:100vh}
   h1,h2,h3{font-family:Georgia,serif;font-weight:800;margin:0}
@@ -110,6 +113,7 @@
         var fwd=ni<STAGES.length-1?'<button class="mini fwd" data-f="'+esc(l.id)+'">'+esc(STAGES[ni+1])+' →</button>':'';
         var enrollHint=st==='Enrolled'?'<div class="note" style="color:#2f6a52">In the door — enroll them on the Classes page.</div>':'';
         return '<div class="lead"><div class="nm">'+esc(l.name)+(l.age?' <small style="color:var(--mut);font-weight:400">· '+esc(l.age)+'</small>':'')+'</div>'+
+          (l.contact?'<div class="ct"><a href="'+(String(l.contact).indexOf('@')>0?'mailto:':'tel:')+esc(l.contact)+'">'+esc(l.contact)+'</a></div>':'')+
           '<div class="meta">'+esc(l.program||'')+' &nbsp;<span class="src">'+esc(l.source||'')+'</span></div>'+
           (l.trial?'<div class="trial">'+esc(l.trial)+'</div>':'')+
           (l.note?'<div class="note">'+esc(l.note)+'</div>':'')+enrollHint+
