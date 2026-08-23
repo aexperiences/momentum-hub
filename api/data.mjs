@@ -31,6 +31,35 @@ export default async function handler(req, res) {
   const col = clean(body.collection || q.collection, 40);
   const token = body.sess || q.sess || "";
   const role = await roleOf(token);
+
+  // ---- PUBLIC INTAKE ------------------------------------------------------
+  // The only unauthenticated write in the spine. A family on the public site
+  // can raise their hand without an account: book the $10 trial, take a place
+  // on a waitlist, ask about a party. It is deliberately narrow -- APPEND ONLY,
+  // three named collections, a fixed field whitelist, hard length caps, and no
+  // way to read, change or delete anything. Everything else still needs a seat.
+  if (doo === "intake") {
+    const OPEN = { leads: 1, waitlist: 1, partyrequests: 1 };
+    if (!OPEN[col]) { res.status(403).json({ ok: false, error: "NOT_PUBLIC" }); return; }
+    const src = (body.record && typeof body.record === "object") ? body.record : {};
+    const FIELDS = ["name","child","childAge","contact","email","phone","program","classId","className",
+                    "day","time","note","preferred","guests","partyDate","source","status"];
+    const rec = {};
+    for (const f of FIELDS) {
+      if (src[f] == null) continue;
+      rec[f] = String(src[f]).slice(0, 200);
+    }
+    if (!rec.contact && !rec.email && !rec.phone) { res.status(400).json({ ok: false, error: "NO_CONTACT", message: "A phone or email is required." }); return; }
+    const arr = await loadCol(col);
+    if (arr.length > 4000) { res.status(429).json({ ok: false, error: "FULL" }); return; }
+    const now = new Date().toISOString();
+    const rid = id();
+    arr.push(Object.assign({ status: "New", source: "Website" }, rec, { id: rid, createdAt: now, updatedAt: now }));
+    await saveCol(col, arr);
+    res.status(200).json({ ok: true, id: rid });
+    return;
+  }
+
   if (role === "guest") { res.status(401).json({ ok: false, error: "AUTH", message: "Sign in to use the data spine." }); return; }
   if (!col) { res.status(400).json({ ok: false, error: "NO_COLLECTION" }); return; }
 
