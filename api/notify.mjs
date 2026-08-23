@@ -57,9 +57,11 @@ async function buildDigest() {
   const certs = [];
   hr.forEach((p) => {
     (p.certs || []).forEach((c) => {
-      const n = days(c.expires);
+      // records carry {cert, exp}; tolerate the older {name, expires} shape too
+      const when = c.exp || c.expires || c.expiry;
+      const n = days(when);
       const w = certWindow(n);
-      if (w) certs.push({ person: p.name || p.staff || "—", cert: c.name || c.type || "Certificate", expires: c.expires, inDays: n, window: w });
+      if (w) certs.push({ person: p.name || p.staff || "\u2014", cert: c.cert || c.name || c.type || "Certificate", expires: when, inDays: n, window: w });
     });
   });
   certs.sort((a, b) => (a.inDays ?? 9e9) - (b.inDays ?? 9e9));
