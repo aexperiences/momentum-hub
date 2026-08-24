@@ -7,7 +7,7 @@
    ============================================================================ */
 window.HUB_CONFIG = {
   tenant: "momentum",
-  seedVersion: "2026-08-24-momentum-v11-timeclock-payroll",
+  seedVersion: "2026-08-24-momentum-v12-hall-of-records",
 
   brand: {
     name:    "Momentum Sports and Play",
@@ -44,7 +44,7 @@ window.HUB_CONFIG = {
     { name:"Families",   keys:["families","parties"],  accent:"#14b8a6" },
     { name:"Money",      keys:["tuition","books","payroll"], accent:"#0f9d9d" },
     { name:"People & Safety", keys:["timeclock","hr","law","approvals"], accent:"#0a6f6f" },
-    { name:"System",     keys:["comply","it","org","bring"], accent:"#0891b2" },
+    { name:"System",     keys:["comply","it","org","bring","records"], accent:"#0891b2" },
     { name:"Your Gym, Your Look", keys:["skins"], accent:"#0f9d9d" }
   ],
 
@@ -72,16 +72,17 @@ window.HUB_CONFIG = {
     { k:"pathway",  label:"Skill Pathways",    ic:"/icons/pathway.svg", href:"/pathway.html",  ds:"Every level, and what each kid is working toward" },
     { k:"parties",  label:"Parties & Rooms",   ic:"/icons/parties.svg", href:"/parties.html", ds:"Every booking against a room \u2014 no double-bookings" },
     { k:"bring",    label:"Bring Your Data",   ic:"/icons/bring.svg", href:"/import.html",   ds:"Your roster, imported in about a minute" },
+    { k:"records",  label:"Hall of Records",   ic:"/icons/records.svg", href:"/records.html", ds:"Flyers, printouts and forms \u2014 kept, and private" },
     { k:"skins",    label:"Choose Your Look",  ic:"/icons/skins.svg", href:"/skins.html",    ds:"Six looks, made for Momentum — tap one, the whole hub repaints" }
   ],
 
   roles: {
     admin:     "*",
     manager:   "*",
-    frontdesk: ["home","desk","checkin","enroll","funnel","schedule","pathway","team","families","parties","tuition","timeclock","skins"],
-    coach:     ["home","desk","checkin","schedule","studio","pathway","team","coaches","hr","timeclock"],
+    frontdesk: ["home","desk","checkin","enroll","funnel","schedule","pathway","team","families","parties","tuition","timeclock","records","skins"],
+    coach:     ["home","desk","checkin","schedule","studio","pathway","team","coaches","hr","timeclock","records"],
     trainee:   ["home","checkin","schedule","studio","pathway","timeclock"],
-    teacher:   ["home","checkin","schedule","studio","pathway","team","timeclock"],
+    teacher:   ["home","checkin","schedule","studio","pathway","team","timeclock","records"],
     parent:    ["home","team"],
     guest:     "*"
   },

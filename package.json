@@ -1,0 +1,8 @@
+{
+  "name": "momentum-hub",
+  "private": true,
+  "description": "Momentum Sports and Play — the hub. Built by Accelerated Experiences, LLC.",
+  "dependencies": {
+    "@vercel/blob": "^2.3.0"
+  }
+}
