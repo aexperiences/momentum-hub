@@ -66,10 +66,10 @@ window.HUB_CONFIG = {
     { k:"comply",   label:"Comply · Trust Center", ic:"/icons/comply.svg", href:"/comply.html", ds:"Live domain checks + sealed evidence chain" },
     { k:"it",       label:"System Health",     ic:"/icons/it.svg", href:"/it.html",       ds:"Every system Momentum runs on, one board" },
     { k:"org",      label:"AI Staff",          ic:"/icons/org.svg", href:"/org.html",      ds:"Frankie on duty — and the org that scales" },
-    { k:"desk",     label:"The Desk Today",    ic:"/icons/checkin.svg", href:"/desk.html",     ds:"Who is here, who is late, who is waiting \u2014 right now" },
-    { k:"pathway",  label:"Skill Pathways",    ic:"/icons/studio.svg", href:"/pathway.html",  ds:"Every level, and what each kid is working toward" },
-    { k:"parties",  label:"Parties & Rooms",   ic:"/icons/families.svg", href:"/parties.html", ds:"Every booking against a room \u2014 no double-bookings" },
-    { k:"bring",    label:"Bring Your Data",   ic:"/icons/enroll.svg", href:"/import.html",   ds:"Your roster, imported in about a minute" },
+    { k:"desk",     label:"The Desk Today",    ic:"/icons/desk.svg", href:"/desk.html",     ds:"Who is here, who is late, who is waiting \u2014 right now" },
+    { k:"pathway",  label:"Skill Pathways",    ic:"/icons/pathway.svg", href:"/pathway.html",  ds:"Every level, and what each kid is working toward" },
+    { k:"parties",  label:"Parties & Rooms",   ic:"/icons/parties.svg", href:"/parties.html", ds:"Every booking against a room \u2014 no double-bookings" },
+    { k:"bring",    label:"Bring Your Data",   ic:"/icons/bring.svg", href:"/import.html",   ds:"Your roster, imported in about a minute" },
     { k:"skins",    label:"Choose Your Look",  ic:"/icons/skins.svg", href:"/skins.html",    ds:"Six looks, made for Momentum — tap one, the whole hub repaints" }
   ],
 
