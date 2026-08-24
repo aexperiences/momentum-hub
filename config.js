@@ -7,7 +7,7 @@
    ============================================================================ */
 window.HUB_CONFIG = {
   tenant: "momentum",
-  seedVersion: "2026-08-23-momentum-v10-kids-visits-rooms",
+  seedVersion: "2026-08-24-momentum-v11-timeclock-payroll",
 
   brand: {
     name:    "Momentum Sports and Play",
@@ -42,8 +42,8 @@ window.HUB_CONFIG = {
     { name:"Programs",   keys:["schedule","studio","pathway","coaches"], accent:"#0f9d9d" },
     { name:"Team App",   keys:["team"], accent:"#0e7490" },
     { name:"Families",   keys:["families","parties"],  accent:"#14b8a6" },
-    { name:"Money",      keys:["tuition","books"], accent:"#0f9d9d" },
-    { name:"People & Safety", keys:["hr","law","approvals"], accent:"#0a6f6f" },
+    { name:"Money",      keys:["tuition","books","payroll"], accent:"#0f9d9d" },
+    { name:"People & Safety", keys:["timeclock","hr","law","approvals"], accent:"#0a6f6f" },
     { name:"System",     keys:["comply","it","org","bring"], accent:"#0891b2" },
     { name:"Your Gym, Your Look", keys:["skins"], accent:"#0f9d9d" }
   ],
@@ -59,7 +59,9 @@ window.HUB_CONFIG = {
     { k:"families", label:"Families & Kids",   ic:"/icons/families.svg", href:"/families.html", ds:"Every family, every kid, autopay status" },
     { k:"tuition",  label:"Tuition & Billing", ic:"/icons/tuition.svg", href:"/tuition.html",  ds:"Continuous enrollment, autopay the 1st" },
     { k:"books",    label:"Books & Margins",   ic:"/icons/books.svg", href:"/books.html",    ds:"Revenue, expenses and true margins" },
+    { k:"payroll",  label:"Timesheets & Payroll", ic:"/icons/payroll.svg", href:"/payroll.html", ds:"Clocked hours \u2192 approved week \u2192 gross pay" },
     { k:"coaches",  label:"Staff & Coaches",   ic:"/icons/coaches.svg", href:"/coaches.html",  ds:"Your team and their programs" },
+    { k:"timeclock",label:"Time Clock",          ic:"/icons/timeclock.svg", href:"/timeclock.html", ds:"Tap in, tap out \u2014 the front-desk clock" },
     { k:"hr",       label:"HR & Certifications", ic:"/icons/hr.svg", href:"/hr.html",     ds:"Certs, expirations, payroll and onboarding" },
     { k:"law",      label:"Waivers & Safety",  ic:"/icons/law.svg", href:"/law.html",      ds:"The waiver docket and the incident log" },
     { k:"approvals",label:"Approval Desk",     ic:"/icons/approvals.svg", href:"/approvals.html", ds:"Refunds, discounts and changes — owner signs" },
@@ -76,10 +78,10 @@ window.HUB_CONFIG = {
   roles: {
     admin:     "*",
     manager:   "*",
-    frontdesk: ["home","desk","checkin","enroll","funnel","schedule","pathway","team","families","parties","tuition","skins"],
-    coach:     ["home","desk","checkin","schedule","studio","pathway","team","coaches","hr"],
-    trainee:   ["home","checkin","schedule","studio","pathway"],
-    teacher:   ["home","checkin","schedule","studio","pathway","team"],
+    frontdesk: ["home","desk","checkin","enroll","funnel","schedule","pathway","team","families","parties","tuition","timeclock","skins"],
+    coach:     ["home","desk","checkin","schedule","studio","pathway","team","coaches","hr","timeclock"],
+    trainee:   ["home","checkin","schedule","studio","pathway","timeclock"],
+    teacher:   ["home","checkin","schedule","studio","pathway","team","timeclock"],
     parent:    ["home","team"],
     guest:     "*"
   },
@@ -98,7 +100,7 @@ window.HUB_CONFIG = {
     note: "Names are hidden here on purpose. Coaches and the front desk see the full roster."
   },
 
-  collections: ["classes","families","coaches","teams","teamevents","teammsgs","expenses","attendance","waitlist","leads","hrrecords","waivers","incidents","approvals","systems","evidence","kids","visits","offers","rooms","bookings","ladders"],
+  collections: ["classes","families","coaches","teams","teamevents","teammsgs","expenses","attendance","waitlist","leads","hrrecords","waivers","incidents","approvals","systems","evidence","kids","visits","offers","rooms","bookings","ladders","punches","payperiods"],
 
   programColors: { Gymnastics:"#12968f", Ninja:"#b8461f", Cheer:"#dda12e", Tumbling:"#9b4fd0", STEAM:"#1f6fa8", Preschool:"#d4608c", Homeschool:"#6f9a30", Camps:"#2f8fbf", "Open Gym":"#7a8a94" },
 
@@ -472,6 +474,14 @@ window.HUB_CONFIG = {
     // ---- BOOKINGS --------------------------------------------------------
     // Parties bound to a room and a time, so two cannot occupy one room at once.
     bookings: [],
+
+    // ---- TIME CLOCK ------------------------------------------------------
+    // Empty on purpose. Every other room ships with sample data so nothing waits
+    // on Josh and Katie -- but a punch is a wage. A seeded punch becomes a real
+    // number in Books & Margins the first time a week is approved, so this one
+    // starts at zero and fills up the first time somebody taps in.
+    punches: [],
+    payperiods: [],
 
     approvals: [
       { id:"ap1", type:"Refund",   item:"Whitfield Family — $87 August tuition (moved out of state mid-month)", from:"Front Desk", status:"Pending", ts:"2026-08-18" },

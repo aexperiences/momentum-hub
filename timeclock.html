@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Time Clock</title>
+<link rel="icon" href="/icons/momentum-mark.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/config.js"></script>
+<script src="/skins.js"></script>
+<style>
+  *{box-sizing:border-box}html,body{margin:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#2a201a);background:var(--paper,#fbf7f2);min-height:100vh}
+  h1,h2,h3{font-family:Georgia,serif;font-weight:800;margin:0}
+  .wrap{max-width:1240px;margin:0 auto;padding:20px 20px 90px}
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+  .head{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:4px}
+  .clock{margin-left:auto;text-align:right}
+  .clock .t{font-family:Georgia,serif;font-weight:800;font-size:34px;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums}
+  .clock .d{font-size:13px;color:var(--mut);margin-top:3px}
+  .bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:16px 0 14px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 15px;min-width:104px}
+  .stat .n{font-family:Georgia,serif;font-weight:800;font-size:22px;color:var(--accent);line-height:1.1}
+  .stat .l{font-size:10.5px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+  .why{font-size:12.5px;color:var(--mut);line-height:1.55;margin:0 0 16px;max-width:760px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:13px}
+  .who{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:16px 15px;text-align:left;cursor:pointer;
+       display:flex;gap:13px;align-items:center;font:inherit;color:inherit;box-shadow:0 4px 14px rgba(80,50,20,.05);transition:.14s;min-height:88px}
+  .who:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .who.in{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 7%,var(--card))}
+  .ini{width:48px;height:48px;border-radius:14px;flex:none;display:grid;place-items:center;font-family:Georgia,serif;font-weight:800;font-size:19px;color:#fff}
+  .who .nm{font-weight:700;font-size:15px;line-height:1.25}
+  .who .rl{font-size:11.5px;color:var(--mut);margin-top:2px;line-height:1.3}
+  .who .st{font-size:11.5px;font-weight:700;margin-top:5px}
+  .who .st.on{color:var(--accent)}
+  .who .st.off{color:var(--mut)}
+  .modal{position:fixed;inset:0;z-index:120;background:rgba(30,20,12,.55);display:none;align-items:center;justify-content:center;padding:18px}
+  .modal.on{display:flex}
+  .card{background:var(--card);border-radius:20px;width:100%;max-width:380px;padding:24px 22px;box-shadow:0 24px 60px rgba(40,25,10,.35)}
+  .card h2{font-size:21px;text-align:center}
+  .card .sub{text-align:center;font-size:13px;color:var(--mut);margin:6px 0 16px;line-height:1.5}
+  .dots{display:flex;gap:12px;justify-content:center;margin:4px 0 18px}
+  .dot{width:15px;height:15px;border-radius:50%;border:2px solid var(--line)}
+  .dot.f{background:var(--accent);border-color:var(--accent)}
+  .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .key{border:1px solid var(--line);background:var(--paper);border-radius:14px;padding:16px 0;font-family:Georgia,serif;font-weight:800;font-size:22px;
+       color:var(--ink);cursor:pointer;transition:.1s}
+  .key:active{background:var(--accent);color:var(--onAccent)}
+  .key.wide{grid-column:span 1;font-family:Inter,sans-serif;font-size:13px;font-weight:700;color:var(--mut)}
+  .err{text-align:center;color:#b4552e;font-size:13px;font-weight:600;min-height:19px;margin-top:12px}
+  .done{position:fixed;inset:0;z-index:130;background:var(--accent);color:var(--onAccent,#fff);display:none;align-items:center;justify-content:center;text-align:center;padding:24px}
+  .done.on{display:flex}
+  .done .big{font-family:Georgia,serif;font-weight:800;font-size:38px;line-height:1.15}
+  .done .sm{font-size:17px;margin-top:10px;opacity:.9}
+  .log{margin-top:26px}
+  .row{display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px dotted var(--line);font-size:13.5px}
+  .row:last-child{border-bottom:none}
+  .row .t{font-variant-numeric:tabular-nums;font-weight:700;min-width:74px}
+  .row .k{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:3px 9px;border-radius:99px}
+  .k.in{background:#e9f4ee;color:#2f6a52}.k.out{background:var(--cream);color:var(--mut)}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 14px rgba(80,50,20,.05);overflow:hidden}
+  .ph{display:flex;align-items:center;gap:9px;padding:13px 16px;border-bottom:1px solid var(--line);background:var(--cream)}
+  .ph h2{font-size:16px}.ph .c{margin-left:auto;font-size:11.5px;color:var(--mut);font-weight:600}
+  .pb{padding:4px 16px 14px}
+  .none{font-size:13px;color:var(--mut);padding:14px 0}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:13.5px;opacity:0;transition:.25s;pointer-events:none;z-index:140}.toast.on{opacity:1}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--accent)!important;outline-offset:2px}
+</style>
+<meta name="theme-color" content="#0f9d9d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Momentum">
+<link rel="apple-touch-icon" href="/momentum-logo.png">
+<link rel="manifest" href="/manifest.webmanifest">
+</head>
+<body>
+<script src="/hub-nav.js" defer></script>
+<script src="/data.js"></script>
+<script src="/roomguard.js"></script>
+<script src="/assistant.js" defer></script>
+
+<div class="wrap">
+  <div class="eyebrow" id="eb"></div>
+  <div class="head"><h1>Time Clock</h1>
+    <div class="clock"><div class="t" id="now">—</div><div class="d" id="today"></div></div>
+  </div>
+
+  <div class="bar">
+    <div class="stat"><div class="n" id="kOn">—</div><div class="l">On the clock</div></div>
+    <div class="stat"><div class="n" id="kPunch">—</div><div class="l">Punches today</div></div>
+    <div class="stat"><div class="n" id="kHrs">—</div><div class="l">Hours today</div></div>
+  </div>
+
+  <p class="why">Tap your name, enter your four-digit code, and you're in or out. First time? Tap your name and pick a code — nobody has to set one up for you. <b>This is a time clock, not a lock.</b> The code stops somebody punching in for a friend; it isn't a password, so don't reuse one that matters.</p>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="log">
+    <div class="panel">
+      <div class="ph"><h2>Today's punches</h2><span class="c" id="logC"></span></div>
+      <div class="pb" id="log"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="card">
+    <h2 id="mTitle">—</h2>
+    <div class="sub" id="mSub">—</div>
+    <div class="dots" id="dots"></div>
+    <div class="pad" id="pad"></div>
+    <div class="err" id="err"></div>
+  </div>
+</div>
+
+<div class="done" id="done"><div><div class="big" id="dBig"></div><div class="sm" id="dSm"></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  var el=function(i){return document.getElementById(i);};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var C=window.HUB_CONFIG||{}, BR=C.brand||{};
+  var STAFF=[], PUNCH=[], MODE='punch', WHO=null, PIN='', FIRST='';
+  var TINT=['#0f9d9d','#e2673f','#dda12e','#8a3fc0','#2b7fc4','#12926b','#c2357e','#96552a'];
+
+  el('eb').textContent=(BR.center||BR.name||'');
+  function tick(){ var d=new Date();
+    el('now').textContent=d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
+    el('today').textContent=d.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'});
+  }
+  tick(); setInterval(tick,15000);
+
+  function toast(m){var t=el('toast');t.textContent=m;t.classList.add('on');setTimeout(function(){t.classList.remove('on');},2200);}
+  function initials(n){return String(n||'?').trim().split(/\s+/).map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();}
+  function tint(i){return TINT[i%TINT.length];}
+  function today(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+  function hhmm(iso){try{return new Date(iso).toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});}catch(e){return '';}}
+
+  /* SHA-256 of staffId + code. Salted per person so two people choosing the same
+     four digits do not store the same value. Client-side on purpose: this is a
+     gym time clock, and the honest limit is written on the page above. */
+  async function hash(id,code){
+    try{
+      var b=new TextEncoder().encode('momentum:'+id+':'+code);
+      var h=await crypto.subtle.digest('SHA-256',b);
+      return Array.prototype.map.call(new Uint8Array(h),function(x){return x.toString(16).padStart(2,'0');}).join('');
+    }catch(e){ return 'plain:'+id+':'+code; }
+  }
+
+  function lastPunch(sid){
+    var mine=PUNCH.filter(function(p){return p.staffId===sid;})
+                  .sort(function(a,b){return String(b.ts).localeCompare(String(a.ts));});
+    return mine[0]||null;
+  }
+  function isIn(sid){ var p=lastPunch(sid); return !!(p && p.kind==='in'); }
+
+  function minutesToday(sid){
+    var mine=PUNCH.filter(function(p){return p.staffId===sid && String(p.ts).slice(0,10)===today();})
+                  .sort(function(a,b){return String(a.ts).localeCompare(String(b.ts));});
+    var total=0, open=null;
+    mine.forEach(function(p){
+      if(p.kind==='in'){ open=p; }
+      else if(p.kind==='out' && open){ total+=(new Date(p.ts)-new Date(open.ts))/60000; open=null; }
+    });
+    if(open) total+=(Date.now()-new Date(open.ts))/60000;
+    return Math.max(0,Math.round(total));
+  }
+
+  function render(){
+    var g=el('grid');
+    g.innerHTML=STAFF.map(function(s,i){
+      var on=isIn(s.id), p=lastPunch(s.id);
+      var st=on ? '<div class="st on">In since '+esc(hhmm(p.ts))+'</div>'
+                : (p ? '<div class="st off">Out — last '+esc(hhmm(p.ts))+'</div>' : '<div class="st off">Not clocked in</div>');
+      return '<button class="who'+(on?' in':'')+'" data-id="'+esc(s.id)+'">'+
+        '<div class="ini" style="background:'+tint(i)+'">'+esc(initials(s.name))+'</div>'+
+        '<div><div class="nm">'+esc(s.name)+'</div><div class="rl">'+esc(s.role||'')+'</div>'+st+'</div></button>';
+    }).join('') || '<div class="none">No staff yet — add them in Staff &amp; Coaches.</div>';
+    Array.prototype.forEach.call(g.querySelectorAll('.who'),function(b){
+      b.addEventListener('click',function(){ open(b.getAttribute('data-id')); });
+    });
+
+    var tp=PUNCH.filter(function(p){return String(p.ts).slice(0,10)===today();})
+                .sort(function(a,b){return String(b.ts).localeCompare(String(a.ts));});
+    el('kOn').textContent=STAFF.filter(function(s){return isIn(s.id);}).length;
+    el('kPunch').textContent=tp.length;
+    var mins=STAFF.reduce(function(a,s){return a+minutesToday(s.id);},0);
+    el('kHrs').textContent=(mins/60).toFixed(1);
+    el('logC').textContent=tp.length+' today';
+    el('log').innerHTML= tp.length ? tp.map(function(p){
+      return '<div class="row"><span class="t">'+esc(hhmm(p.ts))+'</span>'+
+        '<span class="k '+(p.kind==='in'?'in':'out')+'">'+(p.kind==='in'?'In':'Out')+'</span>'+
+        '<span>'+esc(p.staffName||'')+'</span></div>';
+    }).join('') : '<div class="none">Nobody has clocked in yet today.</div>';
+  }
+
+  function dots(n,len){ el('dots').innerHTML=Array.apply(null,{length:len||4}).map(function(_,i){return '<div class="dot'+(i<n?' f':'')+'"></div>';}).join(''); }
+
+  function open(id){
+    WHO=STAFF.filter(function(s){return s.id===id;})[0]; if(!WHO) return;
+    PIN=''; FIRST=''; el('err').textContent='';
+    MODE = WHO.pinHash ? 'punch' : 'set';
+    el('mTitle').textContent=WHO.name;
+    el('mSub').innerHTML = MODE==='set'
+      ? 'First time here. Pick a four-digit code you\'ll remember, then type it once more.'
+      : (isIn(WHO.id) ? 'Enter your code to <b>clock out</b>.' : 'Enter your code to <b>clock in</b>.');
+    dots(0); el('modal').classList.add('on');
+  }
+  function close(){ el('modal').classList.remove('on'); WHO=null; PIN=''; FIRST=''; }
+
+  el('pad').innerHTML=['1','2','3','4','5','6','7','8','9','back','0','cancel'].map(function(k){
+    var lbl = k==='back' ? 'Back' : (k==='cancel' ? 'Cancel' : k);
+    return '<button class="key'+(k==='back'||k==='cancel'?' wide':'')+'" data-k="'+k+'">'+lbl+'</button>';
+  }).join('');
+  Array.prototype.forEach.call(el('pad').querySelectorAll('.key'),function(b){
+    b.addEventListener('click',function(){ key(b.getAttribute('data-k')); });
+  });
+
+  async function key(k){
+    if(k==='cancel'){ close(); return; }
+    if(k==='back'){ PIN=PIN.slice(0,-1); dots(PIN.length); el('err').textContent=''; return; }
+    if(PIN.length>=4) return;
+    PIN+=k; dots(PIN.length);
+    if(PIN.length<4) return;
+
+    var code=PIN; PIN=''; setTimeout(function(){dots(0);},120);
+    if(MODE==='set'){
+      if(!FIRST){ FIRST=code; el('mSub').textContent='Once more, to be sure.'; return; }
+      if(FIRST!==code){ FIRST=''; el('err').textContent='Those did not match. Start again.'; el('mSub').textContent='Pick a four-digit code, then type it once more.'; return; }
+      var h=await hash(WHO.id,code);
+      WHO.pinHash=h;
+      await window.HUBDATA.save('coaches',{id:WHO.id,pinHash:h});
+      el('err').textContent=''; MODE='punch';
+      el('mSub').innerHTML='Code saved. Enter it to <b>clock in</b>.';
+      return;
+    }
+    var want=await hash(WHO.id,code);
+    if(want!==WHO.pinHash){ el('err').textContent='That code did not match. Try again.'; return; }
+    await punch(WHO, isIn(WHO.id) ? 'out' : 'in');
+  }
+
+  async function punch(s,kind){
+    var rec={staffId:s.id,staffName:s.name,kind:kind,ts:new Date().toISOString(),device:'Front desk'};
+    var r=await window.HUBDATA.save('punches',rec);
+    rec.id=(r&&r.id)||('p'+Date.now().toString(36));
+    PUNCH.push(rec);
+    close(); render();
+    var d=el('done');
+    el('dBig').textContent=s.name.split(/\s+/)[0]+(kind==='in'?' is in':' is out');
+    el('dSm').textContent=(kind==='in'?'Clocked in at ':'Clocked out at ')+hhmm(rec.ts)+
+      (kind==='out' ? ' · '+(minutesToday(s.id)/60).toFixed(2)+' h today' : '');
+    d.classList.add('on'); setTimeout(function(){ d.classList.remove('on'); },1900);
+  }
+
+  el('modal').addEventListener('click',function(e){ if(e.target===el('modal')) close(); });
+  document.addEventListener('keydown',function(e){
+    if(!el('modal').classList.contains('on')) return;
+    if(e.key==='Escape') return close();
+    if(/^[0-9]$/.test(e.key)) return key(e.key);
+    if(e.key==='Backspace') return key('back');
+  });
+
+  function load(){
+    Promise.all([window.HUBDATA.list('coaches'),window.HUBDATA.list('punches')]).then(function(r){
+      STAFF=(r[0]||[]).slice(); PUNCH=(r[1]||[]).slice(); render();
+    }).catch(function(){ toast('Could not load the clock.'); });
+  }
+  window.RoomGuard('timeclock', function(){ load(); });
+})();
+</script>
+</body>
+</html>
