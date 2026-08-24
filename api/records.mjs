@@ -76,10 +76,17 @@ export default async function handler(req, res) {
       const files = blobs.map((b) => {
         const rest = b.pathname.slice(ROOT.length);
         const cut = rest.indexOf("/");
+        const stored = cut > 0 ? rest.slice(cut + 1) : rest;
+        // addRandomSuffix keeps two "Fall Schedule.pdf" from overwriting each other,
+        // but nobody should have to READ the suffix. Strip it for display only —
+        // the real pathname is what every other call uses.
+        const name = stored
+          .replace(/-[A-Za-z0-9]{24,}(?=\.[^.]+$)/, "")
+          .replace(/-[A-Za-z0-9]{24,}$/, "");
         return {
           pathname: b.pathname,
           category: cut > 0 ? rest.slice(0, cut) : "Other",
-          name: cut > 0 ? rest.slice(cut + 1) : rest,
+          name: name || stored,
           size: b.size,
           uploadedAt: b.uploadedAt
         };
