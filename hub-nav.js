@@ -199,3 +199,66 @@
     if (document.body) buildHdr(); else document.addEventListener("DOMContentLoaded", buildHdr);
   })();
 })();
+
+/* ── Connect — the hub-wide incoming-call watcher ───────────────────────────
+   Rides on hub-nav.js, so it runs on EVERY room. Every 6s it asks the Connect
+   backend whether anyone is ringing the signed-in seat, and pops a Join card
+   wherever that person happens to be — the check-in kiosk, the schedule, payroll.
+   It also badges the unread count on the Connect link in the sidebar.
+
+   APPENDED, never spliced. The engine above is not to be patched by regex:
+   a greedy match once swallowed a hub's helper functions and blanked every page.
+   Identity is not asserted here — the server reads it off the session token.
+   Accelerated Experiences, LLC. */
+(function () {
+  if (typeof document === "undefined") return;
+  var TOKEN = (new URLSearchParams(location.search).get("sess")) || (function () { try { return localStorage.getItem("hub_sess") || ""; } catch (e) { return ""; } })();
+  if (!TOKEN) return;                       // no seat, nothing to ring
+  if (/\/meet\.html$/.test(location.pathname)) return;   // the guest door has its own engine
+
+  function post(p) {
+    return fetch("/api/connect", { method: "POST", headers: { "content-type": "application/json" },
+      body: JSON.stringify(Object.assign({ sess: TOKEN }, p)) })
+      .then(function (r) { return r.json(); }).catch(function () { return { ok: false }; });
+  }
+  var showing = false, myName = "";
+  function card(r) {
+    if (showing) return; showing = true;
+    var d = document.createElement("div");
+    d.style.cssText = "position:fixed;right:18px;top:74px;z-index:9600;background:#2a201a;color:#fbf7f2;border-radius:14px;" +
+      "padding:16px 18px;box-shadow:0 20px 60px rgba(40,25,10,.45);max-width:300px;font-family:Inter,system-ui,sans-serif;border-left:4px solid #0f9d9d";
+    d.innerHTML = '<div style="font-family:Georgia,serif;font-weight:800;font-size:15.5px">' + (r.name || "Someone") + " is calling</div>" +
+      '<div style="font-size:12px;color:#c3b7a7;margin:3px 0 12px">' + (r.subject || "Incoming video call") + "</div>" +
+      '<button id="cnJoin" style="font:inherit;font-weight:700;background:#0f9d9d;color:#fff;border:none;border-radius:9px;padding:10px 16px;cursor:pointer">Join</button> ' +
+      '<button id="cnDis" style="font:inherit;background:none;border:1px solid #6d5c4a;color:#c3b7a7;border-radius:9px;padding:10px 14px;cursor:pointer">Not now</button>';
+    document.body.appendChild(d);
+    function done() { try { document.body.removeChild(d); } catch (e) {} showing = false; }
+    d.querySelector("#cnDis").onclick = done;
+    d.querySelector("#cnJoin").onclick = function () {
+      done();
+      function go() { window.MomentumMeet.open({ room: r.room, displayName: myName || "Momentum", subject: r.subject || ("Call with " + (r.name || "")) }); }
+      if (window.MomentumMeet) go();
+      else { var sc = document.createElement("script"); sc.src = "/momentum-rtc.js"; sc.onload = go; document.head.appendChild(sc); }
+    };
+  }
+  function badge(n) {
+    var a = document.querySelector('.hn-link[href^="/connect.html"]');
+    if (!a) return;
+    var b = a.querySelector(".hn-ub");
+    if (n > 0) {
+      if (!b) { b = document.createElement("span"); b.className = "hn-ub";
+        b.style.cssText = "display:inline-block;min-width:17px;text-align:center;background:#b4552e;color:#fff;border-radius:999px;font-size:10.5px;font-weight:700;padding:1px 5px;margin-left:7px";
+        a.appendChild(b); }
+      b.textContent = n;
+    } else if (b) { b.remove(); }
+  }
+  function tick() {
+    post({ do: "poll" }).then(function (r) {
+      if (!r || !r.ok) return;                       // no KV, no seat, offline — stay quiet
+      if (r.name) myName = r.name;
+      if (r.ring && r.ring.room) card(r.ring);
+      if (typeof r.unread === "number") badge(r.unread);
+    });
+  }
+  setInterval(tick, 6000); setTimeout(tick, 1500);
+})();

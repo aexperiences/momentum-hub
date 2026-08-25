@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Connect</title>
+<link rel="icon" href="/icons/momentum-mark.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/config.js"></script>
+<script src="/skins.js"></script>
+<style>
+  *{box-sizing:border-box}html,body{margin:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#2a201a);background:var(--paper,#fbf7f2);min-height:100vh}
+  h1,h2,h3{font-family:Georgia,serif;font-weight:800;margin:0}
+  .wrap{max-width:1240px;margin:0 auto;padding:20px 20px 90px}
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+  .head{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:4px}
+  .why{font-size:12.5px;color:var(--mut);line-height:1.55;max-width:860px;margin:6px 0 16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 18px 14px;box-shadow:0 4px 14px rgba(80,50,20,.05)}
+  .card h2{font-size:17px}
+  .card .sub{font-size:12.5px;color:var(--mut);line-height:1.5;margin:4px 0 10px}
+  .cn-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:16px;align-items:start}
+  @media(max-width:900px){.cn-grid{grid-template-columns:1fr}}
+  .row{display:flex;align-items:center;gap:12px;padding:11px 2px;border-top:1px solid var(--line)}
+  .row:first-child{border-top:none}
+  .av{width:42px;height:42px;border-radius:50%;background:var(--accent);color:var(--onAccent);display:grid;place-items:center;font-family:Georgia,serif;font-weight:800;font-size:14px;flex:none;position:relative}
+  .av.me{background:var(--ink);color:#fff}
+  .dot{position:absolute;right:-1px;bottom:-1px;width:12px;height:12px;border-radius:50%;border:2px solid var(--card);background:#c3b7a7}
+  .dot.on{background:#2f7d5f}
+  .who b{display:block;font-size:14px;line-height:1.25}
+  .who span{font-size:11.5px;color:var(--mut)}
+  .acts{margin-left:auto;display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+  .btn{border:1px solid var(--line);background:var(--card);border-radius:9px;padding:7px 12px;font:inherit;font-size:12.5px;font-weight:600;color:var(--ink2,#5b4a3a);cursor:pointer}
+  .btn:hover{border-color:var(--accent);color:var(--accent)}
+  .btn.go{background:var(--accent);border-color:transparent;color:var(--onAccent)}
+  .btn.go:hover{filter:brightness(1.06);color:var(--onAccent)}
+  .ico{width:36px;height:36px;border-radius:10px;flex:none;background:var(--cream,#f3ece2);display:grid;place-items:center;font-family:Georgia,serif;font-weight:800;color:var(--accent);font-size:15px}
+  .unread{width:9px;height:9px;border-radius:50%;background:#b4552e;margin-left:auto;flex:none}
+  .chan{cursor:pointer}
+  .chan:hover .who b{color:var(--accent)}
+  .banner{border-radius:12px;padding:11px 15px;font-size:12.5px;line-height:1.55;margin-bottom:14px;display:none}
+  .banner{color:var(--ink)}
+  .banner.warm{display:block;background:color-mix(in srgb,#d99a2b 14%,var(--card));border:1px solid color-mix(in srgb,#d99a2b 40%,var(--line))}
+  .banner.live{display:block;background:color-mix(in srgb,#2f7d5f 14%,var(--card));border:1px solid color-mix(in srgb,#2f7d5f 40%,var(--line))}
+  .banner.shut{display:block;background:color-mix(in srgb,#b4552e 14%,var(--card));border:1px solid color-mix(in srgb,#b4552e 42%,var(--line))}
+  .lives{background:color-mix(in srgb,#b23b2f 12%,var(--card));border:1px solid color-mix(in srgb,#b23b2f 38%,var(--line));color:var(--ink);border-radius:14px;padding:12px 14px;margin-bottom:14px;display:none}
+  .lives.on{display:block}
+  .lv{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:13.5px;flex-wrap:wrap}
+  .rd{width:10px;height:10px;border-radius:50%;background:#b23b2f;animation:pl 1.4s infinite;flex:none}
+  @keyframes pl{0%,100%{opacity:1}50%{opacity:.3}}
+  .inp{border:1px solid var(--line);border-radius:9px;padding:10px 12px;font:inherit;font-size:13.5px;background:var(--paper);color:inherit}
+  /* chat drawer */
+  #dr{position:fixed;top:0;right:0;height:100%;width:min(430px,100%);background:var(--paper);box-shadow:-16px 0 50px rgba(40,25,10,.25);transform:translateX(105%);transition:.22s;z-index:700;display:flex;flex-direction:column}
+  #dr.on{transform:none}
+  #drh{background:var(--accent);color:var(--onAccent);padding:14px 16px;display:flex;align-items:center;gap:11px}
+  #drh b{font-size:15px;font-family:Georgia,serif}
+  #drh .s{font-size:11px;opacity:.85}
+  #drh .x{margin-left:auto;background:none;border:none;color:var(--onAccent);font-size:24px;cursor:pointer;line-height:1}
+  #drl{flex:1;overflow:auto;padding:15px 16px;display:flex;flex-direction:column;gap:8px}
+  .m{max-width:85%;padding:9px 13px;border-radius:13px;font-size:13.5px;line-height:1.45;background:var(--card);border:1px solid var(--line);align-self:flex-start;word-wrap:break-word}
+  .m.mine{align-self:flex-end;background:var(--accent);border-color:transparent;color:var(--onAccent)}
+  .m .w{display:block;font-size:10.5px;font-weight:700;color:var(--mut);margin-bottom:2px}
+  .m.mine .w{color:rgba(255,255,255,.8)}
+  #drf{border-top:1px solid var(--line);padding:11px 12px;display:flex;gap:8px;background:var(--card)}
+  #dri{flex:1}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:13.5px;opacity:0;transition:.25s;pointer-events:none;z-index:900}.toast.on{opacity:1}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--accent)!important;outline-offset:2px}
+</style>
+<meta name="theme-color" content="#0f9d9d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Momentum">
+<link rel="apple-touch-icon" href="/momentum-logo.png">
+<link rel="manifest" href="/manifest.webmanifest">
+</head>
+<body>
+<script src="/hub-nav.js" defer></script>
+<script src="/data.js"></script>
+<script src="/momentum-rtc.js"></script>
+<script src="/roomguard.js"></script>
+<script src="/assistant.js" defer></script>
+
+<div class="wrap">
+  <div class="eyebrow" id="eb"></div>
+  <div class="head"><h1>Connect</h1></div>
+  <p class="why">Message anyone on staff, post to a channel the whole gym reads, or get face to face on video —
+  one to one, the coaches together, or a parent joining from a plain browser link. The video is this browser's own:
+  no Zoom, no accounts, no app for the person on the other end. Nothing here is visible to families.</p>
+
+  <div class="banner" id="banner"></div>
+  <div class="lives" id="lives"></div>
+
+  <div class="cn-grid">
+    <div>
+      <div class="card">
+        <h2>The staff</h2>
+        <div class="sub">A green dot means they have the hub open right now. Calling rings them on whatever page they're on.</div>
+        <div id="people"><div class="sub">Loading the roster…</div></div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <h2>Channels</h2>
+        <div class="sub">Say it once, the group sees it. Better than a group text nobody can search.</div>
+        <div id="chans"></div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <h2>Meeting rooms</h2>
+        <div class="sub">Native video, up to the whole staff. A room with somebody in it shows up top under "Live now".</div>
+        <div id="rooms"></div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <h2>Bring somebody in</h2>
+        <div class="sub">A parent, a visiting coach, the insurance rep: name them, send the link, they join from a plain browser. No app, no account, and the link only opens the one room.</div>
+        <div style="display:flex;gap:9px;flex-wrap:wrap">
+          <input id="guest" class="inp" placeholder="Who's joining? e.g. the Nguyen family" style="flex:1;min-width:180px">
+          <button class="btn go" id="mkinvite">Create the link</button>
+        </div>
+        <div id="inviteout" style="margin-top:10px;font-size:12.5px;color:var(--mut);word-break:break-all"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="dr">
+  <div id="drh"><span class="av" id="drav" style="position:static;width:34px;height:34px;font-size:12px"></span>
+    <span><b id="drn"></b><div class="s" id="drs"></div></span>
+    <button class="x" id="drx" aria-label="Close">&times;</button></div>
+  <div id="drl"></div>
+  <div id="drf"><input id="dri" class="inp" placeholder="Write a message…"><button class="btn go" id="drsend">Send</button></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+  var CH=[
+    {ch:"gym",       name:"# gym",        desc:"Everyone — the whole building"},
+    {ch:"coaches",   name:"# coaches",    desc:"Floor talk, spotting, class notes"},
+    {ch:"front-desk",name:"# front-desk", desc:"Check-in, tuition questions, walk-ins"},
+    {ch:"teams",     name:"# teams",      desc:"Comp squads, meets and travel"}
+  ];
+  var ROOMS=[
+    {key:"staff-huddle", label:"Staff huddle",  sub:"The five minutes before open"},
+    {key:"coaches-room", label:"Coaches' room", sub:"Season planning, level moves"},
+    {key:"owners",       label:"Josh & Katie",  sub:"The two of them, whichever building they're in"}
+  ];
+  var $=function(id){return document.getElementById(id);};
+  function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+  function slug(s){return String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-zA-Z0-9]+/g,"-").replace(/^-+|-+$/g,"").toLowerCase().slice(0,80);}
+  function initials(n){var p=String(n||"").trim().split(/\s+/);return ((p[0]||"?")[0]+((p[1]||"")[0]||"")).toUpperCase();}
+  var tt;
+  function toast(m){var t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(function(){t.classList.remove("on");},3000);}
+  var SESS=(new URLSearchParams(location.search).get("sess"))||(function(){try{return localStorage.getItem("hub_sess")||"";}catch(e){return "";}})();
+  function api(p){ return fetch("/api/connect",{method:"POST",headers:{"content-type":"application/json"},
+      body:JSON.stringify(Object.assign({sess:SESS},p))}).then(function(r){return r.json();}).catch(function(){return {ok:false,reason:"offline"};}); }
+
+  var ME={slug:"",name:""}, STAFF=[], KV=null, TIMER=null;
+
+  // Connect is STAFF. The nav already keeps parents out, but this hub keeps a
+  // wide-open demo seat on purpose, and a demo seat has no business in the room
+  // where coaches talk about families. Belt and braces, same as roomguard itself.
+  var STAFF_ROLES = {admin:1,manager:1,frontdesk:1,coach:1,trainee:1,teacher:1};
+  RoomGuard("connect", function(role){
+    $("eb").textContent = (window.HUB_CONFIG&&HUB_CONFIG.tenantName? HUB_CONFIG.tenantName+" · " : "") + "Connect";
+    if(!STAFF_ROLES[role]){
+      document.querySelector(".cn-grid").style.display="none";
+      $("banner").className="banner shut";
+      $("banner").innerHTML="<b>Connect is for staff.</b> This is where coaches and the front desk talk to each other, so it stays behind a real staff sign-in. Sign in with your own seat and it opens.";
+      return;
+    }
+    boot(role);
+  });
+
+  function boot(role){
+    renderChans(null); renderRooms();
+    // Who am I? The server decides from the session — the browser never gets to claim a name.
+    api({do:"ping"}).then(function(r){
+      if(r.ok){ ME={slug:r.me,name:r.name||""}; setKV(true); }
+      else if(r.reason==="no_kv"){ setKV(false); }
+      else if(r.reason==="no_seat"){ setKV("shut"); }
+      loadStaff();
+      if(ME.slug){ tick(); TIMER=setInterval(tick,8000); }
+    });
+  }
+
+  function loadStaff(){
+    var done=function(list){
+      STAFF=(list||[]).filter(function(c){return c&&c.name;}).map(function(c){
+        return {slug:slug(c.name),name:c.name,role:c.role||"Staff",init:initials(c.name)};
+      });
+      // De-duplicate on slug: two "Coach Emma" rows would otherwise both light up.
+      var seen={}; STAFF=STAFF.filter(function(s){ if(seen[s.slug])return false; seen[s.slug]=1; return true; });
+      renderPeople(null);
+    };
+    if(window.HUBDATA&&HUBDATA.list) HUBDATA.list("coaches").then(done).catch(function(){done([]);});
+    else done([]);
+  }
+
+  /* ---- render ---- */
+  function renderPeople(online){
+    var host=$("people");
+    if(!STAFF.length){ host.innerHTML='<div class="sub">No staff on file yet — add them in Coaches &amp; Staff and they show up here.</div>'; return; }
+    host.innerHTML=STAFF.map(function(t){
+      var mine=t.slug===ME.slug;
+      var on=mine||(online&&online[t.slug]);
+      return '<div class="row"><span class="av'+(mine?" me":"")+'">'+esc(t.init)+'<span class="dot'+(on?" on":"")+'"></span></span>'+
+        '<span class="who"><b>'+esc(t.name)+(mine?" (you)":"")+'</b><span>'+esc(t.role)+'</span></span>'+
+        (mine?'<span class="acts"><span class="sub" style="margin:0">This is you</span></span>'
+             :'<span class="acts"><button class="btn" data-msg="'+esc(t.slug)+'">Message</button><button class="btn go" data-call="'+esc(t.slug)+'">Call</button></span>')+
+        '</div>';
+    }).join("");
+    host.onclick=function(e){
+      var b=e.target.closest("button"); if(!b)return;
+      var t=STAFF.filter(function(x){return x.slug===(b.dataset.msg||b.dataset.call);})[0]; if(!t)return;
+      if(!ME.slug){ toast("Connect needs your seat — sign in again."); return; }
+      if(b.dataset.msg) openThread("dm",t.slug,t.name,t.role,t.init);
+      else callPerson(t);
+    };
+  }
+  function renderChans(meta){
+    $("chans").innerHTML=CH.map(function(c){
+      var mm=meta&&meta[c.ch];
+      return '<div class="row chan" data-ch="'+c.ch+'"><span class="ico">#</span>'+
+        '<span class="who"><b>'+esc(c.name)+'</b><span>'+esc(mm&&mm.lastText?mm.lastText:c.desc)+'</span></span>'+
+        (mm&&mm.unread?'<span class="unread"></span>':'')+'</div>';
+    }).join("");
+    $("chans").onclick=function(e){
+      var d=e.target.closest(".chan"); if(!d)return;
+      var c=CH.filter(function(x){return x.ch===d.dataset.ch;})[0];
+      if(!ME.slug){ toast("Connect needs your seat — sign in again."); return; }
+      openThread("ch",c.ch,c.name,c.desc,"#");
+    };
+  }
+  function renderRooms(){
+    $("rooms").innerHTML=ROOMS.map(function(r){
+      return '<div class="row"><span class="ico">&#9679;</span><span class="who"><b>'+esc(r.label)+'</b><span>'+esc(r.sub)+'</span></span>'+
+        '<span class="acts"><button class="btn go" data-room="'+r.key+'" data-label="'+esc(r.label)+'">Start / Join</button></span></div>';
+    }).join("");
+    $("rooms").onclick=function(e){
+      var b=e.target.closest("[data-room]"); if(!b)return;
+      window.MomentumMeet.open({room:MomentumMeet.groupRoom(b.dataset.room),displayName:ME.name||"Momentum",subject:b.dataset.label});
+    };
+  }
+
+  /* ---- calls ---- */
+  function callPerson(t){
+    var room=MomentumMeet.pairRoom(ME.slug,t.slug);
+    api({do:"ring",to:t.slug,room:room,subject:"Call from "+(ME.name||"the gym")});
+    MomentumMeet.open({room:room,displayName:ME.name||"Momentum",subject:(ME.name||"You").split(" ")[0]+" · "+t.name.split(" ")[0]});
+    toast("Ringing "+t.name.split(" ")[0]+" — a Join card pops up wherever they are in the hub.");
+  }
+
+  /* ---- chat drawer ---- */
+  var DMODE=null,DWITH=null,DPOLL=null;
+  function openThread(mode,key,label,sub,init){
+    DMODE=mode;DWITH=key;
+    $("drn").textContent=label; $("drs").textContent=sub; $("drav").textContent=init;
+    $("dr").classList.add("on"); loadThread();
+    clearInterval(DPOLL); DPOLL=setInterval(loadThread,5000);
+    setTimeout(function(){$("dri").focus();},80);
+  }
+  function closeThread(){ $("dr").classList.remove("on"); clearInterval(DPOLL); DWITH=null; }
+  $("drx").onclick=closeThread;
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeThread(); });
+  function loadThread(){
+    if(!DWITH)return;
+    var p=DMODE==="dm"?{do:"thread",with:DWITH}:{do:"chread",channel:DWITH};
+    api(p).then(function(r){
+      var log=$("drl");
+      if(!r.ok){ log.innerHTML='<div class="m">'+(r.reason==="no_kv"
+        ?"Messages come alive the moment the backend key is connected. The room is built — it's waiting on the vault."
+        :"Couldn't reach the message store just now.")+'</div>'; return; }
+      var stick=log.scrollTop+log.clientHeight>=log.scrollHeight-40;
+      log.innerHTML=(r.msgs||[]).map(function(x){
+        var mine=x.from===ME.slug;
+        return '<div class="m'+(mine?" mine":"")+'">'+(mine?"":'<span class="w">'+esc(x.name||x.from)+'</span>')+esc(x.text)+'</div>';
+      }).join("")||'<div class="m">Nothing here yet — say the first thing.</div>';
+      if(stick) log.scrollTop=log.scrollHeight;
+    });
+  }
+  function sendMsg(){
+    var i=$("dri"), v=i.value.trim(); if(!v||!DWITH)return; i.value="";
+    var p=DMODE==="dm"?{do:"send",to:DWITH,text:v}:{do:"chsend",channel:DWITH,channelName:(CH.filter(function(x){return x.ch===DWITH;})[0]||{}).name,text:v};
+    api(p).then(function(r){ if(!r.ok&&r.reason==="no_kv") toast("Messages wake up when the backend key is in — nothing was lost."); loadThread(); });
+  }
+  $("drsend").onclick=sendMsg;
+  $("dri").addEventListener("keydown",function(e){ if(e.key==="Enter") sendMsg(); });
+
+  /* ---- outreach ---- */
+  $("mkinvite").onclick=function(){
+    var g=$("guest").value.trim()||"Guest";
+    var room=MomentumMeet.outreachRoom(g);
+    var url=location.origin+"/meet.html?room="+encodeURIComponent(room);
+    var out=$("inviteout");
+    out.innerHTML='<b style="color:var(--ink)">Link for '+esc(g)+':</b><br>'+esc(url)+
+      '<br><button class="btn" id="cp" style="margin-top:8px">Copy the link</button> <button class="btn go" id="entr" style="margin-top:8px">Go in now</button>';
+    $("cp").onclick=function(){ navigator.clipboard.writeText(url).then(function(){toast("Copied — text or email it to them.");},function(){toast("Select the link above and copy it.");}); };
+    $("entr").onclick=function(){ MomentumMeet.open({room:room,displayName:ME.name||"Momentum",subject:"Guest · "+g,outreach:true}); };
+  };
+
+  /* ---- pollers ---- */
+  function tick(){
+    api({do:"ping"}).then(function(r){ if(r.ok&&r.me) ME={slug:r.me,name:r.name||ME.name}; });
+    api({do:"who"}).then(function(r){
+      if(!r.ok){ setKV(r.reason==="no_seat"?"shut":false); renderPeople(null); return; }
+      setKV(true);
+      var on={}; (r.people||[]).forEach(function(p){ if(p.online) on[p.slug]=1; });
+      renderPeople(on);
+    });
+    api({do:"channels"}).then(function(r){
+      var meta={}; if(r.ok)(r.channels||[]).forEach(function(x){meta[x.channel]=x;});
+      renderChans(r.ok?meta:null);
+    });
+    api({do:"liveList"}).then(function(r){
+      var lv=$("lives");
+      if(!r.ok||!(r.rooms||[]).length){ lv.classList.remove("on"); return; }
+      lv.classList.add("on");
+      lv.innerHTML='<div style="font-family:Georgia,serif;font-weight:800;font-size:14px;margin-bottom:4px">Live now</div>'+
+        r.rooms.map(function(rm){
+        return '<div class="lv"><span class="rd"></span><b>'+esc(rm.subject||rm.room)+'</b>'+
+          '<span style="color:var(--mut);font-size:12.5px">'+rm.count+' in the room · '+esc((rm.names||[]).join(", "))+'</span>'+
+          '<button class="btn go" style="margin-left:auto" data-join="'+esc(rm.room)+'" data-sub="'+esc(rm.subject||"")+'">Join</button></div>';
+      }).join("");
+      lv.onclick=function(e){ var b=e.target.closest("[data-join]"); if(!b)return;
+        MomentumMeet.open({room:b.dataset.join,displayName:ME.name||"Momentum",subject:b.dataset.sub}); };
+    });
+  }
+  function setKV(state){
+    if(KV===state)return; KV=state;
+    var b=$("banner");
+    if(state===true){ b.className="banner live"; b.innerHTML="<b>&#9679; Live.</b> Messages, channels, the green dots and cross-page ringing are all real."; }
+    else if(state==="shut"){ b.className="banner shut"; b.innerHTML="<b>Your seat didn't come through.</b> Connect takes your name from your hub sign-in, not from this page. Sign out and back in and it will find you."; }
+    else { b.className="banner warm"; b.innerHTML="<b>Warming up.</b> The video engine is native to this browser, so meeting rooms and guest links work right now. Messages, the green dots and cross-page ringing switch on the moment the backend key is connected."; }
+  }
+})();
+</script>
+</body>
+</html>
