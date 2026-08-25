@@ -2,7 +2,7 @@
   "name": "Momentum Sports and Play",
   "short_name": "Momentum",
   "description": "Momentum OS - schedules, teams, travel and announcements for Momentum families.",
-  "start_url": "/team.html",
+  "start_url": "/hub.html",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
@@ -10,16 +10,22 @@
   "theme_color": "#0f9d9d",
   "icons": [
     {
-      "src": "/icons/momentum-mark.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/momentum-logo.png",
+      "src": "/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
