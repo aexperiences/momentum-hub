@@ -16,6 +16,7 @@ const HUB = (process.env.HUB_NS || "momentum") + ":";   // the hub's own namespa
 const NS  = HUB + "connect:";                            // everything this file writes
 const ROSTER_TTL = 60, PEER_STALE = 22000, BOX_TTL = 90, THREAD_MAX = 500;
 const RING_TTL = 45, LIVE_STALE = 32000, CH_MAX = 400, PRESENCE_STALE = 5 * 60 * 1000;
+const ROSTER_KEEP = 24 * 60 * 60 * 1000;   // the roster is a presence cache, not a directory
 
 function kvCreds(){ const url=(process.env.KV_REST_API_URL||process.env.UPSTASH_REDIS_REST_URL||'').replace(/\/$/,'');
   const tok=process.env.KV_REST_API_TOKEN||process.env.UPSTASH_REDIS_REST_TOKEN||''; return url&&tok?{url,tok}:null; }
@@ -62,8 +63,13 @@ async function meOf(p){
 
 /* ---------------- presence ---------------- */
 async function ping(p,me){
-  const r=await getJSON(NS+'roster',{}); r[me.slug]={name:clip(me.name,80),role:clip(me.role,30),ts:now()};
-  await setJSON(NS+'roster',r); return {ok:true,me:me.slug,name:me.name,role:me.role,named:me.named,ts:now()}; }
+  const r=await getJSON(NS+'roster',{}); const t=now();
+  // Forget anyone who hasn't opened the hub in a day. Without this the roster is a
+  // one-way list: a coach who leaves the gym stays on it for ever, and so does every
+  // throwaway seat anybody ever signed in with. They come back the instant they sign in.
+  for(const k in r) if(t-(r[k].ts||0)>ROSTER_KEEP) delete r[k];
+  r[me.slug]={name:clip(me.name,80),role:clip(me.role,30),ts:t};
+  await setJSON(NS+'roster',r); return {ok:true,me:me.slug,name:me.name,role:me.role,named:me.named,ts:t}; }
 async function who(p,me){ const r=await getJSON(NS+'roster',{}); const t=now();
   const list=Object.keys(r).map(k=>({slug:k,name:r[k].name,role:r[k].role||'',online:(t-(r[k].ts||0))<PRESENCE_STALE,ts:r[k].ts||0}));
   return {ok:true,me:me.slug,people:list}; }
