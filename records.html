@@ -28,6 +28,9 @@
   .sel{border:1px solid var(--line);background:var(--paper);border-radius:9px;padding:9px 12px;font:inherit;font-size:13px;color:inherit}
   .btn{border:none;background:var(--accent);color:var(--onAccent);border-radius:10px;padding:10px 18px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit}
   .btn[disabled]{opacity:.5;cursor:not-allowed}
+  .prog{margin-top:14px;font-size:12.5px;color:var(--mut);min-height:18px}
+  .pbar{height:7px;background:var(--cream);border-radius:99px;overflow:hidden;margin:7px auto 0;max-width:330px}
+  .pbar i{display:block;height:100%;background:var(--accent);width:0;transition:width .2s}
   .filters{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 14px}
   .flt{border:1px solid var(--line);background:var(--card);border-radius:99px;padding:7px 14px;font-size:12.5px;font-weight:600;color:var(--ink2);cursor:pointer}
   .flt.on{background:var(--accent);color:var(--onAccent);border-color:transparent}
@@ -58,6 +61,7 @@
 <body>
 <script src="/hub-nav.js" defer></script>
 <script src="/data.js"></script>
+<script src="/blob-client.js"></script>
 <script src="/roomguard.js"></script>
 <script src="/assistant.js" defer></script>
 
@@ -75,12 +79,13 @@
 
   <div class="drop" id="drop">
     <h2>Put a file on the shelf</h2>
-    <p>Drop it here, or choose one. PDFs, images and documents up to <b>3 MB</b>.</p>
+    <p>Drop it here, or choose one. PDFs, images, photos, documents — <b>big files are fine</b>, they go straight to storage.</p>
     <div class="pick">
       <select class="sel" id="cat"></select>
       <input type="file" id="file" style="display:none" multiple>
       <button class="btn" id="choose">Choose a file</button>
     </div>
+    <div id="prog" class="prog"></div>
   </div>
 
   <div class="filters" id="filters"></div>
@@ -176,22 +181,37 @@
     else toast((j&&j.message)||'Could not remove that file.');
   }
 
-  function b64(buf){
-    var bytes=new Uint8Array(buf), bin='', CH=0x8000;
-    for(var i=0;i<bytes.length;i+=CH) bin+=String.fromCharCode.apply(null,bytes.subarray(i,i+CH));
-    return btoa(bin);
+  /* The file goes straight from this browser to storage. It never travels through
+     our function, which is why size stopped being a problem. The server still
+     decides whether an upload may happen at all, and to exactly what path. */
+  function safeName(n){
+    return String(n||'file').replace(/[\\/]/g,'-').replace(/[^\w.\- ()&]/g,'').replace(/^\.+/,'').trim().slice(0,90)||'file';
+  }
+  function showProg(txt,pct){
+    el('prog').innerHTML = txt ? esc(txt)+(pct!=null?'<div class="pbar"><i style="width:'+pct+'%"></i></div>':'') : '';
   }
   async function upload(fileList){
-    var cat=el('cat').value, n=0;
-    for(var i=0;i<fileList.length;i++){
+    if(!(window.BlobClient&&window.BlobClient.upload)){ toast('Upload is still loading — give it a second.'); return; }
+    var cat=el('cat').value, n=0, total=fileList.length;
+    for(var i=0;i<total;i++){
       var f=fileList[i];
-      if(f.size>3*1024*1024){ toast('"'+f.name+'" is '+(f.size/1048576).toFixed(1)+' MB — the limit is 3 MB.'); continue; }
-      toast('Adding '+f.name+'…');
+      var label=(total>1?('('+(i+1)+' of '+total+') '):'')+f.name;
+      showProg('Adding '+label+'…',0);
       try{
-        var j=await apiJson({action:'upload',name:f.name,category:cat,contentType:f.type||'application/octet-stream',dataB64:b64(await f.arrayBuffer())});
-        if(j&&j.ok) n++; else toast((j&&j.message)||('Could not add '+f.name));
-      }catch(e){ toast('Could not add '+f.name); }
+        await window.BlobClient.upload('momentum/records/'+cat+'/'+safeName(f.name), f, {
+          access:'private',
+          handleUploadUrl:'/api/records-upload',
+          clientPayload:JSON.stringify({sess:SESS}),
+          multipart: f.size > 10*1024*1024,
+          onUploadProgress:function(p){ showProg('Adding '+label+'… '+Math.round(p.percentage)+'%', p.percentage); }
+        });
+        n++;
+      }catch(e){
+        showProg('');
+        toast(String((e&&e.message)||('Could not add '+f.name)));
+      }
     }
+    showProg('');
     if(n){ toast(n+' file'+(n>1?'s':'')+' on the shelf.'); await load(); }
   }
 
