@@ -39,6 +39,12 @@ const pairKey=(a,b)=>{ const x=[slug(a),slug(b)].sort(); return x[0]+'~'+x[1]; }
    The hub stores sessions as momentum:sess:<token> = "role|name". We read that and
    derive the speaking identity from it. A missing or expired token is a guest, and a
    guest reaches nothing but the rtc* doors below. */
+// Sign-in asks for a name but does not require one. A nameless seat still has to be
+// somebody in here, so it borrows its role's label — "Owner", not "manager". It is
+// honest (that IS all the hub knows about them) and it is stable across sessions.
+const ROLE_LABEL = { admin:"Admin", manager:"Owner", frontdesk:"Front Desk",
+                     coach:"Coach", trainee:"Coach-in-Training", teacher:"Teacher" };
+
 async function meOf(p){
   const t = clip(p.sess, 120);
   if(!t) return null;
@@ -48,15 +54,16 @@ async function meOf(p){
   const role = i>=0 ? s.slice(0,i) : 'guest';
   const name = (i>=0 ? s.slice(i+1) : '').trim();
   if(role==='guest') return null;
-  const id = slug(name) || slug(role);
+  const label = name || ROLE_LABEL[role] || role;
+  const id = slug(label);
   if(!id) return null;
-  return { slug:id, name: name || role, role };
+  return { slug:id, name:label, role, named: !!name };
 }
 
 /* ---------------- presence ---------------- */
 async function ping(p,me){
   const r=await getJSON(NS+'roster',{}); r[me.slug]={name:clip(me.name,80),role:clip(me.role,30),ts:now()};
-  await setJSON(NS+'roster',r); return {ok:true,me:me.slug,name:me.name,role:me.role,ts:now()}; }
+  await setJSON(NS+'roster',r); return {ok:true,me:me.slug,name:me.name,role:me.role,named:me.named,ts:now()}; }
 async function who(p,me){ const r=await getJSON(NS+'roster',{}); const t=now();
   const list=Object.keys(r).map(k=>({slug:k,name:r[k].name,role:r[k].role||'',online:(t-(r[k].ts||0))<PRESENCE_STALE,ts:r[k].ts||0}));
   return {ok:true,me:me.slug,people:list}; }
