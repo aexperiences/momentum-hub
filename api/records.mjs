@@ -29,11 +29,6 @@ async function roleOf(t) {
 }
 
 const CATEGORIES = ["Flyers", "Printouts", "Forms", "Schedules", "Photos", "Other"];
-// Keep a filename recognisable but harmless: no slashes, no leading dots, capped.
-const safeName = (s) => String(s || "file")
-  .replace(/[\\/]/g, "-").replace(/[^\w.\- ()&]/g, "").replace(/^\.+/, "").trim().slice(0, 90) || "file";
-
-const MAX_BYTES = 3 * 1024 * 1024; // Vercel caps a function request body at ~4.5MB and base64 adds a third
 
 export default async function handler(req, res) {
   const q = req.query || {};
@@ -95,27 +90,10 @@ export default async function handler(req, res) {
       return;
     }
 
-    // ---- UPLOAD --------------------------------------------------------
-    if (doo === "upload") {
-      const name = safeName(body.name);
-      const category = CATEGORIES.indexOf(body.category) >= 0 ? body.category : "Other";
-      const b64 = String(body.dataB64 || "");
-      if (!b64) { res.status(400).json({ ok: false, error: "NO_FILE" }); return; }
-      const buf = Buffer.from(b64, "base64");
-      if (!buf.length) { res.status(400).json({ ok: false, error: "EMPTY" }); return; }
-      if (buf.length > MAX_BYTES) {
-        res.status(413).json({ ok: false, error: "TOO_BIG",
-          message: "That file is " + (buf.length / 1048576).toFixed(1) + " MB. The limit here is 3 MB." });
-        return;
-      }
-      const out = await put(ROOT + category + "/" + name, buf, {
-        access: "private",
-        addRandomSuffix: true,      // two flyers called "Fall Schedule.pdf" must not overwrite each other
-        contentType: String(body.contentType || "application/octet-stream").slice(0, 120)
-      });
-      res.status(200).json({ ok: true, pathname: out.pathname, size: buf.length });
-      return;
-    }
+    // ---- UPLOAD ------------------------------------------------------
+    // There is no server-side upload any more. Files go browser -> storage
+    // directly, so nothing is capped by the function body limit. The token
+    // exchange that authorises it lives in api/records-upload.mjs.
 
     // ---- DELETE --------------------------------------------------------
     // Deleting is a fence: owner and admin only, never a coach or the front desk.
