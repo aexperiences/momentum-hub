@@ -157,7 +157,7 @@
   function api(p){ return fetch("/api/connect",{method:"POST",headers:{"content-type":"application/json"},
       body:JSON.stringify(Object.assign({sess:SESS},p))}).then(function(r){return r.json();}).catch(function(){return {ok:false,reason:"offline"};}); }
 
-  var ME={slug:"",name:""}, STAFF=[], KV=null, TIMER=null;
+  var ME={slug:"",name:"",named:true}, STAFF=[], KV=null, TIMER=null;
 
   // Connect is STAFF. The nav already keeps parents out, but this hub keeps a
   // wide-open demo seat on purpose, and a demo seat has no business in the room
@@ -178,7 +178,7 @@
     renderChans(null); renderRooms();
     // Who am I? The server decides from the session — the browser never gets to claim a name.
     api({do:"ping"}).then(function(r){
-      if(r.ok){ ME={slug:r.me,name:r.name||""}; setKV(true); }
+      if(r.ok){ ME={slug:r.me,name:r.name||"",named:r.named!==false}; setKV(true); }
       else if(r.reason==="no_kv"){ setKV(false); }
       else if(r.reason==="no_seat"){ setKV("shut"); }
       loadStaff();
@@ -193,6 +193,10 @@
       });
       // De-duplicate on slug: two "Coach Emma" rows would otherwise both light up.
       var seen={}; STAFF=STAFF.filter(function(s){ if(seen[s.slug])return false; seen[s.slug]=1; return true; });
+      // Whoever is signed in must always see themselves. An owner who signed in without
+      // typing a name is not on the coaches list, and without this they'd be looking at a
+      // roster with a Call button next to their own seat and no way to tell.
+      if(ME.slug && !seen[ME.slug]) STAFF.unshift({slug:ME.slug,name:ME.name||"You",role:"Signed in on this device",init:initials(ME.name||"You")});
       renderPeople(null);
     };
     if(window.HUBDATA&&HUBDATA.list) HUBDATA.list("coaches").then(done).catch(function(){done([]);});
@@ -303,7 +307,7 @@
 
   /* ---- pollers ---- */
   function tick(){
-    api({do:"ping"}).then(function(r){ if(r.ok&&r.me) ME={slug:r.me,name:r.name||ME.name}; });
+    api({do:"ping"}).then(function(r){ if(r.ok&&r.me) ME={slug:r.me,name:r.name||ME.name,named:r.named!==false}; });
     api({do:"who"}).then(function(r){
       if(!r.ok){ setKV(r.reason==="no_seat"?"shut":false); renderPeople(null); return; }
       setKV(true);
@@ -331,7 +335,9 @@
   function setKV(state){
     if(KV===state)return; KV=state;
     var b=$("banner");
-    if(state===true){ b.className="banner live"; b.innerHTML="<b>&#9679; Live.</b> Messages, channels, the green dots and cross-page ringing are all real."; }
+    if(state===true){ b.className="banner live";
+      b.innerHTML="<b>&#9679; Live.</b> Messages, channels, the green dots and cross-page ringing are all real."
+        + (ME.named===false ? " <span style=\"opacity:.85\">You signed in without a name, so everyone sees you as <b>"+esc(ME.name)+"</b> \u2014 <a href=\"/signin.html\" style=\"color:inherit\">sign in again with your name</a> and messages will carry it.</span>" : ""); }
     else if(state==="shut"){ b.className="banner shut"; b.innerHTML="<b>Your seat didn't come through.</b> Connect takes your name from your hub sign-in, not from this page. Sign out and back in and it will find you."; }
     else { b.className="banner warm"; b.innerHTML="<b>Warming up.</b> The video engine is native to this browser, so meeting rooms and guest links work right now. Messages, the green dots and cross-page ringing switch on the moment the backend key is connected."; }
   }
