@@ -279,3 +279,18 @@
     fetch("/api/visit", { method: "POST", headers: { "content-type": "application/json" }, body: body, keepalive: true }).catch(function () {});
   } catch (e) {}
 })();
+
+/* ============================================================================
+   THE OWNER'S MANUAL LOADER (appended Aug 27 2026 — appended, never spliced).
+   Loads /manual.js — the ae-help-manual machine: a slide-in Guide + Ask panel
+   behind a small ? button in this nav's header, on every page that has the nav.
+   The manual is one self-contained file; removing this block removes it whole.
+   ========================================================================= */
+(function () {
+  try {
+    if (document.getElementById("momManual")) return;
+    var s = document.createElement("script");
+    s.src = "/manual.js"; s.defer = true;
+    document.head.appendChild(s);
+  } catch (e) {}
+})();
