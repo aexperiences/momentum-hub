@@ -32,6 +32,23 @@
   .pill{margin-left:auto;flex:none;font-size:10px;font-weight:800;text-transform:uppercase;padding:3px 10px;border-radius:99px}
   .pill.CLEAR{background:#eef6f0;color:#2f6a52}.pill.WATCH{background:#fbeee0;color:#a85f1f}.pill.INTERVENE{background:#fdeaea;color:#b23b3b}
   .foot{font-size:12px;color:var(--mut);margin-top:14px}
+  /* — the visit log (owner eyes only) — */
+  .vh{display:none;margin-top:26px}
+  .vh h2{font-size:21px;margin-bottom:4px}
+  .vh .sub{font-size:12.5px;color:var(--mut);margin-bottom:12px}
+  .vwrap{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 4px 14px rgba(80,50,20,.05)}
+  .vscroll{overflow-x:auto}
+  table.vt{border-collapse:collapse;width:100%;min-width:680px;font-size:12.5px}
+  .vt th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--mut);padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+  .vt td{padding:8px 12px;border-bottom:1px solid color-mix(in srgb, var(--line) 55%, transparent);vertical-align:top;white-space:nowrap}
+  .vt tr:last-child td{border-bottom:0}
+  .vt .who-seat{font-weight:700;color:var(--accent)}
+  .vt .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px}
+  .vt .dim{color:var(--mut)}
+  .vbadge{display:inline-block;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:2px 7px;border-radius:99px;background:color-mix(in srgb, var(--accent) 14%, transparent);color:var(--accent)}
+  .vbtn{font:inherit;font-size:12px;font-weight:700;background:var(--accent);color:#fff;border:0;border-radius:9px;padding:7px 14px;cursor:pointer}
+  .vempty{padding:22px 16px;font-size:13px;color:var(--mut)}
+
   a:focus-visible,button:focus-visible{outline:3px solid var(--accent)!important;outline-offset:2px}
 </style>
 <meta name="theme-color" content="#0f9d9d">
@@ -59,6 +76,21 @@
   <div class="note"><b>The system board:</b> every tool the gym actually runs on, in one glance, in plain English. Green means leave it alone. Amber means someone should look this month — the note says exactly what and why. Nothing here needs a login to check; deeper live checks (your domain's email security, HTTPS, the evidence trail) live in <a href="/comply.html" style="color:var(--accent);font-weight:700">Comply · Trust Center</a>.</div>
   <div id="board"></div>
   <div class="foot" id="foot"></div>
+
+  <div class="vh" id="visitHome">
+    <h2>Who&#8217;s been in</h2>
+    <div class="sub" id="vSub">Every open of the hub and its public pages &mdash; date, time, page, who (when signed in), where from, and the address it came from. Only the owner seats can see this list; it keeps the most recent 2,000 visits. Logging began Aug 26 2026 &mdash; earlier visits were not recorded.</div>
+    <div class="bar">
+      <div class="stat"><div class="n" id="vTotal">&mdash;</div><div class="l">Visits logged</div></div>
+      <div class="stat"><div class="n" id="vToday">&mdash;</div><div class="l">Last 24 hours</div></div>
+      <div class="sp"></div>
+      <button class="vbtn" id="vRefresh" type="button">Refresh</button>
+    </div>
+    <div class="vwrap"><div class="vscroll"><table class="vt" aria-label="Visit log">
+      <thead><tr><th>When (Pacific)</th><th>Page</th><th>Who</th><th>From</th><th>IP address</th><th>Device</th></tr></thead>
+      <tbody id="vRows"></tbody>
+    </table></div><div class="vempty" id="vEmpty" hidden>Nothing logged yet. The next time anyone opens the hub &mdash; you included &mdash; a row appears here.</div></div>
+  </div>
 </div>
 <script>
 (function(){
@@ -80,6 +112,44 @@
   }
   window.AssistantContext=function(){ return { view:'system health board', center:BR.center,
     systems:SYS.map(function(s){return {name:s.name,area:s.area,status:s.status,note:s.note};}) }; };
+  load();
+})();
+
+/* — the visit log: owner eyes only. The server refuses every other seat anyway;
+     this only decides whether to draw the section at all. — */
+(function(){
+  var t=""; try{ t=new URLSearchParams(location.search).get("sess")||localStorage.getItem("hub_sess")||""; }catch(e){}
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var PAGES={'/':'Command Center','/hub.html':'Command Center','/welcome.html':'Welcome (the gift page)','/signin.html':'Sign in','/trial.html':'$10 first class (public)','/party.html':'Party enquiry (public)','/meet.html':'Video meeting (guest door)','/email-aug25.html':'The Aug 25 letter','/timeclock.html':'Time Clock'};
+  function pageName(p){ if(PAGES[p]) return PAGES[p];
+    var C=window.HUB_CONFIG||{}, secs=C.sections||[];
+    for(var i=0;i<secs.length;i++){ if(secs[i].href===p) return secs[i].label; }
+    return p; }
+  function device(ua){ ua=String(ua||'');
+    if(/bot|crawl|spider|preview|facebookexternalhit|slack|whatsapp|twitterbot|linkedinbot/i.test(ua)) return 'Link preview / bot';
+    if(/iPhone/.test(ua)) return 'iPhone'; if(/iPad/.test(ua)) return 'iPad';
+    if(/Android/.test(ua)) return 'Android'; if(/Macintosh/.test(ua)) return 'Mac';
+    if(/Windows/.test(ua)) return 'Windows'; return ua? 'Other' : ''; }
+  function fmt(ts){ try{ return new Date(ts).toLocaleString('en-US',{timeZone:'America/Los_Angeles',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});}catch(e){ return new Date(ts).toLocaleString(); } }
+  function load(){
+    fetch('/api/visit',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({action:'list',sess:t})})
+    .then(function(r){return r.json();}).then(function(j){
+      if(!j||!j.ok) return;                       // not an owner seat, or KV dormant — draw nothing
+      document.getElementById('visitHome').style.display='block';
+      var rows=j.rows||[], day=Date.now()-864e5;
+      document.getElementById('vTotal').textContent=j.total||rows.length;
+      document.getElementById('vToday').textContent=rows.filter(function(r){return r.t>day;}).length;
+      var tb=document.getElementById('vRows');
+      document.getElementById('vEmpty').hidden = rows.length>0;
+      tb.innerHTML=rows.map(function(r){
+        var who = r.who ? (function(){var i=r.who.indexOf('|');var role=i>=0?r.who.slice(0,i):r.who;var nm=i>=0?r.who.slice(i+1):'';
+          return '<span class="who-seat">'+esc(nm||role)+'</span> <span class="dim">('+esc(role)+')</span>';})() : '<span class="dim">Visitor</span>';
+        var from=[r.city,r.reg].filter(Boolean).join(', ')+(r.co&&r.co!=='US'?' &middot; '+esc(r.co):'');
+        return '<tr><td>'+esc(fmt(r.t))+'</td><td>'+esc(pageName(r.p))+'</td><td>'+who+'</td><td>'+(from||'<span class="dim">&mdash;</span>')+'</td><td class="mono">'+esc(r.ip||'')+'</td><td>'+esc(device(r.ua))+'</td></tr>';
+      }).join('');
+    }).catch(function(){});
+  }
+  var b=document.getElementById('vRefresh'); if(b) b.onclick=load;
   load();
 })();
 </script>

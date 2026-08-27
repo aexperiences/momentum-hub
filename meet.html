@@ -66,5 +66,11 @@
   document.getElementById('joinBtn').addEventListener('click',go);
   nm.addEventListener('keydown',function(e){ if(e.key==='Enter') go(); });
 </script>
+<script>
+/* The visit beacon — one POST so the owner can see this page was opened. */
+(function(){try{var t="";try{t=localStorage.getItem("hub_sess")||"";}catch(e){}
+fetch("/api/visit",{method:"POST",headers:{"content-type":"application/json"},
+body:JSON.stringify({action:"hit",path:location.pathname,ref:document.referrer||"",sess:t}),keepalive:true}).catch(function(){});}catch(e){}})();
+</script>
 </body>
 </html>

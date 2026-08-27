@@ -262,3 +262,20 @@
   }
   setInterval(tick, 6000); setTimeout(tick, 1500);
 })();
+
+/* ============================================================================
+   THE VISIT BEACON (appended Aug 26 2026 — appended, never spliced).
+   One small POST per pageload so the owner's visit log in System Health can
+   answer "has anyone opened this, and when?". The server records what the edge
+   already knows (IP, time, rough location); the browser sends only the path,
+   the referrer, and the session token so a signed-in seat gets its name on the
+   row instead of "Visitor". Fire-and-forget: if it fails, the page never knows.
+   ========================================================================= */
+(function () {
+  try {
+    var t = "";
+    try { t = new URLSearchParams(location.search).get("sess") || localStorage.getItem("hub_sess") || ""; } catch (e) {}
+    var body = JSON.stringify({ action: "hit", path: location.pathname, ref: document.referrer || "", sess: t });
+    fetch("/api/visit", { method: "POST", headers: { "content-type": "application/json" }, body: body, keepalive: true }).catch(function () {});
+  } catch (e) {}
+})();
