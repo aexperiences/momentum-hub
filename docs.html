@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Documents</title>
+<link rel="icon" href="/icons/momentum-mark.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/config.js"></script>
+<script src="/skins.js"></script>
+<style>
+  *{box-sizing:border-box}html,body{margin:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#2a201a);background:var(--paper,#fbf7f2);min-height:100vh}
+  h1,h2{font-family:Georgia,serif;font-weight:800;margin:0}
+  .wrap{max-width:980px;margin:0 auto;padding:20px 20px 90px}
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+  .sub{font-size:12.5px;color:var(--mut);margin:2px 0 16px;max-width:640px;line-height:1.55}
+  .bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .sp{flex:1}
+  .act{border:1px solid var(--line);background:var(--card);border-radius:9px;padding:9px 15px;font-size:12.5px;font-weight:700;color:var(--ink2);cursor:pointer}
+  .act:hover{border-color:var(--accent);color:var(--accent)}
+  .act.go{background:var(--accent);color:var(--onAccent,#fff);border-color:transparent}
+  /* document cards */
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+  .dcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px;cursor:pointer;box-shadow:0 4px 14px rgba(80,50,20,.05);text-align:left;font:inherit;color:inherit}
+  .dcard:hover{border-color:var(--accent)}
+  .dcard .tt{font-family:Georgia,serif;font-weight:800;font-size:15.5px;margin-bottom:5px;word-break:break-word}
+  .dcard .mm{font-size:11.5px;color:var(--mut)}
+  .empty{background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:26px 20px;font-size:13.5px;color:var(--mut);line-height:1.6}
+  /* editor */
+  .ed{display:none}
+  .ed.on{display:block}
+  .home.off{display:none}
+  .ttl{width:100%;border:0;background:none;color:var(--ink);font-family:Georgia,serif;font-weight:800;font-size:24px;padding:4px 2px;margin-bottom:8px}
+  .ttl:focus{outline:2px solid var(--accent);border-radius:8px;outline-offset:3px}
+  .tools{position:sticky;top:0;z-index:5;display:flex;gap:5px;flex-wrap:wrap;background:var(--paper);padding:8px 0}
+  .tb{border:1px solid var(--line);background:var(--card);color:var(--ink2);border-radius:8px;min-width:36px;padding:8px 10px;font-size:13px;font-weight:700;cursor:pointer}
+  .tb:hover{border-color:var(--accent);color:var(--accent)}
+  .tb b{font-weight:900}.tb i{font-style:italic}.tb u{text-decoration:underline}
+  .page{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 14px rgba(80,50,20,.06);padding:34px 38px;min-height:460px;font-size:15px;line-height:1.7;color:var(--ink)}
+  .page:focus{outline:2px solid var(--accent);outline-offset:2px}
+  .page h1{font-size:24px;margin:14px 0 8px}.page h2{font-size:19px;margin:12px 0 6px}
+  .page ul,.page ol{margin:6px 0;padding-left:26px}
+  .page p{margin:0 0 9px}
+  .savenote{font-size:11.5px;color:var(--mut);margin-top:9px}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:11px 16px;border-radius:11px;font-size:13.5px;opacity:0;transition:.25s;pointer-events:none;z-index:90;display:flex;gap:14px;align-items:center}
+  .toast.on{opacity:1;pointer-events:auto}
+  .toast button{border:0;background:none;color:var(--accent);font:inherit;font-weight:800;cursor:pointer}
+  @media(max-width:700px){ .wrap{padding:16px 12px 100px} .page{padding:22px 18px} }
+  a:focus-visible,button:focus-visible{outline:3px solid var(--accent)!important;outline-offset:2px}
+</style>
+<meta name="theme-color" content="#0f9d9d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Momentum">
+<link rel="apple-touch-icon" href="/momentum-logo.png">
+<link rel="manifest" href="/manifest.webmanifest">
+</head>
+<body>
+<script src="/hub-nav.js" defer></script>
+<script src="/data.js"></script>
+<script src="/roomguard.js"></script>
+<script src="/assistant.js" defer></script>
+
+<div class="wrap">
+  <div class="eyebrow" id="eb"></div>
+  <div class="home" id="home">
+    <h1>Documents</h1>
+    <div class="sub">Letters, notices, flyers and anything else the gym needs on paper — written here, kept here, and <b>saved to Word</b> whenever you need the file. Nothing to install.</div>
+    <div class="bar">
+      <button class="act go" id="newDoc" type="button">+ New document</button>
+      <span class="sp"></span>
+    </div>
+    <div class="cards" id="cards"></div>
+    <div class="empty" id="empty" hidden><b>No documents yet.</b><br>Start one — a welcome letter, a coach notice, the party-room rules. It saves as you type, and one button turns it into a Word file.</div>
+  </div>
+
+  <div class="ed" id="ed">
+    <div class="bar">
+      <button class="act" id="back" type="button">&#8249; All documents</button>
+      <span class="sp"></span>
+      <button class="act" id="delDoc" type="button">Remove</button>
+      <button class="act go" id="dl" type="button">Save to Word (.docx)</button>
+    </div>
+    <input class="ttl" id="ttl" placeholder="Untitled document" maxlength="140" autocomplete="off">
+    <div class="tools">
+      <button class="tb" data-cmd="formatBlock" data-val="h1" title="Big heading">H1</button>
+      <button class="tb" data-cmd="formatBlock" data-val="h2" title="Heading">H2</button>
+      <button class="tb" data-cmd="formatBlock" data-val="p" title="Normal text">¶</button>
+      <button class="tb" data-cmd="bold"><b>B</b></button>
+      <button class="tb" data-cmd="italic"><i>I</i></button>
+      <button class="tb" data-cmd="underline"><u>U</u></button>
+      <button class="tb" data-cmd="insertUnorderedList" title="Bullet list">•&nbsp;list</button>
+      <button class="tb" data-cmd="insertOrderedList" title="Numbered list">1.&nbsp;list</button>
+      <button class="tb" data-cmd="undo" title="Undo">&#8630;</button>
+      <button class="tb" data-cmd="redo" title="Redo">&#8631;</button>
+    </div>
+    <div class="page" id="page" contenteditable="true" spellcheck="true"></div>
+    <div class="savenote" id="savenote">Saves by itself as you write.</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toastMsg"></span><button id="toastUndo" hidden>Undo</button></div>
+
+<script>
+(function(){
+  var COL='documents';
+  var el=function(id){return document.getElementById(id);};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var C=window.HUB_CONFIG||{}, BR=C.brand||{};
+  el('eb').textContent=(BR.center||BR.name||'');
+  var DOCS=[], CUR=null, dirty=false, saveTimer=null;
+
+  /* ---------- toast + undo ---------- */
+  var toastTimer=null, undoFn=null;
+  function toast(msg,undo){ el('toastMsg').textContent=msg; undoFn=undo||null; el('toastUndo').hidden=!undo;
+    var t=el('toast'); t.classList.add('on'); clearTimeout(toastTimer);
+    toastTimer=setTimeout(function(){ t.classList.remove('on'); undoFn=null; }, undo?6000:2400); }
+  el('toastUndo').onclick=function(){ if(undoFn) undoFn(); el('toast').classList.remove('on'); undoFn=null; };
+
+  /* ---------- data ---------- */
+  function load(){ window.HUBDATA.list(COL).then(function(r){ DOCS=r||[]; renderHome(); }); }
+  function saveDoc(d){ return window.HUBDATA.save(COL,d); }
+  function fmt(iso){ try{ return new Date(iso).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}); }catch(e){ return ''; } }
+  function words(html){ var t=document.createElement('div'); t.innerHTML=html||''; var s=t.textContent.trim(); return s? s.split(/\s+/).length : 0; }
+
+  /* ---------- home ---------- */
+  function renderHome(){
+    var a=DOCS.slice().sort(function(x,y){ return String(y.updatedAt||'').localeCompare(String(x.updatedAt||'')); });
+    el('empty').hidden=a.length>0;
+    el('cards').innerHTML=a.map(function(d){
+      return '<button class="dcard" data-id="'+esc(d.id)+'"><div class="tt">'+esc(d.title||'Untitled document')+'</div>'+
+        '<div class="mm">'+esc(fmt(d.updatedAt||d.createdAt))+' · '+words(d.body)+' words</div></button>';
+    }).join('');
+  }
+  el('cards').addEventListener('click', function(ev){
+    var b=ev.target.closest('.dcard'); if(!b) return;
+    var d=DOCS.find(function(x){return x.id===b.getAttribute('data-id');}); if(d) open(d);
+  });
+  el('newDoc').onclick=function(){
+    var d={title:'', body:'<p></p>'};
+    saveDoc(d).then(function(r){ if(r&&r.id) d.id=r.id; DOCS.push(d); open(d); });
+  };
+
+  /* ---------- editor ---------- */
+  function open(d){ CUR=d; el('ttl').value=d.title||''; el('page').innerHTML=d.body||'<p></p>';
+    el('home').classList.add('off'); el('ed').classList.add('on'); el('savenote').textContent='Saves by itself as you write.'; el('ttl').focus(); }
+  function closeEd(){ flush(); CUR=null; el('ed').classList.remove('on'); el('home').classList.remove('off'); renderHome(); }
+  el('back').onclick=closeEd;
+  function queueSave(){ dirty=true; el('savenote').textContent='Writing…'; clearTimeout(saveTimer); saveTimer=setTimeout(flush,1200); }
+  function flush(){ if(!CUR||!dirty) return; dirty=false;
+    CUR.title=el('ttl').value.trim(); CUR.body=el('page').innerHTML;
+    saveDoc(CUR).then(function(){ el('savenote').textContent='Saved · '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}); }); }
+  el('page').addEventListener('input', queueSave);
+  el('ttl').addEventListener('input', queueSave);
+  window.addEventListener('beforeunload', flush);
+  document.addEventListener('visibilitychange', function(){ if(document.hidden) flush(); });
+
+  document.querySelector('.tools').addEventListener('click', function(ev){
+    var b=ev.target.closest('.tb'); if(!b) return; ev.preventDefault();
+    el('page').focus();
+    document.execCommand(b.getAttribute('data-cmd'), false, b.getAttribute('data-val')||null);
+    queueSave();
+  });
+
+  el('delDoc').onclick=function(){ if(!CUR) return;
+    var keep=Object.assign({},CUR);
+    DOCS=DOCS.filter(function(x){return x.id!==keep.id;});
+    window.HUBDATA.del(COL,keep.id); dirty=false; CUR=null; closeEd();
+    toast('Removed “'+(keep.title||'Untitled')+'”', function(){ delete keep.updatedAt;
+      saveDoc(keep).then(function(r){ if(r&&r.id) keep.id=r.id; DOCS.push(keep); renderHome(); }); });
+  };
+
+  /* ================= SAVE TO WORD — a real .docx, no libraries =================
+     A .docx is a zip of XML. We build both by hand: the zip (STORE, CRC-32) and
+     the WordprocessingML inside it. Nothing leaves the browser. */
+  function crcTable(){ var t=[],c; for(var n=0;n<256;n++){ c=n; for(var k=0;k<8;k++) c = (c&1)? (0xEDB88320 ^ (c>>>1)) : (c>>>1); t[n]=c>>>0; } return t; }
+  var CRCT=crcTable();
+  function crc32(u8){ var c=0xFFFFFFFF; for(var i=0;i<u8.length;i++) c=CRCT[(c^u8[i])&0xFF]^(c>>>8); return (c^0xFFFFFFFF)>>>0; }
+  function zip(files){ // files: [{name, text}]
+    var enc=new TextEncoder(), parts=[], central=[], off=0;
+    function u16(n){ return [n&255,(n>>8)&255]; }
+    function u32(n){ return [n&255,(n>>8)&255,(n>>16)&255,(n>>24)&255]; }
+    files.forEach(function(f){
+      var name=enc.encode(f.name), data=enc.encode(f.text), crc=crc32(data);
+      var head=[].concat(u32(0x04034b50),u16(20),u16(0),u16(0),u16(0),u16(0),u32(crc),u32(data.length),u32(data.length),u16(name.length),u16(0));
+      parts.push(new Uint8Array(head),name,data);
+      central.push({name:name,crc:crc,size:data.length,off:off});
+      off+=head.length+name.length+data.length;
+    });
+    var cdStart=off, cdLen=0;
+    central.forEach(function(c){
+      var rec=[].concat(u32(0x02014b50),u16(20),u16(20),u16(0),u16(0),u16(0),u16(0),u32(c.crc),u32(c.size),u32(c.size),u16(c.name.length),u16(0),u16(0),u16(0),u16(0),u32(0),u32(c.off));
+      parts.push(new Uint8Array(rec),c.name); cdLen+=rec.length+c.name.length;
+    });
+    parts.push(new Uint8Array([].concat(u32(0x06054b50),u16(0),u16(0),u16(files.length),u16(files.length),u32(cdLen),u32(cdStart),u16(0))));
+    return new Blob(parts,{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+  }
+  var xe=function(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); };
+  function runsOf(node, st){ // inline walk -> <w:r> list
+    var out='';
+    node.childNodes.forEach(function(n){
+      if(n.nodeType===3){ var t=n.textContent; if(!t) return;
+        var pr=''; if(st.b) pr+='<w:b/>'; if(st.i) pr+='<w:i/>'; if(st.u) pr+='<w:u w:val="single"/>';
+        out+='<w:r>'+(pr?'<w:rPr>'+pr+'</w:rPr>':'')+'<w:t xml:space="preserve">'+xe(t)+'</w:t></w:r>'; return; }
+      if(n.nodeType!==1) return;
+      var tag=n.tagName;
+      if(tag==='BR'){ out+='<w:r><w:br/></w:r>'; return; }
+      var s2={b:st.b||tag==='B'||tag==='STRONG', i:st.i||tag==='I'||tag==='EM', u:st.u||tag==='U'};
+      out+=runsOf(n,s2);
+    });
+    return out;
+  }
+  function para(runs, opts){ opts=opts||{};
+    var pr='';
+    if(opts.style) pr+='<w:pStyle w:val="'+opts.style+'"/>';
+    if(opts.num) pr+='<w:numPr><w:ilvl w:val="0"/><w:numId w:val="'+opts.num+'"/></w:numPr>';
+    return '<w:p>'+(pr?'<w:pPr>'+pr+'</w:pPr>':'')+(runs||'<w:r><w:t/></w:r>')+'</w:p>';
+  }
+  function bodyXML(root){
+    var out='';
+    root.childNodes.forEach(function(n){
+      if(n.nodeType===3){ var t=n.textContent.trim(); if(t) out+=para('<w:r><w:t xml:space="preserve">'+xe(t)+'</w:t></w:r>'); return; }
+      if(n.nodeType!==1) return;
+      var tag=n.tagName;
+      if(tag==='H1') out+=para(runsOf(n,{}),{style:'Heading1'});
+      else if(tag==='H2'||tag==='H3') out+=para(runsOf(n,{}),{style:'Heading2'});
+      else if(tag==='UL'||tag==='OL'){ var num=tag==='UL'?'1':'2';
+        n.querySelectorAll(':scope > li').forEach(function(li){ out+=para(runsOf(li,{}),{num:num}); }); }
+      else if(tag==='P'||tag==='DIV'||tag==='BLOCKQUOTE') out+=para(runsOf(n,{}));
+      else out+=para(runsOf(n,{}));
+    });
+    return out || para('');
+  }
+  function makeDocx(title, html){
+    var host=document.createElement('div'); host.innerHTML=html||'';
+    var body=(title? para('<w:r><w:t xml:space="preserve">'+xe(title)+'</w:t></w:r>',{style:'Heading1'}) : '') + bodyXML(host);
+    var W='xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"';
+    var files=[
+      {name:'[Content_Types].xml', text:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+        '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'+
+        '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'+
+        '<Default Extension="xml" ContentType="application/xml"/>'+
+        '<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>'+
+        '<Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>'+
+        '<Override PartName="/word/numbering.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml"/>'+
+        '</Types>'},
+      {name:'_rels/.rels', text:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+        '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+
+        '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>'+
+        '</Relationships>'},
+      {name:'word/_rels/document.xml.rels', text:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+        '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+
+        '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>'+
+        '<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering" Target="numbering.xml"/>'+
+        '</Relationships>'},
+      {name:'word/styles.xml', text:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+        '<w:styles '+W+'>'+
+        '<w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:pPr><w:spacing w:before="240" w:after="120"/></w:pPr><w:rPr><w:b/><w:sz w:val="48"/></w:rPr></w:style>'+
+        '<w:style w:type="paragraph" w:styleId="Heading2"><w:name w:val="heading 2"/><w:pPr><w:spacing w:before="200" w:after="100"/></w:pPr><w:rPr><w:b/><w:sz w:val="36"/></w:rPr></w:style>'+
+        '</w:styles>'},
+      {name:'word/numbering.xml', text:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+        '<w:numbering '+W+'>'+
+        '<w:abstractNum w:abstractNumId="1"><w:lvl w:ilvl="0"><w:numFmt w:val="bullet"/><w:lvlText w:val="&#8226;"/><w:pPr><w:ind w:left="720" w:hanging="360"/></w:pPr></w:lvl></w:abstractNum>'+
+        '<w:abstractNum w:abstractNumId="2"><w:lvl w:ilvl="0"><w:start w:val="1"/><w:numFmt w:val="decimal"/><w:lvlText w:val="%1."/><w:pPr><w:ind w:left="720" w:hanging="360"/></w:pPr></w:lvl></w:abstractNum>'+
+        '<w:num w:numId="1"><w:abstractNumId w:val="1"/></w:num>'+
+        '<w:num w:numId="2"><w:abstractNumId w:val="2"/></w:num>'+
+        '</w:numbering>'},
+      {name:'word/document.xml', text:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+        '<w:document '+W+'><w:body>'+body+'<w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440"/></w:sectPr></w:body></w:document>'}
+    ];
+    return zip(files);
+  }
+  el('dl').onclick=function(){ if(!CUR) return; flush();
+    var name=(el('ttl').value.trim()||'Untitled document').replace(/[\\/:*?"<>|]/g,'-');
+    var blob=makeDocx(el('ttl').value.trim(), el('page').innerHTML);
+    var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name+'.docx';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); },4000);
+    toast('Saved “'+name+'.docx” to your downloads.');
+  };
+  window.__makeDocx=makeDocx; // for the test harness
+
+  window.AssistantContext=function(){ return { view:'documents',
+    documents:DOCS.map(function(d){return d.title||'Untitled';}), editing:CUR? (CUR.title||'Untitled') : null }; };
+
+  /* Staff-of-the-office only: the room is in no coach/parent role list, and because this
+     hub keeps a wide-open demo seat, the page itself insists on a real seat. */
+  window.RoomGuard('docs', function(role){
+    if(role!=='admin' && role!=='manager' && role!=='frontdesk'){
+      document.querySelector('.wrap').innerHTML='<div class="eyebrow"></div><h1>Documents</h1>'+
+        '<div class="empty" style="margin-top:14px"><b>This room holds the gym&#8217;s working papers.</b><br>'+
+        'Letters and notices live here, so it opens for the Owner, Admin and Front Desk seats only — the demo seat included. The rest of the hub is yours to explore.</div>';
+      return;
+    }
+    load();
+  });
+})();
+</script>
+</body>
+</html>
