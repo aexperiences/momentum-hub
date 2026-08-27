@@ -7,7 +7,7 @@
    ============================================================================ */
 window.HUB_CONFIG = {
   tenant: "momentum",
-  seedVersion: "2026-08-25-momentum-v14-connect",
+  seedVersion: "2026-08-26-momentum-v15-masterlist",
 
   brand: {
     name:    "Momentum Sports and Play",
@@ -38,7 +38,7 @@ window.HUB_CONFIG = {
 
   departments: [
     { name:"",           keys:["home"] },
-    { name:"Office",     keys:["calendar","connect"], accent:"#0f9d9d" },
+    { name:"Office",     keys:["calendar","connect","list"], accent:"#0f9d9d" },
     { name:"Front Desk", keys:["desk","checkin","enroll","funnel"], accent:"#14b8a6" },
     { name:"Programs",   keys:["schedule","studio","pathway","coaches"], accent:"#0f9d9d" },
     { name:"Team App",   keys:["team"], accent:"#0e7490" },
@@ -53,6 +53,7 @@ window.HUB_CONFIG = {
     { k:"home",     label:"Command Center",    ic:"/icons/command-center.svg", href:"/hub.html",      ds:"Everything you run, in one place" },
     { k:"calendar", label:"Calendar",           ic:"/icons/calendar.svg", href:"/calendar.html", ds:"Every class, team, party and closure \u2014 subscribe on your phone" },
     { k:"connect",  label:"Connect",            ic:"/icons/connect.svg", href:"/connect.html", ds:"Message the staff, post to a channel, or get face to face \u2014 staff only" },
+{ k:"list",     label:"Master List",        ic:"/icons/list.svg", href:"/list.html",   ds:"The owners' running list \u2014 drag what matters most to the top" },
     { k:"checkin",  label:"Check-in & Attendance", ic:"/icons/checkin.svg", href:"/checkin.html", ds:"One-tap front-desk check-in and the floor log" },
     { k:"enroll",   label:"Enrollment & Waitlists", ic:"/icons/enroll.svg", href:"/enroll.html", ds:"Waitlist queues and one-click promotion" },
     { k:"funnel",   label:"Growth Funnel",     ic:"/icons/funnel.svg", href:"/funnel.html",   ds:"Every lead from first click to enrolled" },
@@ -104,7 +105,7 @@ window.HUB_CONFIG = {
     note: "Names are hidden here on purpose. Coaches and the front desk see the full roster."
   },
 
-  collections: ["classes","families","coaches","teams","teamevents","teammsgs","expenses","attendance","waitlist","leads","hrrecords","waivers","incidents","approvals","systems","evidence","kids","visits","offers","rooms","bookings","ladders","punches","payperiods","events"],
+  collections: ["classes","families","coaches","teams","teamevents","teammsgs","expenses","attendance","waitlist","leads","hrrecords","waivers","incidents","approvals","systems","evidence","kids","visits","offers","rooms","bookings","ladders","punches","payperiods","events","masterlist"],
 
   programColors: { Gymnastics:"#12968f", Ninja:"#b8461f", Cheer:"#dda12e", Tumbling:"#9b4fd0", STEAM:"#1f6fa8", Preschool:"#d4608c", Homeschool:"#6f9a30", Camps:"#2f8fbf", "Open Gym":"#7a8a94" },
 
@@ -488,6 +489,7 @@ window.HUB_CONFIG = {
     // Empty on purpose. The calendar already has 108 real classes, the team
     // practices and competitions, and the party bookings to draw on. Inventing
     // a closure would put a day on their wall that Momentum never announced.
+    masterlist: [],  // seeded EMPTY on purpose \u2014 a task is a claim about the owners' real to-dos
     events: [],
 
     punches: [],

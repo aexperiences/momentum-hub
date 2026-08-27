@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Master List</title>
+<link rel="icon" href="/icons/momentum-mark.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/config.js"></script>
+<script src="/skins.js"></script>
+<style>
+  *{box-sizing:border-box}html,body{margin:0}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink,#2a201a);background:var(--paper,#fbf7f2);min-height:100vh}
+  h1,h2{font-family:Georgia,serif;font-weight:800;margin:0}
+  .wrap{max-width:860px;margin:0 auto;padding:20px 20px 90px}
+  .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+  .head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:6px 0 4px}
+  .sub{font-size:12.5px;color:var(--mut);margin:2px 0 16px;max-width:640px;line-height:1.55}
+  /* capture bar */
+  .cap{display:flex;gap:9px;margin-bottom:16px}
+  .cap input{flex:1;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:13px 15px;font:inherit;font-size:16px}
+  .cap input:focus{outline:2px solid var(--accent);outline-offset:1px}
+  .cap button{border:0;background:var(--accent);color:var(--onAccent,#fff);border-radius:12px;padding:0 20px;font:inherit;font-weight:800;cursor:pointer}
+  .bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .chip{font-size:11.5px;color:var(--mut)}
+  .sp{flex:1}
+  .act{border:1px solid var(--line);background:var(--card);border-radius:9px;padding:8px 14px;font-size:12.5px;font-weight:700;color:var(--ink2);cursor:pointer}
+  .act:hover{border-color:var(--accent);color:var(--accent)}
+  /* task cards */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 14px rgba(80,50,20,.05);margin-bottom:11px;overflow:hidden;transition:box-shadow .15s}
+  .card.dragging{opacity:.45}
+  .card.drop-above{box-shadow:0 -3px 0 0 var(--accent), 0 4px 14px rgba(80,50,20,.05)}
+  .card.drop-below{box-shadow:0 3px 0 0 var(--accent), 0 4px 14px rgba(80,50,20,.05)}
+  /* done = yellow, card AND notes, and it stays. The house format law. */
+  .card.done{background:color-mix(in srgb, #f5c751 26%, var(--card));border-color:color-mix(in srgb, #c8892a 45%, var(--line))}
+  .card.done .note textarea{background:color-mix(in srgb, #f5c751 18%, var(--card))}
+  .card.done .t{text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:color-mix(in srgb,#8a5f1a 60%,transparent)}
+  .row{display:flex;align-items:flex-start;gap:10px;padding:12px 14px 6px}
+  .grip{flex:none;width:26px;height:34px;border-radius:8px;display:grid;grid-template-columns:1fr 1fr;gap:3px 4px;place-content:center;cursor:grab;touch-action:none;color:var(--mut)}
+  .grip:active{cursor:grabbing}
+  .grip i{width:4.5px;height:4.5px;border-radius:99px;background:currentColor;opacity:.65}
+  .tick{flex:none;width:26px;height:26px;margin-top:3px;border:2px solid var(--line);border-radius:9px;background:var(--paper);cursor:pointer;display:grid;place-items:center;color:transparent;font-weight:900}
+  .card.done .tick{background:#e0a83a;border-color:#c8892a;color:#fff}
+  .t{flex:1;font-size:15px;font-weight:600;line-height:1.45;padding-top:3px;word-break:break-word}
+  .t[contenteditable]:focus{outline:2px solid var(--accent);border-radius:6px;outline-offset:3px}
+  .tools{flex:none;display:flex;gap:4px;align-items:center}
+  .tool{border:0;background:none;color:var(--mut);cursor:pointer;font-size:15px;padding:5px 7px;border-radius:8px;line-height:1}
+  .tool:hover{color:var(--accent);background:color-mix(in srgb, var(--accent) 10%, transparent)}
+  .due{font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:99px;background:color-mix(in srgb, var(--accent) 13%, transparent);color:var(--accent);white-space:nowrap}
+  .due.late{background:#fbeae2;color:#b23b3b}
+  /* the note lives UNDER every task, always visible */
+  .note{padding:0 14px 12px 50px}
+  .note textarea{width:100%;border:1px dashed color-mix(in srgb, var(--line) 80%, transparent);background:color-mix(in srgb, var(--cream) 55%, transparent);color:var(--ink2);border-radius:10px;padding:9px 11px;font:inherit;font-size:12.5px;line-height:1.5;resize:none;overflow:hidden;min-height:38px}
+  .note textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+  .empty{background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:26px 20px;font-size:13.5px;color:var(--mut);line-height:1.6}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:11px 16px;border-radius:11px;font-size:13.5px;opacity:0;transition:.25s;pointer-events:none;z-index:90;display:flex;gap:14px;align-items:center}
+  .toast.on{opacity:1;pointer-events:auto}
+  .toast button{border:0;background:none;color:var(--accent);font:inherit;font-weight:800;cursor:pointer}
+  @media(max-width:700px){ .wrap{padding:16px 12px 100px} .note{padding-left:14px} }
+  a:focus-visible,button:focus-visible{outline:3px solid var(--accent)!important;outline-offset:2px}
+</style>
+<meta name="theme-color" content="#0f9d9d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Momentum">
+<link rel="apple-touch-icon" href="/momentum-logo.png">
+<link rel="manifest" href="/manifest.webmanifest">
+</head>
+<body>
+<script src="/hub-nav.js" defer></script>
+<script src="/data.js"></script>
+<script src="/roomguard.js"></script>
+<script src="/assistant.js" defer></script>
+
+<div class="wrap">
+  <div class="eyebrow" id="eb"></div>
+  <div class="head"><h1>Master List</h1></div>
+  <div class="sub">The owners' running list. Write things down in any order — <b>drag what matters most to the top</b>; where a card sits <i>is</i> its priority. Notes live under every task. Finished work turns gold and stays on the list until you start fresh.</div>
+
+  <form class="cap" id="capForm">
+    <input id="capIn" placeholder="Write it down — sort it out later" maxlength="300" autocomplete="off">
+    <button type="submit">Add</button>
+  </form>
+
+  <div class="bar">
+    <span class="chip" id="count">—</span>
+    <span class="sp"></span>
+    <button class="act" id="fresh" type="button">Start fresh — clear the finished ones</button>
+  </div>
+
+  <div id="listBox"></div>
+  <div class="empty" id="empty" hidden><b>Nothing on the list yet.</b><br>Type the first thing above. New items land on top; drag the important ones up. This list is the owners' — coaches and parents never see it.</div>
+</div>
+
+<div class="toast" id="toast"><span id="toastMsg"></span><button id="toastUndo" hidden>Undo</button></div>
+
+<script>
+(function(){
+  var COL='masterlist';
+  var el=function(id){return document.getElementById(id);};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var C=window.HUB_CONFIG||{}, BR=C.brand||{};
+  el('eb').textContent=(BR.center||BR.name||'');
+  var TASKS=[];
+
+  /* ---------- data ---------- */
+  function ordered(){ return TASKS.slice().sort(function(a,b){ return (a.pos||0)-(b.pos||0); }); }
+  function load(){ window.HUBDATA.list(COL).then(function(r){ TASKS=r||[]; render(); }); }
+  function saveTask(t){ return window.HUBDATA.save(COL,t); }
+
+  /* ---------- toast + undo (no confirm dialogs — act, then offer undo) ---------- */
+  var toastTimer=null, undoFn=null;
+  function toast(msg,undo){ el('toastMsg').textContent=msg; undoFn=undo||null;
+    el('toastUndo').hidden=!undo;
+    var t=el('toast'); t.classList.add('on');
+    clearTimeout(toastTimer); toastTimer=setTimeout(function(){ t.classList.remove('on'); undoFn=null; }, undo?6000:2400); }
+  el('toastUndo').onclick=function(){ if(undoFn) undoFn(); el('toast').classList.remove('on'); undoFn=null; };
+
+  /* ---------- capture: newest on top, no sorting while thinking ---------- */
+  el('capForm').addEventListener('submit', function(ev){ ev.preventDefault();
+    var v=el('capIn').value.trim(); if(!v) return;
+    var top=ordered()[0]; var pos=top? (top.pos||0)-1 : 0;
+    var t={t:v, note:'', done:false, pos:pos, remindAt:''};
+    el('capIn').value='';
+    saveTask(t).then(function(r){ if(r&&r.id) t.id=r.id; TASKS.push(t); render(); });
+  });
+
+  /* ---------- render ---------- */
+  function fmtDue(iso){ try{ return new Date(iso).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}); }catch(e){ return ''; } }
+  function render(){
+    var a=ordered();
+    el('count').textContent=a.length? (a.filter(function(x){return !x.done;}).length+' open · '+a.filter(function(x){return x.done;}).length+' finished') : '';
+    el('empty').hidden=a.length>0;
+    el('listBox').innerHTML=a.map(function(t){
+      var late=t.remindAt && !t.done && (new Date(t.remindAt) < new Date());
+      return '<div class="card'+(t.done?' done':'')+'" data-id="'+esc(t.id)+'">'+
+        '<div class="row">'+
+          '<div class="grip" title="Drag to set priority" aria-label="Drag to reorder"><i></i><i></i><i></i><i></i><i></i><i></i></div>'+
+          '<button class="tick" data-do="done" aria-label="Mark finished">&#10003;</button>'+
+          '<div class="t" data-do="title" contenteditable="plaintext-only" spellcheck="false">'+esc(t.t)+'</div>'+
+          '<div class="tools">'+
+            (t.remindAt? '<span class="due'+(late?' late':'')+'">'+(late?'was due ':'')+esc(fmtDue(t.remindAt))+'</span>':'')+
+            '<button class="tool" data-do="bell" title="Remind me">&#128276;</button>'+
+            '<button class="tool" data-do="del" title="Remove">&#10005;</button>'+
+          '</div>'+
+        '</div>'+
+        '<div class="note"><textarea data-do="note" placeholder="Notes — they stay open under the task">'+esc(t.note||'')+'</textarea></div>'+
+        '<input type="datetime-local" data-do="bellinput" style="position:absolute;width:0;height:0;opacity:0;border:0;padding:0">'+
+      '</div>';
+    }).join('');
+    // autosize notes
+    [].forEach.call(document.querySelectorAll('.note textarea'), autosize);
+  }
+  function autosize(ta){ ta.style.height='auto'; ta.style.height=(ta.scrollHeight+2)+'px'; }
+  function byId(id){ for(var i=0;i<TASKS.length;i++) if(TASKS[i].id===id) return TASKS[i]; return null; }
+  function cardOf(n){ while(n && n!==document && !(n.classList&&n.classList.contains('card'))) n=n.parentNode; return n===document?null:n; }
+
+  /* ---------- edits ---------- */
+  document.addEventListener('click', function(ev){
+    var b=ev.target.closest('[data-do]'); if(!b) return;
+    var card=cardOf(b); if(!card) return; var t=byId(card.getAttribute('data-id')); if(!t) return;
+    var what=b.getAttribute('data-do');
+    if(what==='done'){ t.done=!t.done; saveTask(t); render(); }
+    if(what==='del'){
+      var keep=Object.assign({},t);
+      TASKS=TASKS.filter(function(x){return x.id!==t.id;});
+      window.HUBDATA.del(COL,t.id); render();
+      toast('Removed “'+keep.t.slice(0,40)+'”', function(){ delete keep.updatedAt;
+        saveTask(keep).then(function(r){ if(r&&r.id) keep.id=r.id; TASKS.push(keep); render(); }); });
+    }
+    if(what==='bell'){ var inp=card.querySelector('[data-do="bellinput"]');
+      if(t.remindAt){ try{ inp.value=t.remindAt; }catch(e){} }
+      if(inp.showPicker){ try{ inp.showPicker(); }catch(e){ inp.focus(); } } else inp.focus(); }
+  });
+  document.addEventListener('change', function(ev){
+    var b=ev.target.closest('[data-do="bellinput"]'); if(!b) return;
+    var card=cardOf(b); var t=byId(card.getAttribute('data-id')); if(!t) return;
+    t.remindAt=b.value||''; saveTask(t); render();
+    if(t.remindAt && 'Notification' in window && Notification.permission==='default'){ try{ Notification.requestPermission(); }catch(e){} }
+  });
+  document.addEventListener('input', function(ev){
+    if(ev.target.matches&&ev.target.matches('.note textarea')) autosize(ev.target);
+  });
+  // title + note save on blur — no save buttons, no dialogs
+  document.addEventListener('focusout', function(ev){
+    var n=ev.target; var card=cardOf(n); if(!card) return; var t=byId(card.getAttribute('data-id')); if(!t) return;
+    if(n.getAttribute&&n.getAttribute('data-do')==='title'){ var v=n.textContent.trim(); if(v && v!==t.t){ t.t=v.slice(0,300); saveTask(t); } if(!v){ n.textContent=t.t; } }
+    if(n.matches&&n.matches('.note textarea')){ if(n.value!==(t.note||'')){ t.note=n.value.slice(0,2000); saveTask(t); } }
+  });
+
+  /* ---------- start fresh: strips ONLY the finished ones ---------- */
+  el('fresh').onclick=function(){
+    var gone=TASKS.filter(function(x){return x.done;});
+    if(!gone.length){ toast('Nothing finished to clear.'); return; }
+    TASKS=TASKS.filter(function(x){return !x.done;});
+    gone.forEach(function(x){ window.HUBDATA.del(COL,x.id); });
+    render();
+    toast(gone.length+' finished item'+(gone.length>1?'s':'')+' cleared', function(){
+      gone.forEach(function(x){ var k=Object.assign({},x); delete k.updatedAt;
+        saveTask(k).then(function(r){ if(r&&r.id) k.id=r.id; TASKS.push(k); render(); }); });
+    });
+  };
+
+  /* ---------- drag-and-drop priority — pointer events, one path for thumb and mouse ---------- */
+  var drag=null;
+  document.addEventListener('pointerdown', function(ev){
+    var g=ev.target.closest('.grip'); if(!g) return;
+    var card=cardOf(g); if(!card) return;
+    ev.preventDefault();
+    try{ g.setPointerCapture(ev.pointerId); }catch(e){}
+    drag={id:card.getAttribute('data-id'), card:card, over:null, place:null};
+    card.classList.add('dragging');
+  });
+  document.addEventListener('pointermove', function(ev){
+    if(!drag) return;
+    var elAt=document.elementFromPoint(ev.clientX, ev.clientY);
+    var over=cardOf(elAt);
+    [].forEach.call(document.querySelectorAll('.card'), function(c){ c.classList.remove('drop-above','drop-below'); });
+    if(!over || over===drag.card){ drag.over=null; return; }
+    var r=over.getBoundingClientRect();
+    drag.place = (ev.clientY < r.top + r.height/2) ? 'above' : 'below';
+    over.classList.add(drag.place==='above'?'drop-above':'drop-below');
+    drag.over=over;
+  });
+  document.addEventListener('pointerup', function(ev){
+    if(!drag) return;
+    var d=drag; drag=null;
+    d.card.classList.remove('dragging');
+    [].forEach.call(document.querySelectorAll('.card'), function(c){ c.classList.remove('drop-above','drop-below'); });
+    if(!d.over) return;
+    var a=ordered().filter(function(x){return x.id!==d.id;});
+    var t=byId(d.id); if(!t) return;
+    var idx=a.findIndex(function(x){ return x.id===d.over.getAttribute('data-id'); });
+    if(idx<0) return;
+    if(d.place==='below') idx++;
+    a.splice(idx,0,t);
+    // re-rank the whole list in tens so there is always room between cards
+    a.forEach(function(x,i){ var np=(i+1)*10; if(x.pos!==np){ x.pos=np; saveTask(x); } });
+    render();
+  });
+  document.addEventListener('pointercancel', function(){ if(drag){ drag.card.classList.remove('dragging'); drag=null;
+    [].forEach.call(document.querySelectorAll('.card'), function(c){ c.classList.remove('drop-above','drop-below'); }); } });
+
+  /* ---------- reminders: red chip carries it; a notification fires if the room is open ---------- */
+  setInterval(function(){
+    var now=Date.now(), changed=false;
+    TASKS.forEach(function(t){
+      if(t.remindAt && !t.done && !t._pinged && new Date(t.remindAt).getTime()<=now){
+        t._pinged=true; changed=true;
+        if('Notification' in window && Notification.permission==='granted'){
+          try{ new Notification('Master List', {body:t.t, icon:'/icons/list.svg'}); }catch(e){}
+        }
+      }
+    });
+    if(changed) render();
+  }, 30000);
+
+  window.AssistantContext=function(){ return { view:'the owners master list',
+    open:TASKS.filter(function(t){return !t.done;}).map(function(t){return t.t;}),
+    finished:TASKS.filter(function(t){return t.done;}).length }; };
+
+  /* Owner eyes only, twice over: the room is in no parent role list, and because this hub
+     keeps a wide-open demo seat, the page itself insists on a real owner seat. */
+  window.RoomGuard('list', function(role){
+    if(role!=='admin' && role!=='manager'){
+      document.querySelector('.wrap').innerHTML='<div class="eyebrow"></div><h1>Master List</h1>'+
+        '<div class="empty" style="margin-top:14px"><b>This is the owners’ private list.</b><br>'+
+        'It holds Josh &amp; Katie’s own running notes about the business, so only the Owner and Admin seats can open it — the demo seat included. Everything else in the hub is yours to explore.</div>';
+      return;
+    }
+    load();
+  });
+})();
+</script>
+</body>
+</html>
