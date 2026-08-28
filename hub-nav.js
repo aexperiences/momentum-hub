@@ -76,7 +76,51 @@
     ".hn-htitle{font-family:Georgia,serif;font-weight:700;font-size:19px;line-height:1.1}.hn-hsub{font-size:11px;opacity:.85;margin-top:2px}.hn-hsp{flex:1}" +
     ".hn-hrole{font-size:11px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);padding:5px 10px;border-radius:99px}.hn-hrole:empty{display:none}" +
     "@media(max-width:900px){.hn-hb{padding-left:60px}}" +
-    ".hn-tabs{display:none;position:fixed;left:0;right:0;bottom:0;z-index:1202;background:color-mix(in srgb, var(--cream) 88%, transparent);-webkit-backdrop-filter:saturate(180%) blur(14px);backdrop-filter:saturate(180%) blur(14px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}" +".hn-tabs .row{display:flex;align-items:stretch}" +".hn-tab{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 4px 7px;text-decoration:none;color:var(--mut);background:none;border:0;font:inherit;cursor:pointer;min-height:56px;-webkit-tap-highlight-color:transparent}" +".hn-tab img,.hn-tab .gl{width:26px;height:26px;border-radius:7px;display:block;opacity:.62;transition:opacity .15s,transform .15s}" +".hn-tab .gl{display:flex;align-items:center;justify-content:center;font-size:19px;line-height:1;color:var(--ink2)}" +".hn-tab .lb{font-size:10.5px;font-weight:600;letter-spacing:.01em;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}" +".hn-tab.on{color:var(--accent)}" +".hn-tab.on img,.hn-tab.on .gl{opacity:1;transform:translateY(-1px)}" +".hn-tab.on .lb{font-weight:800}" +".hn-tab .bar{position:absolute;top:0;height:3px;border-radius:0 0 3px 3px;background:var(--accent)}" +"@media(max-width:900px){"+  ".hn-tabs{display:block}"+  "body{padding-bottom:calc(64px + env(safe-area-inset-bottom))}"+  ".hn-openbtn{display:none !important}"+  ".hn-hb{padding-left:16px}"+  ".hn{width:min(300px,86vw)}"+"}" +
+    ".hn-tabs{display:none;position:fixed;left:0;right:0;bottom:0;z-index:1202;background:color-mix(in srgb, var(--cream) 88%, transparent);-webkit-backdrop-filter:saturate(180%) blur(14px);backdrop-filter:saturate(180%) blur(14px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}" +".hn-tabs .row{display:flex;align-items:stretch}" +".hn-tab{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 4px 7px;text-decoration:none;color:var(--mut);background:none;border:0;font:inherit;cursor:pointer;min-height:60px;-webkit-tap-highlight-color:transparent}" +".hn-tab img,.hn-tab .gl{width:26px;height:26px;border-radius:7px;display:block;opacity:.62;transition:opacity .15s,transform .15s}" +".hn-tab .gl{display:flex;align-items:center;justify-content:center;font-size:19px;line-height:1;color:var(--ink2)}" +".hn-tab .lb{font-size:11px;font-weight:600;letter-spacing:.01em;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}" +".hn-tab.on{color:var(--accent)}" +".hn-tab.on img,.hn-tab.on .gl{opacity:1;transform:translateY(-1px)}" +".hn-tab.on .lb{font-weight:800}" +".hn-tab .bar{position:absolute;top:0;height:3px;border-radius:0 0 3px 3px;background:var(--accent)}" +"@media(max-width:900px){"+  ".hn-tabs{display:block}"+  "body{padding-bottom:calc(64px + env(safe-area-inset-bottom))}"+  ".hn-openbtn{display:none !important}"+  ".hn-hb{padding-left:16px}"+  ".hn{width:min(300px,86vw)}"+"}" + +
+    /* ============================================================================
+       THE PHONE LAYER — Momentum OS. Accelerated Experiences, LLC. Aug 28 2026.
+       Injected for every room, so no page is a desktop layout squeezed into a thumb.
+       In the order it matters at the counter:
+         1. Content first — the explaining paragraph is not what you opened this for.
+         2. Nothing scrolls sideways. A shape that will not fit a phone gets a
+            different shape, not a drag bar.
+         3. Every tappable thing is 44px or bigger. Coaches have chalk on their hands.
+         4. Nothing under 12px, and inputs at 16px so iOS stops zooming the page.
+       ========================================================================== */
+    "@media(max-width:760px){" +
+      ".wrap{padding:14px 14px calc(78px + env(safe-area-inset-bottom))!important;max-width:100%!important}" +
+      "h1{font-size:23px!important;line-height:1.15;letter-spacing:-.01em}" +
+      "h2{font-size:17px!important}" +
+      ".lede{font-size:13.5px!important;line-height:1.5!important;margin:6px 0 14px!important;color:var(--mut)}" +
+      ".eyebrow{font-size:10.5px!important;letter-spacing:.16em!important}" +
+      ".bar{flex-wrap:nowrap!important;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;" +
+        "-webkit-overflow-scrolling:touch;margin-left:-14px!important;margin-right:-14px!important;" +
+        "padding:2px 14px 8px!important;scrollbar-width:none}" +
+      ".bar::-webkit-scrollbar{display:none}" +
+      ".bar>.stat{flex:0 0 auto!important;scroll-snap-align:start;min-width:120px}" +
+      ".bar>.sp{display:none!important}" +
+      ".filters{flex-wrap:nowrap!important;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;" +
+        "margin-left:-14px!important;margin-right:-14px!important;padding:0 14px 4px!important;scrollbar-width:none}" +
+      ".filters::-webkit-scrollbar{display:none}" +
+      ".filters>.flt{flex:0 0 auto;scroll-snap-align:start;min-height:40px;display:flex;align-items:center}" +
+      "button,.btn,.act,.mini,.nav,.chk,.lnk,select{min-height:44px}" +
+      ".btn,button.btn{padding:12px 18px!important;font-size:15px!important}" +
+      "input,select,textarea{font-size:16px!important}" +
+      ".cols,.cards{grid-template-columns:1fr!important}" +
+      ".panel,.card{border-radius:13px}" +
+      ".ph{padding:12px 14px!important;flex-wrap:wrap}" +
+      ".pb{padding:8px 14px 14px!important}" +
+      ".meta,.fm,.why,.hint,.rnote{font-size:12.5px!important}" +
+      ".stat .l{font-size:11px!important}" +
+      ".scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}" +
+      ".as-fab{bottom:calc(78px + env(safe-area-inset-bottom))!important;right:14px!important;width:56px!important;height:56px!important}" +
+      ".as-panel{bottom:calc(142px + env(safe-area-inset-bottom))!important;right:12px!important;left:12px!important;width:auto!important;max-width:none!important;max-height:calc(100vh - 230px)!important}" +
+    "}" +
+    "@media(max-width:400px){" +
+      ".wrap{padding-left:12px!important;padding-right:12px!important}" +
+      "h1{font-size:21px!important}" +
+      ".bar,.filters{margin-left:-12px!important;margin-right:-12px!important;padding-left:12px!important;padding-right:12px!important}" +
+    "}"
     ".hn-scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1199;opacity:0;pointer-events:none;transition:opacity .26s ease;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}" +"@media(max-width:900px){body.hn-open .hn-scrim{opacity:1;pointer-events:auto}}" +".hn-close{display:none;position:absolute;top:12px;right:12px;width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:18px;line-height:1;cursor:pointer;align-items:center;justify-content:center}" +"@media(max-width:900px){.hn-close{display:flex}}" +".hn{padding-top:calc(18px + env(safe-area-inset-top));padding-bottom:calc(18px + env(safe-area-inset-bottom));padding-left:calc(14px + env(safe-area-inset-left))}" +".hn-openbtn{top:calc(13px + env(safe-area-inset-top));left:calc(13px + env(safe-area-inset-left))}" +".hn-hdr{padding-top:calc(12px + env(safe-area-inset-top))}" +"html,body{max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}" +"img,svg,video,canvas{max-width:100%;height:auto}" +"*{-webkit-tap-highlight-color:rgba(0,0,0,.06)}" +"@media(max-width:900px){"+  ".hn-link{min-height:46px;font-size:15px}"+  ".hn-acts a{padding:12px 10px;font-size:13px}"+  ".hn-site{padding:13px 12px}"+  "input,select,textarea{font-size:16px}"+  "button,.btn,.lnk,a.btn{min-height:44px}"+  "table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}"+  ".hn-hb{padding-left:60px}"+"}" +"body.hn-lock{overflow:hidden;position:relative}";
   css += "html{scrollbar-gutter:stable}*{scrollbar-width:auto;scrollbar-color:rgba(136,136,136,.62) rgba(136,136,136,.14)}::-webkit-scrollbar{width:15px;height:15px}::-webkit-scrollbar-track{background:rgba(136,136,136,.14);border-radius:10px}::-webkit-scrollbar-thumb{background:rgba(136,136,136,.62);border-radius:10px;border:3px solid transparent;background-clip:padding-box}::-webkit-scrollbar-thumb:hover{background:rgba(136,136,136,.82);border:3px solid transparent;background-clip:padding-box}::-webkit-scrollbar-thumb:active{background:rgba(136,136,136,.95);border:3px solid transparent;background-clip:padding-box}::-webkit-scrollbar-corner{background:transparent}";
   var st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
@@ -147,7 +191,7 @@
     var html = show.map(function (sec) {
       var ic = sec.ic ? '<img alt="" src="' + esc(sec.ic) + '">' : '<span class="gl">&#9679;</span>';
       return '<a class="hn-tab' + (sec.k === here ? " on" : "") + '" href="' + sec.href + S + '">' + ic +
-             '<span class="lb">' + esc(sec.label) + "</span></a>";
+             '<span class="lb">' + esc(sec.short || sec.label) + "</span></a>";
     }).join("");
     if (more) {
       var hereHidden = items.slice(MAXTABS - 1).some(function (x) { return x.k === here; });
